@@ -23,12 +23,9 @@ public class MainActivity2 extends AppCompatActivity {
 
         Button button = findViewById(R.id.searchGames);
         games = findViewById(R.id.games);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gameSearchViewModel = new GameSearchViewModel();
-                games.setText("gameSearchViewModel.receiveGames()");
-            }
+        button.setOnClickListener(v -> {
+            gameSearchViewModel = new GameSearchViewModel();
+            games.setText("gameSearchViewModel.receiveGames()");
         });
     }
 
