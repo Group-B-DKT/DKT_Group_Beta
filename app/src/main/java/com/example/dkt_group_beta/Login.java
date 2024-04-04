@@ -24,8 +24,8 @@ public class Login extends AppCompatActivity {
             return insets;
         });
 
-        Button login = findViewById(R.id.LoginButton);
-        login.setOnClickListener(new View.OnClickListener() {
+        Button loginButton = findViewById(R.id.LoginButton);
+        loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Login.this, Spielverbindung.class);
