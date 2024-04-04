@@ -29,7 +29,9 @@
 
         <activity
             android:name=".Spielverbindung"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="landscape"
+            />
 
         <activity
             android:name=".LoginOld"
