@@ -27,12 +27,11 @@ public class LoginViewModel {
         Log.d("debug", username);
         try {
             SharedPreferences sharedPreferences = getSharedPreference();
-
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("Username", username);
             editor.apply();
         }catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
+            return;
         }
 
     }
@@ -42,7 +41,6 @@ public class LoginViewModel {
             SharedPreferences sharedPreferences = getSharedPreference();
             return sharedPreferences.getString("Username", "");
         }catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
             return "";
         }
 
