@@ -27,7 +27,7 @@ public class WebSocketClient {
 
     private Player player;
 
-    private List<WebSocketListener> messageHandler;
+    private List<WebSocketMessageHandler<String>> messageHandler;
 
 
 
@@ -75,11 +75,17 @@ public class WebSocketClient {
         });
     }
 
-    private void addMessageHandler(WebSocketListener messageHandler){
+    public void addMessageHandler(WebSocketMessageHandler<String> messageHandler){
         this.messageHandler.add(messageHandler);
     }
 
     public void sendMessageToServer(String msg) {
+        Log.d("DEBUG", "Websocket: " + msg);
         webSocket.send(msg);
     }
+
+    public void notifyMessageHandler(String msg){
+        this.messageHandler.forEach(m -> m.onMessageReceived(msg));
+    }
+
 }
