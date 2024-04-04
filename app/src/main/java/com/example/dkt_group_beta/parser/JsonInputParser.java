@@ -11,6 +11,6 @@ public class JsonInputParser implements InputParser {
     public JsonInputParser(){
 
     }
-    public void parseInput(String client_msg, WebSocketMessageHandler<String> messageHandler) {
+    public void parseInput(String client_msg) {
     }
 }
