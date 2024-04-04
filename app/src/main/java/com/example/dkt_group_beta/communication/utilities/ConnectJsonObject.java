@@ -17,4 +17,10 @@ public class ConnectJsonObject {
     public ConnectJsonObject(ConnectType connectType) {
         this.connectType = connectType;
     }
+
+    public ConnectJsonObject(ConnectType connectType, String playerId, String username) {
+        this.connectType = connectType;
+        this.playerId = playerId;
+        this.username = username;
+    }
 }
