@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DKT_Group_Beta</string>
+    <string name="ip_address">ws://192.168.0.171:8080/websocket-example-handler</string>
 </resources>
