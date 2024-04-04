@@ -17,4 +17,11 @@ public class Wrapper {
     private Request request;
     @Getter
     private Object object;
+
+    public Wrapper(String classname, int gameId, Request request, Object object) {
+        this.classname = classname;
+        this.gameId = gameId;
+        this.request = request;
+        this.object = object;
+    }
 }
