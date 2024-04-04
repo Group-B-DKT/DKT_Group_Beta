@@ -21,15 +21,15 @@ public class MainActivity2 extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        Button button = findViewById(R.id.searchGames);
-        games = findViewById(R.id.games);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gameSearchViewModel = new GameSearchViewModel();
-                games.setText("gameSearchViewModel.receiveGames()");
-            }
-        });
+//        Button button = findViewById(R.id.searchGames);
+//        games = findViewById(R.id.games);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                gameSearchViewModel = new GameSearchViewModel();
+//                games.setText("gameSearchViewModel.receiveGames()");
+//            }
+//        });
     }
 
 }
