@@ -7,6 +7,9 @@ import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.parser.JsonInputParser;
 import com.example.dkt_group_beta.parser.interfaces.InputParser;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -18,12 +21,14 @@ public class WebSocketClient {
     private InputParser inputParser;
     private WebSocket webSocket;
 
+    private List<WebSocketListener> messageHandler;
+
 
 
     public WebSocketClient(String websocketUri){
         WEBSOCKET_URI = websocketUri;
         this.inputParser = new JsonInputParser();
-
+        this.messageHandler = new ArrayList<>();
     }
 
 
@@ -59,5 +64,9 @@ public class WebSocketClient {
                 Log.d("Network", "connection failure");
             }
         });
+    }
+
+    private void addMessageHandler(WebSocketListener messageHandler){
+        this.messageHandler.add(messageHandler);
     }
 }
