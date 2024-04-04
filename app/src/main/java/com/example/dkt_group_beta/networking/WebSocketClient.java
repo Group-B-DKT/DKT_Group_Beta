@@ -13,7 +13,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 public class WebSocketClient {
-    private final String WEBSOCKET_URI = "ws://192.168.0.171:8080/websocket-example-handler";
+    private final String WEBSOCKET_URI = System.getenv("ws://192.168.0.171:8080/websocket-example-handler");
     private InputParser inputParser;
     private WebSocket webSocket;
 
