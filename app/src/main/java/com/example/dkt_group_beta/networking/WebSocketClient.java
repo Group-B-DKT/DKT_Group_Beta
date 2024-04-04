@@ -1,7 +1,9 @@
 package com.example.dkt_group_beta.networking;
 
+import android.content.Context;
 import android.util.Log;
 
+import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.parser.JsonInputParser;
 import com.example.dkt_group_beta.parser.interfaces.InputParser;
 
@@ -12,14 +14,16 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 
 public class WebSocketClient {
-    private final String WEBSOCKET_URI = System.getenv("ws://192.168.0.171:8080/websocket-example-handler");
+    private String WEBSOCKET_URI;
     private InputParser inputParser;
     private WebSocket webSocket;
 
 
 
-    public WebSocketClient(){
+    public WebSocketClient(String websocketUri){
+        WEBSOCKET_URI = websocketUri;
         this.inputParser = new JsonInputParser();
+
     }
 
 
