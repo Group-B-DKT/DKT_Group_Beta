@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".Login">
 
     <TextView
@@ -52,12 +53,17 @@
         app:layout_constraintVertical_bias="0.054" />
 
     <Button
-        android:id="@+id/LoginButton"
+        android:id="@+id/LoginButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="77dp"
         android:layout_marginBottom="30dp"
+        android:backgroundTint="#FF0000"
         android:text="Login"
+        android:textColor="#FFFFFF"
+
+        android:textColorLink="#FF0000"
+        app:iconTint="#FFFF0000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
