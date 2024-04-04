@@ -19,7 +19,7 @@ public class MainActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
         Button button = findViewById(R.id.searchGames);
         games = findViewById(R.id.games);
