@@ -5,7 +5,6 @@ import android.util.Log;
 import com.example.dkt_group_beta.parser.JsonInputParser;
 import com.example.dkt_group_beta.parser.interfaces.InputParser;
 
-import lombok.AllArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
