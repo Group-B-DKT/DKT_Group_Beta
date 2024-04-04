@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">DKT_Group_Beta</string>
+    <string name="User">Benutzername: </string>
+    <string name="Verbindung">Spielverbindung</string>
+    <string name="Login">Login</string>
+
 </resources>
