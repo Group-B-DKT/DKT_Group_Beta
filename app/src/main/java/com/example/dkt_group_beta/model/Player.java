@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public class Player {
-
     @Getter
     private String username;
     @Getter
@@ -16,8 +15,17 @@ public class Player {
     private int gameId;
 
 
+    public Player(String username, String id) {
+        this.username = username;
+        this.id = id;
+    }
 
 
+    public String getUsername() {
+        return username;
+    }
 
-
+    public String getId() {
+        return id;
+    }
 }
