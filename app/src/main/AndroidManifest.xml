@@ -16,11 +16,11 @@
             android:name=".Spielverbindung"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".Login22"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Login"
             android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
