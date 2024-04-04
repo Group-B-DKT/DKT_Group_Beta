@@ -31,6 +31,7 @@ android {
 dependencies {
 
     implementation(libs.appcompat)
+    implementation (libs.security.crypto)
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
@@ -40,4 +41,5 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.okhttp)
     compileOnly(libs.lombok)
+
 }
