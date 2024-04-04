@@ -21,4 +21,7 @@ public class Spielverbindung extends AppCompatActivity {
             return insets;
         });
     }
+    protected void test(){
+
+    }
 }
