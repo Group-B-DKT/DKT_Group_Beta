@@ -1,6 +1,7 @@
 package com.example.dkt_group_beta;
 
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.networking.WebSocketClient;
 
 public class MainActivity extends AppCompatActivity {
     private Button btn;
@@ -33,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onClick(View view){
-        WebsocketClientController websocketClientController = new WebsocketClientController();
-        websocketClientController.connectToServer();
+        String device_unique_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        WebsocketClientController.connectToServer(getString(R.string.ip_address), device_unique_id, "PlayerX");
     }
 }
