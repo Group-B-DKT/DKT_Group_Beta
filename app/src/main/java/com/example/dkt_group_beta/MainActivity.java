@@ -39,7 +39,12 @@ public class MainActivity extends AppCompatActivity {
         loginviewmodel = new LoginViewModel(this.getApplicationContext());
         etusername = findViewById(R.id.inputText);
         btnLogin = findViewById(R.id.buttonLogin);
-        btnLogin.setOnClickListener((v) -> {loginviewmodel.onLogin(etusername.getText().toString());});
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginviewmodel.onLogin(etusername.getText().toString());
+            }
+        });
         Log.d("debug", "Gespeicherte Namen :" + loginviewmodel.getSavedUsername());
 
 
