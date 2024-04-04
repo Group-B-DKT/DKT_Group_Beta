@@ -8,7 +8,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
+
 public class MainActivity extends AppCompatActivity {
+
+    GameSearchViewModel gameSearchViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
