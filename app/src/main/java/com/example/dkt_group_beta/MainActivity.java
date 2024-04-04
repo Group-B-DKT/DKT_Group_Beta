@@ -1,6 +1,8 @@
 package com.example.dkt_group_beta;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        loginviewmodel = new LoginViewModel();
+
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
@@ -34,12 +36,16 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        loginviewmodel = new LoginViewModel();
+        loginviewmodel = new LoginViewModel(this.getApplicationContext());
         etusername = findViewById(R.id.inputText);
         btnLogin = findViewById(R.id.buttonLogin);
         btnLogin.setOnClickListener((v) -> {loginviewmodel.onLogin(etusername.getText().toString());});
+        Log.d("debug", "Gespeicherte Namen :" + loginviewmodel.getSavedUsername());
+
 
     }
+
+
 
 
 
