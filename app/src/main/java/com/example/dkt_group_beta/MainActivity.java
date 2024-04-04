@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         loginviewmodel = new LoginViewModel(this.getApplicationContext());
         etusername = findViewById(R.id.inputText);
         btnLogin = findViewById(R.id.buttonLogin);
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
