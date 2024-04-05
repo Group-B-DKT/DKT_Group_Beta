@@ -3,8 +3,8 @@ package com.example.dkt_group_beta.networking;
 import android.util.Log;
 
 import com.example.dkt_group_beta.communication.enums.ConnectType;
-import com.example.dkt_group_beta.communication.utilities.ConnectJsonObject;
-import com.example.dkt_group_beta.communication.utilities.Wrapper;
+import com.example.dkt_group_beta.communication.ConnectJsonObject;
+import com.example.dkt_group_beta.communication.Wrapper;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.parser.JsonInputParser;
 import com.example.dkt_group_beta.parser.interfaces.InputParser;
@@ -27,7 +27,7 @@ public class WebSocketClient {
 
     private Player player;
 
-    private List<WebSocketMessageHandler<String>> messageHandler;
+    private List<WebSocketMessageHandler<Object>> messageHandler;
 
 
 
@@ -69,23 +69,22 @@ public class WebSocketClient {
 
             @Override
             public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-//                messageHandler.onMessageReceived("Connection lost...");
                 Log.d("Network", "connection failure" + t.getLocalizedMessage());
             }
         });
     }
 
-    public void addMessageHandler(WebSocketMessageHandler<String> messageHandler){
+    public void addMessageHandler(WebSocketMessageHandler<Object> messageHandler){
         this.messageHandler.add(messageHandler);
     }
 
     public void sendMessageToServer(String msg) {
-        Log.d("DEBUG", "Websocket: " + msg);
         webSocket.send(msg);
     }
 
-    public void notifyMessageHandler(String msg){
-        this.messageHandler.forEach(m -> m.onMessageReceived(msg));
+    public void notifyMessageHandler(Object jsonObject){
+        Log.d("DEBUG", "WebSocketClient::notifyMessageHandler/ " + messageHandler.size());
+        this.messageHandler.forEach(m -> m.onMessageReceived(jsonObject));
     }
 
 }

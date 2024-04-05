@@ -6,20 +6,28 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.dkt_group_beta.communication.controller.InfoController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.communication.enums.Info;
+
+import java.util.Map;
 
 public class GameSearchViewModel extends ViewModel {
     private final InfoController infoController;
 
     public GameSearchViewModel(){
-        infoController = new InfoController();
-        WebsocketClientController.addMessageHandler(this::messageReceivedFromServer);
+        infoController = new InfoController(this::handleInfo);
+//        WebsocketClientController.addMessageHandler(this::messageReceivedFromServer);
     }
 
     public void receiveGames (){
         infoController.getGameListFromServer();
     }
 
-    private void messageReceivedFromServer(String message) {
-        Log.d("DEBUG", "RECEIVED" + message);
+//    private void messageReceivedFromServer(String message) {
+//        Log.d("DEBUG", "RECEIVED" + message);
+//    }
+
+    void handleInfo(Info info, Map<Integer, Integer> gameInfo){
+
     }
+
 }
