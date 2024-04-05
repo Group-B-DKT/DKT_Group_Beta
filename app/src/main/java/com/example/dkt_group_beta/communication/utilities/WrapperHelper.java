@@ -45,4 +45,9 @@ public class WrapperHelper {
         Wrapper wrapper = new Wrapper(object.getClass().getSimpleName(), gameId, request, object);
         return gson.toJson(wrapper);
     }
+
+    public static String toJsonFromObject(Request request, Object object){
+        Wrapper wrapper = new Wrapper(object.getClass().getSimpleName(), -1, request, object);
+        return gson.toJson(wrapper);
+    }
 }

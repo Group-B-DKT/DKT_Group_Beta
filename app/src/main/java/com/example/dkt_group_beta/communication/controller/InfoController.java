@@ -6,6 +6,7 @@ import com.example.dkt_group_beta.communication.enums.Info;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.example.dkt_group_beta.communication.InfoJsonObject;
 import com.example.dkt_group_beta.communication.Wrapper;
+import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleInfo;
 import com.google.gson.Gson;
 
@@ -20,8 +21,7 @@ public class InfoController {
     }
     public void getGameListFromServer(){
         InfoJsonObject infoJsonObject = new InfoJsonObject(Info.GAME_LIST, -1, null);
-        Wrapper wrapper = new Wrapper(infoJsonObject.getClass().getSimpleName(), -1, Request.INFO, infoJsonObject);
-        String msg = gson.toJson(wrapper);
+        String msg = WrapperHelper.toJsonFromObject(Request.INFO, infoJsonObject);
         Log.d("DEBUG", "InfoController::getGameListFromServer/ "+msg);
         WebsocketClientController.sendToServer(msg);
     }
