@@ -1,4 +1,4 @@
-package com.example.dkt_group_beta.communication.utilities;
+package com.example.dkt_group_beta.communication;
 
 import com.example.dkt_group_beta.communication.enums.Request;
 
@@ -23,5 +23,31 @@ public class Wrapper {
         this.gameId = gameId;
         this.request = request;
         this.object = object;
+    }
+
+    public String getClassname() {
+        return classname;
+    }
+
+    public int getGameId() {
+        return gameId;
+    }
+
+    public Request getRequest() {
+        return request;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    @Override
+    public String toString() {
+        return "Wrapper{" +
+                "classname='" + classname + '\'' +
+                ", gameId=" + gameId +
+                ", request=" + request +
+                ", object=" + object +
+                '}';
     }
 }

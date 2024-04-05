@@ -1,4 +1,4 @@
-package com.example.dkt_group_beta.communication.utilities;
+package com.example.dkt_group_beta.communication;
 
 import com.example.dkt_group_beta.communication.enums.ConnectType;
 
