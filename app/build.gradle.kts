@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     testImplementation(libs.junit)
+    testImplementation("org.mockito:mockito-core:3.11.2")
     testImplementation("org.robolectric:robolectric:4.7.3")
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
