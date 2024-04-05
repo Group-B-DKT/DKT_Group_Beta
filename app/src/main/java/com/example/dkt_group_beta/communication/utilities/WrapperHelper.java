@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.communication.utilities;
 
+import android.util.Log;
+
 import com.example.dkt_group_beta.communication.ActionJsonObject;
 import com.example.dkt_group_beta.communication.ConnectJsonObject;
 import com.example.dkt_group_beta.communication.InfoJsonObject;

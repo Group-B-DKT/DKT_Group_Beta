@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.Gamesearch">
+    tools:context=".activities.GameSearch">
 
     <TextView
         android:id="@+id/verbindungID"
@@ -33,8 +33,9 @@
         app:layout_constraintVertical_bias="0.5">
 
         <LinearLayout
+            android:id="@+id/scrollview_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical"/>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

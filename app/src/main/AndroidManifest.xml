@@ -39,7 +39,7 @@
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".activities.Gamesearch"
+            android:name=".activities.GameSearch"
             android:exported="false"
             android:screenOrientation="landscape"
             />

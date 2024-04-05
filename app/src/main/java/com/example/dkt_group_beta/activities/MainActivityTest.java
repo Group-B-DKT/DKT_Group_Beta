@@ -38,8 +38,9 @@ public class MainActivityTest extends AppCompatActivity {
         btn2 = findViewById(R.id.button2);
         btn2.setOnClickListener(this::onClick2);
 
-
+//        gameSearchViewModel = new GameSearchViewModel(getString(R.string.ip_address), "ASD", "ASD");
     }
+
 
     private void onClick(View view){
 

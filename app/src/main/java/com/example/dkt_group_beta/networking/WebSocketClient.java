@@ -75,6 +75,8 @@ public class WebSocketClient {
     }
 
     public void addMessageHandler(WebSocketMessageHandler<Object> messageHandler){
+        if (this.messageHandler == null)
+            this.messageHandler = new ArrayList<>();
         this.messageHandler.add(messageHandler);
     }
 
@@ -84,6 +86,7 @@ public class WebSocketClient {
 
     public void notifyMessageHandler(Object jsonObject){
         Log.d("DEBUG", "WebSocketClient::notifyMessageHandler/ " + messageHandler.size());
+
         this.messageHandler.forEach(m -> m.onMessageReceived(jsonObject));
     }
 
