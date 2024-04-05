@@ -35,8 +35,7 @@ public class LoginViewModelTest {
     @Test
     public void testgetSharedPreference() {
         try {
-            MasterKey masterKey = new MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
+
             LoginViewModel loginViewModel = new LoginViewModel(context, gameSearchAction);
             SharedPreferences sharedPreferences = loginViewModel.getSharedPreference();
             assertEquals(true, sharedPreferences != null);
