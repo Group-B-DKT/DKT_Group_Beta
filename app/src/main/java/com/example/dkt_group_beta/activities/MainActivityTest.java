@@ -1,9 +1,10 @@
-package com.example.dkt_group_beta;
+package com.example.dkt_group_beta.activities;
 
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,12 +12,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
+import com.example.dkt_group_beta.viewmodel.LoginViewModel;
 
 public class MainActivityTest extends AppCompatActivity {
     private Button btn;
     private Button btn2;
+    private GameSearchViewModel gameSearchViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,15 +38,19 @@ public class MainActivityTest extends AppCompatActivity {
         btn2 = findViewById(R.id.button2);
         btn2.setOnClickListener(this::onClick2);
 
+
     }
 
     private void onClick(View view){
         String device_unique_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         WebsocketClientController.connectToServer(getString(R.string.ip_address), device_unique_id, "PlayerX");
+        this.gameSearchViewModel = new GameSearchViewModel();
     }
 
     private void onClick2(View view){
-        new GameSearchViewModel().receiveGames();
+        if (this.gameSearchViewModel == null)
+            return;
+        this.gameSearchViewModel.receiveGames();
     }
 
 }

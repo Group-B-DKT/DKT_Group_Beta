@@ -17,7 +17,11 @@ public class WebsocketClientController {
         networkHandler.sendMessageToServer(msg);
     }
 
-    public static void addMessageHandler(WebSocketMessageHandler<String> messageHandler){
+    public static void addMessageHandler(WebSocketMessageHandler<Object> messageHandler){
         networkHandler.addMessageHandler(messageHandler);
+    }
+
+    public static void notifyMessageHandler(Object jsonObject){
+        networkHandler.notifyMessageHandler(jsonObject);
     }
 }
