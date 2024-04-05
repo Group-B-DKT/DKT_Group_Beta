@@ -31,6 +31,7 @@ public class InfoController {
         if (!(infoObject instanceof InfoJsonObject))
             return;
         Log.d("DEBUG", "InfoController::onMessageReceived/ " + ((InfoJsonObject) infoObject).getInfo());
+        handleInfo.handleInfo(((InfoJsonObject) infoObject).getInfo(), ((InfoJsonObject) infoObject).getGameInfo());
     }
 
 }

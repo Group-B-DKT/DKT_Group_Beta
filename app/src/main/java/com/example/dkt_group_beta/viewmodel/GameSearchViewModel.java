@@ -15,16 +15,11 @@ public class GameSearchViewModel extends ViewModel {
 
     public GameSearchViewModel(){
         infoController = new InfoController(this::handleInfo);
-//        WebsocketClientController.addMessageHandler(this::messageReceivedFromServer);
     }
 
     public void receiveGames (){
         infoController.getGameListFromServer();
     }
-
-//    private void messageReceivedFromServer(String message) {
-//        Log.d("DEBUG", "RECEIVED" + message);
-//    }
 
     void handleInfo(Info info, Map<Integer, Integer> gameInfo){
 
