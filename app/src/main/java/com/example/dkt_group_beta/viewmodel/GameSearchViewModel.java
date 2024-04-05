@@ -37,6 +37,7 @@ public class GameSearchViewModel extends ViewModel {
         Log.d("DEBUG", "GameSearchViewModel::handleInfo/ " + gameInfo);
         if (gameInfo == null) return;
 
+        gameSearchAction.refreshGameList();
         gameInfo.forEach(gameSearchAction::addGameToScrollView);
 
     }
