@@ -41,7 +41,7 @@ public class LoginViewModel {
     public String getSavedUsername() {
         try {
             SharedPreferences sharedPreferences = getSharedPreference();
-            return sharedPreferences.getString("Username", "");
+            return sharedPreferences.getString("Username", null);
         }catch (GeneralSecurityException | IOException e) {
             return null;
         }

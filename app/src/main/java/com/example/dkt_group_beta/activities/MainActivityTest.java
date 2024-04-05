@@ -42,9 +42,7 @@ public class MainActivityTest extends AppCompatActivity {
     }
 
     private void onClick(View view){
-        String device_unique_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        WebsocketClientController.connectToServer(getString(R.string.ip_address), device_unique_id, "PlayerX");
-        this.gameSearchViewModel = new GameSearchViewModel();
+
     }
 
     private void onClick2(View view){
