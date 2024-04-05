@@ -23,7 +23,7 @@ public class LoginViewModelTest {
     private Context context;
     private GameSearchAction gameSearchAction;
     private LoginViewModel loginViewModel;
-    private SharedPreferences sharedPreferences;
+
 
     @Before
     public void setUp() {
