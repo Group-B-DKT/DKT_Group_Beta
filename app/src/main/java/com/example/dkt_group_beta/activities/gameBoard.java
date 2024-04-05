@@ -1,4 +1,4 @@
-package com.example.dkt_group_beta;
+package com.example.dkt_group_beta.activities;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.dkt_group_beta.R;
 
 public class gameBoard extends AppCompatActivity {
 

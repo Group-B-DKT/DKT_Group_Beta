@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".Login">
+    tools:context=".activities.Login">
 
     <TextView
         android:id="@+id/Login"
@@ -42,16 +42,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="220dp"
         android:layout_marginEnd="300dp"
-        android:layout_marginBottom="164dp"
         android:ems="10"
         android:inputType="text"
         android:text=""
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/LoginButton2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Benutzer"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/Login" />
 
     <Button
         android:id="@+id/LoginButton2"

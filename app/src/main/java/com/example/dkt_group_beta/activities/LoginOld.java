@@ -1,4 +1,4 @@
-package com.example.dkt_group_beta;
+package com.example.dkt_group_beta.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.dkt_group_beta.R;
 
 public class LoginOld extends AppCompatActivity {
 
@@ -28,7 +30,7 @@ public class LoginOld extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginOld.this, Spielverbindung.class);
+                Intent intent = new Intent(LoginOld.this, Gamesearch.class);
                 startActivity(intent);
             }
         });

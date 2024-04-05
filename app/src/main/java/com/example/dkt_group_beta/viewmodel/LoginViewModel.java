@@ -1,13 +1,10 @@
 package com.example.dkt_group_beta.viewmodel;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.util.Log;
 import androidx.security.crypto.EncryptedSharedPreferences;
-
 import androidx.security.crypto.MasterKey;
-
+import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -16,9 +13,13 @@ import java.security.GeneralSecurityException;
 
 public class LoginViewModel {
     private final Context context;
+    private final GameSearchAction gameSearchAction;
 
-    public LoginViewModel(Context applicationContext) {
+    public LoginViewModel(Context applicationContext, GameSearchAction gameSearchAction) {
+
         context = applicationContext;
+        this.gameSearchAction = gameSearchAction;
+
     }
 
 
@@ -33,6 +34,7 @@ public class LoginViewModel {
         }catch (GeneralSecurityException | IOException e) {
             return;
         }
+        gameSearchAction.switchToGameView(username);
 
     }
 
@@ -41,9 +43,16 @@ public class LoginViewModel {
             SharedPreferences sharedPreferences = getSharedPreference();
             return sharedPreferences.getString("Username", "");
         }catch (GeneralSecurityException | IOException e) {
-            return "";
+            return null;
         }
+    }
 
+    public void checkSavedUsername() {
+        String username = getSavedUsername();
+        if(username == null) {
+            return;
+        }
+        gameSearchAction.switchToGameView(username);
     }
     private SharedPreferences getSharedPreference () throws GeneralSecurityException, IOException {
         MasterKey masterKey = new MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)

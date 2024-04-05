@@ -18,32 +18,34 @@
         
       
         <activity
-            android:name=".Login"
+            android:name=".activities.Login"
             android:screenOrientation="landscape"
-            android:exported="false"/>
-          
-        <activity
-            android:name=".MainActivityTest"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
 
         <activity
-            android:name=".gameBoard"
+            android:name=".activities.MainActivityTest"
+            android:exported="false">
+
+        </activity>
+
+        <activity
+            android:name=".activities.gameBoard"
             android:exported="false"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".Spielverbindung"
+            android:name=".activities.Gamesearch"
             android:exported="false"
             android:screenOrientation="landscape"
             />
 
         <activity
-            android:name=".LoginOld"
+            android:name=".activities.LoginOld"
             android:exported="false"
             android:screenOrientation="landscape" />
 
