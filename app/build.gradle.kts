@@ -38,10 +38,12 @@ dependencies {
     implementation(libs.navigation.fragment)
     implementation(libs.navigation.ui)
     testImplementation(libs.junit)
+    testImplementation("org.robolectric:robolectric:4.7.3")
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.gson)
     implementation(libs.okhttp)
+    implementation ("androidx.test:core:1.5.0")
     compileOnly(libs.lombok)
 
 }

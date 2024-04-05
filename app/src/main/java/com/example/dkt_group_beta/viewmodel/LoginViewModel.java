@@ -23,6 +23,8 @@ public class LoginViewModel {
     }
 
 
+
+
     public void onLogin (String username) {
 
         Log.d("debug", username);
@@ -41,7 +43,7 @@ public class LoginViewModel {
     public String getSavedUsername() {
         try {
             SharedPreferences sharedPreferences = getSharedPreference();
-            return sharedPreferences.getString("Username", "");
+            return sharedPreferences.getString("Username", null);
         }catch (GeneralSecurityException | IOException e) {
             return null;
         }
@@ -54,7 +56,7 @@ public class LoginViewModel {
         }
         gameSearchAction.switchToGameView(username);
     }
-    private SharedPreferences getSharedPreference () throws GeneralSecurityException, IOException {
+    public SharedPreferences getSharedPreference() throws GeneralSecurityException, IOException {
         MasterKey masterKey = new MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
         SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(context, "encrypted_preferences",
