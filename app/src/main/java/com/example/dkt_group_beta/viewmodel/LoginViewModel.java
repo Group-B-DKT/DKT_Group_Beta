@@ -13,7 +13,7 @@ import java.security.GeneralSecurityException;
 
 public class LoginViewModel {
     private final Context context;
-    private GameSearchAction gameSearchAction;
+    private final GameSearchAction gameSearchAction;
 
     public LoginViewModel(Context applicationContext, GameSearchAction gameSearchAction) {
 
