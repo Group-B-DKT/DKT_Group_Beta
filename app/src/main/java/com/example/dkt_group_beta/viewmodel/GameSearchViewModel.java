@@ -29,6 +29,10 @@ public class GameSearchViewModel extends ViewModel {
         infoController.getGameListFromServer();
     }
 
+    public void connectToGame(int gameId){
+        Log.d("DEBUG", "GameSearchViewModel::connectToGame/ " + gameId);
+    }
+
     void handleInfo(Info info, Map<Integer, Integer> gameInfo){
         Log.d("DEBUG", "GameSearchViewModel::handleInfo/ " + gameInfo);
         if (gameInfo == null) return;

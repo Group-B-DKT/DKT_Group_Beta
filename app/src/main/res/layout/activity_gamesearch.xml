@@ -9,8 +9,9 @@
 
     <TextView
         android:id="@+id/verbindungID"
-        android:layout_width="252dp"
+        android:layout_width="wrap_content"
         android:layout_height="59dp"
+        android:maxLines="1"
         android:text="@string/Verbindung"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
@@ -25,6 +26,7 @@
         android:layout_width="628dp"
         android:layout_height="251dp"
         android:background="#EED5D2"
+        android:contentDescription="@string/description_scrollview_gamelist"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -36,6 +38,6 @@
             android:id="@+id/scrollview_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

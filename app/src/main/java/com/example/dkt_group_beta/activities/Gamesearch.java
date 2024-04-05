@@ -1,11 +1,13 @@
 package com.example.dkt_group_beta.activities;
 
-import android.icu.text.ListFormatter;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -48,19 +50,54 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction2 {
     public void addGameToScrollView(int gameId, int amountOfPLayer){
         Log.d("DEBUG", "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);
         runOnUiThread(() -> {
-            TextView textView = new TextView(this);
-            textView.setText(String.format(Locale.GERMAN,"Spiel %d \t %d/6", gameId, amountOfPLayer));
-            textView.setId(gameId);
-            textView.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    100));
-            textView.setTextSize(20);
-            scrollviewLayout.addView(textView);
-            this.gameFields.add(textView);
+            LinearLayout linearLayout = getLinearLayout(gameId);
+
+            TextView textViewGameId = getTextView(String.format(Locale.GERMAN, "Spiel %d", gameId), View.TEXT_ALIGNMENT_TEXT_START);
+
+            String status = String.format("%s", amountOfPLayer == 6 ? "Starting..." : "Waiting...");
+            TextView textViewPlayerStatus = getTextView(status, View.TEXT_ALIGNMENT_CENTER);
+
+            TextView textViewPlayerCount = getTextView(String.format(Locale.GERMAN, "%d/6", amountOfPLayer), View.TEXT_ALIGNMENT_TEXT_END);
+
+            linearLayout.addView(textViewGameId);
+            linearLayout.addView(textViewPlayerStatus);
+            linearLayout.addView(textViewPlayerCount);
+
+            scrollviewLayout.addView(linearLayout);
+            this.gameFields.add(textViewGameId);
         });
 
 
     }
+
+    private TextView getTextView(String text, int textAlignment){
+        TextView textView = new TextView(this);
+        textView.setText(text);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                130, 1.0f));
+        textView.setTextSize(20);
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextAlignment(textAlignment);
+        return textView;
+    }
+
+    private LinearLayout getLinearLayout(int gameId) {
+        LinearLayout linearLayout = new LinearLayout(this);
+        linearLayout.setPadding(30,0,30,0);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL);
+        linearLayout.setId(gameId);
+        linearLayout.setOnClickListener(v -> gameSearchViewModel.connectToGame(v.getId()));
+
+        if (gameId % 2 == 0)
+            linearLayout.setBackgroundColor(Color.LTGRAY);
+        return linearLayout;
+    }
+
     @Override
     public void onConnectionEstablished(){
         Log.d("DEBUG", "GameSearch::onConnectionEstablished/ ");
