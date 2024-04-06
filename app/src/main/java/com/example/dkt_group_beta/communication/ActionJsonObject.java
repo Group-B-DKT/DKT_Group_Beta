@@ -11,8 +11,19 @@ public class ActionJsonObject {
     private String param;
     private String fromPlayername;
 
-    public ActionJsonObject(Action action) {
+
+    public ActionJsonObject(Action action, String param, String fromPlayername) {
         this.action = action;
+        this.param = param;
+        this.fromPlayername = fromPlayername;
+    }
+
+    public ActionJsonObject(Action action, String param) {
+        this(action, param, null);
+    }
+
+    public ActionJsonObject(Action action) {
+        this(action, null);
     }
 
     public Action getAction() {

@@ -61,7 +61,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction2 {
     }
 
     @Override
-    public void refreshGameList() {
+    public void refreshGameListItems() {
         runOnUiThread(() -> {
             this.gameFields.forEach(layout -> {
                 Log.d("DEBUG", "GameSearch::refreshGameList/ " + layout.getId());
@@ -139,7 +139,11 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction2 {
         builder.setView(input);
 
         builder.setPositiveButton(getString(R.string.create_game_btn_create), (dialog, which) -> {
+            String inputText = input.getText().toString();
+            if (inputText.isEmpty())
+                return;
 
+            this.gameSearchViewModel.createGame(inputText);
         });
         builder.setNegativeButton(getString(R.string.create_game_btn_cancel), (dialog, which) -> dialog.cancel());
 

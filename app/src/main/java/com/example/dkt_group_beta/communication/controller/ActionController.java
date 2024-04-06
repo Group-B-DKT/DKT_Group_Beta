@@ -1,4 +1,33 @@
 package com.example.dkt_group_beta.communication.controller;
 
+import android.util.Log;
+
+import com.example.dkt_group_beta.communication.ActionJsonObject;
+import com.example.dkt_group_beta.communication.enums.Action;
+import com.example.dkt_group_beta.communication.enums.Request;
+import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
+import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
+
 public class ActionController {
+    private InputHandleAction handleAction;
+
+    public ActionController(InputHandleAction handleAction) {
+        this.handleAction = handleAction;
+        WebsocketClientController.addMessageHandler(this::onMessageReceived);
+    }
+    public void createGame(String gameName){
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.CREATE_GAME, gameName);
+        String msg = WrapperHelper.toJsonFromObject(Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    private void onMessageReceived(Object actionObject) {
+        if (!(actionObject instanceof ActionJsonObject))
+            return;
+
+        Log.d("DEBUG", "ActionController::onMessageReceived/ " + ((ActionJsonObject) actionObject).getAction());
+
+        ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
+        handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayername());
+    }
 }
