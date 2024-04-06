@@ -1,17 +1,21 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -32,6 +36,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction2 {
     private List<LinearLayout> gameFields;
     private Button btnRefresh;
     private Button btnConnect;
+    private Button btnCreateNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,9 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction2 {
         this.btnRefresh = findViewById(R.id.btn_refresh);
         this.btnRefresh.setOnClickListener(v -> gameSearchViewModel.receiveGames());
         this.gameFields = new ArrayList<>();
+
+        this.btnCreateNew = findViewById(R.id.btn_createNew);
+        this.btnCreateNew.setOnClickListener(this::assertInputDialog);
     }
 
     @Override
@@ -64,12 +72,12 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction2 {
     }
 
     @Override
-    public void addGameToScrollView(int gameId, int amountOfPLayer){
+    public void addGameToScrollView(int gameId, String gameName, int amountOfPLayer){
         Log.d("DEBUG", "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(gameId, amountOfPLayer);
 
-            TextView textViewGameId = getTextView(String.format(Locale.GERMAN, "Spiel %d", gameId), View.TEXT_ALIGNMENT_TEXT_START, amountOfPLayer);
+            TextView textViewGameId = getTextView(gameName, View.TEXT_ALIGNMENT_TEXT_START, amountOfPLayer);
 
             String status = String.format("%s", amountOfPLayer == MAX_PLAYER ? "Starting..." : "Waiting...");
             TextView textViewPlayerStatus = getTextView(status, View.TEXT_ALIGNMENT_CENTER, amountOfPLayer);
@@ -120,6 +128,22 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction2 {
             linearLayout.setOnClickListener(v -> gameSearchViewModel.connectToGame(v.getId()));
         }
         return linearLayout;
+    }
+
+    private void assertInputDialog(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.create_game_input_dialog));
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
+        builder.setView(input);
+
+        builder.setPositiveButton(getString(R.string.create_game_btn_create), (dialog, which) -> {
+
+        });
+        builder.setNegativeButton(getString(R.string.create_game_btn_cancel), (dialog, which) -> dialog.cancel());
+
+        builder.show();
     }
 
     @Override

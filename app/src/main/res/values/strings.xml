@@ -9,4 +9,7 @@
     <string name="description_scrollview_gamelist">Shows all avialable Games</string>
     <string name="btn_refresh">Refresh</string>
     <string name="btn_connect">Connect</string>
+    <string name="create_game_input_dialog">Game Name</string>
+    <string name="create_game_btn_create">Create</string>
+    <string name="create_game_btn_cancel">Cancel</string>
 </resources>

@@ -9,7 +9,9 @@ import com.example.dkt_group_beta.communication.controller.ConnectController;
 import com.example.dkt_group_beta.communication.controller.InfoController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.communication.enums.Info;
+import com.example.dkt_group_beta.model.GameInfo;
 
+import java.util.List;
 import java.util.Map;
 
 public class GameSearchViewModel extends ViewModel {
@@ -33,12 +35,15 @@ public class GameSearchViewModel extends ViewModel {
         Log.d("DEBUG", "GameSearchViewModel::connectToGame/ " + gameId);
     }
 
-    void handleInfo(Info info, Map<Integer, Integer> gameInfo){
-        Log.d("DEBUG", "GameSearchViewModel::handleInfo/ " + gameInfo);
-        if (gameInfo == null) return;
+
+    void handleInfo(Info info, List<GameInfo> gameInfos){
+        Log.d("DEBUG", "GameSearchViewModel::handleInfo/ " + gameInfos);
+        if (gameInfos == null) return;
 
         gameSearchAction.refreshGameList();
-        gameInfo.forEach(gameSearchAction::addGameToScrollView);
+        gameInfos.forEach((gameInfo) -> gameSearchAction.addGameToScrollView(gameInfo.getId(),
+                                                                             gameInfo.getName(),
+                                                                             gameInfo.getConnectedPlayer()));
 
     }
 

@@ -26,6 +26,7 @@ public class WrapperHelper {
                 return gson.fromJson(object, ActionJsonObject.class);
             }
             case "InfoJsonObject": {
+                Log.d("DEBUG", "WrapperHelper::getInstanceFromWrapper/ " + gson.fromJson(object, InfoJsonObject.class));
                 return gson.fromJson(object, InfoJsonObject.class);
             }
 
