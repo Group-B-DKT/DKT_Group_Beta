@@ -62,8 +62,10 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     void handleAction(Action action, String param, String fromPlayername){
-        if (!fromPlayername.equals(username))
+        if (!fromPlayername.equals(username)) {
+            this.receiveGames();
             return;
+        }
 
         if (action == Action.GAME_CREATED_SUCCESSFULLY) {
             gameSearchAction.switchToGameLobby(username, true);
@@ -71,7 +73,5 @@ public class GameSearchViewModel extends ViewModel {
         if (action == Action.GAME_JOINED_SUCCESSFULLY){
             gameSearchAction.switchToGameLobby(username, false);
         }
-
-        else this.receiveGames();
     }
 }
