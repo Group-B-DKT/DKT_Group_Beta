@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class GameSearch extends AppCompatActivity implements GameSearchAction {
+public class GameLobby extends AppCompatActivity implements GameSearchAction {
     private static final int MAX_PLAYER = 6;
     private LinearLayout scrollviewLayout;
     private GameSearchViewModel gameSearchViewModel;
@@ -36,7 +36,6 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private Button btnRefresh;
     private Button btnConnect;
     private Button btnCreateNew;
-    private int selectedGameId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +57,6 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
 
         this.btnCreateNew = findViewById(R.id.btn_createNew);
         this.btnCreateNew.setOnClickListener(this::assertInputDialog);
-
-        this.btnConnect = findViewById(R.id.btn_connect);
-        this.btnConnect.setOnClickListener((v) -> gameSearchViewModel.connectToGame(this.selectedGameId));
-
-        this.selectedGameId = -1;
     }
 
     @Override
@@ -130,20 +124,9 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         if (amountOfPLayer == MAX_PLAYER){
             linearLayout.setBackgroundColor(getColor(R.color.light_gray));
         }else {
-            linearLayout.setOnClickListener(v -> updateFocus(v.getId()));
+            linearLayout.setOnClickListener(v -> gameSearchViewModel.connectToGame(v.getId()));
         }
         return linearLayout;
-    }
-
-    private void updateFocus(int gameId){
-        this.selectedGameId = gameId;
-        this.gameFields.forEach(layout -> {
-            if (layout.getId() != gameId) {
-                int layotuId = layout.getId();
-                layout.setBackgroundColor(layotuId % 2 == 0 ? Color.LTGRAY : Color.TRANSPARENT);
-            }
-            else layout.setBackgroundColor(Color.GRAY);
-        });
     }
 
     private void assertInputDialog(View view){
