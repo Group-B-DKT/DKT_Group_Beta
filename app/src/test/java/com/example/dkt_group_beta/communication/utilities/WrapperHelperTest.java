@@ -2,7 +2,6 @@ package com.example.dkt_group_beta.communication.utilities;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 
 import static org.junit.Assert.*;
 
