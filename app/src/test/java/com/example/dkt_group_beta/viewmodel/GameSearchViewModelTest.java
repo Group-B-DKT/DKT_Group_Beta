@@ -29,6 +29,8 @@ public class GameSearchViewModelTest {
         gameSearchViewModel = new GameSearchViewModel(uri, username, id, gameSearchActionMock);
         infoControllerMock = mock(InfoController.class);
         gameSearchViewModel.infoController = infoControllerMock;
+        actionControllerMock = mock(ActionController.class);
+        gameSearchViewModel.actionController = actionControllerMock;
 
     }
 
@@ -36,6 +38,12 @@ public class GameSearchViewModelTest {
     public void testReceiveGames() {
         gameSearchViewModel.receiveGames();
         verify(infoControllerMock, times(1)).getGameListFromServer();
+    }
+    @Test
+    public void testCreateGame() {
+        String inputText = "input";
+        gameSearchViewModel.createGame(inputText);
+        verify(actionControllerMock, times(1)).createGame(inputText);
     }
 
 
