@@ -38,6 +38,7 @@ public class GameSearchViewModel extends ViewModel {
 
     public void connectToGame(int gameId){
         Log.d("DEBUG", "GameSearchViewModel::connectToGame/ " + gameId);
+        actionController.joinGame(gameId);
     }
 
     public void createGame(String inputText) {
@@ -52,7 +53,7 @@ public class GameSearchViewModel extends ViewModel {
         gameSearchAction.refreshGameListItems();
         gameInfos.forEach((gameInfo) -> gameSearchAction.addGameToScrollView(gameInfo.getId(),
                                                                              gameInfo.getName(),
-                                                                             gameInfo.getConnectedPlayer()));
+                                                                             gameInfo.getConnectedPlayerNames() == null ? 0 : gameInfo.getConnectedPlayerNames().size()));
 
     }
 
@@ -61,11 +62,16 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     void handleAction(Action action, String param, String fromPlayername){
+        if (!fromPlayername.equals(username))
+            return;
+
         if (action == Action.GAME_CREATED_SUCCESSFULLY) {
-            Log.d("DEBUG", "GameSearchViewModel::handleAction/ " + username + " | " + fromPlayername);
-            if (fromPlayername.equals(this.username))
-                gameSearchAction.switchToGameLobby(true);
+            gameSearchAction.switchToGameLobby(username, true);
         }
-            else this.receiveGames();
+        if (action == Action.GAME_JOINED_SUCCESSFULLY){
+            gameSearchAction.switchToGameLobby(username, false);
+        }
+
+        else this.receiveGames();
     }
 }

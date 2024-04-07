@@ -23,14 +23,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class GameLobby extends AppCompatActivity {
+public class GameLobby extends AppCompatActivity implements GameLobbyAction {
+    private GameLobbyViewModel gameLobbyViewModel;
     private LinearLayout scrollviewLayout;
     private LinearLayout layoutButtons;
     private List<LinearLayout> playerFields;
@@ -38,6 +41,7 @@ public class GameLobby extends AppCompatActivity {
     private Button btnReady;
     private Button btnStart;
     private boolean isHost;
+    private static int id = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,9 @@ public class GameLobby extends AppCompatActivity {
             return insets;
         });
 
+        this.gameLobbyViewModel = new GameLobbyViewModel(this);
+        this.playerFields = new ArrayList<>();
+
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
         this.btnReady = findViewById(R.id.btn_setReady);
@@ -58,6 +65,9 @@ public class GameLobby extends AppCompatActivity {
 
         isHost = getIntent().getBooleanExtra("isHost", false);
         if (isHost) addStartButton();
+
+//        addPlayerToView(getIntent().getStringExtra("username"));
+        gameLobbyViewModel.getConnectedPlayerNames();
     }
 
     private void addStartButton(){
@@ -76,7 +86,7 @@ public class GameLobby extends AppCompatActivity {
 
 
 
-    private LinearLayout getLinearLayout(int gameId, int amountOfPLayer) {
+    private LinearLayout getLinearLayout(int gameId) {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setPadding(30,0,30,0);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -89,11 +99,34 @@ public class GameLobby extends AppCompatActivity {
         if (gameId % 2 == 0)
             linearLayout.setBackgroundColor(Color.LTGRAY);
 
-//      linearLayout.setOnClickListener(v -> gameSearchViewModel.connectToGame(v.getId()));
-
         return linearLayout;
     }
 
+    private TextView getTextView(String text, int textAlignment){
+        TextView textView = new TextView(this);
+        textView.setText(text);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                130, 1.0f));
+        textView.setTextSize(20);
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextAlignment(textAlignment);
+
+        return textView;
+    }
 
 
+    @Override
+    public void addPlayerToView(String username) {
+        runOnUiThread(() -> {
+            LinearLayout linearLayout = getLinearLayout(id++);
+
+            TextView textViewGameId = getTextView(username, View.TEXT_ALIGNMENT_TEXT_START);
+
+            linearLayout.addView(textViewGameId);
+
+            scrollviewLayout.addView(linearLayout);
+            this.playerFields.add(linearLayout);
+        });
+    }
 }

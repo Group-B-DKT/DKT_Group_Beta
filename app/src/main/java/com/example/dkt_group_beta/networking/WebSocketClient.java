@@ -89,4 +89,18 @@ public class WebSocketClient {
         this.messageHandler.forEach(m -> m.onMessageReceived(jsonObject));
     }
 
+    public int getConnectedGameId(){
+        return this.player.getGameId();
+    }
+
+    public void connectToGame(int gameId){
+        this.player.setGameId(gameId);
+        this.player.setConnected(true);
+    }
+
+    public boolean isConnected(){
+        return this.player.isConnected();
+    }
+
+
 }

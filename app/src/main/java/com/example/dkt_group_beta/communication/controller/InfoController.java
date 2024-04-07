@@ -25,8 +25,16 @@ public class InfoController {
         WebsocketClientController.sendToServer(msg);
     }
 
+    public void getConnectedPlayers(){
+        InfoJsonObject infoJsonObject = new InfoJsonObject(Info.CONNECTED_PLAYERNAMES);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.INFO, infoJsonObject);
 
-    private void onMessageReceived(Object infoObject){
+        WebsocketClientController.sendToServer(msg);
+    }
+
+
+
+        private void onMessageReceived(Object infoObject){
         if (!(infoObject instanceof InfoJsonObject))
             return;
 

@@ -6,5 +6,5 @@ public interface GameSearchAction {
 
     void refreshGameListItems();
 
-    void switchToGameLobby(boolean isHost);
+    void switchToGameLobby(String username, boolean isHost);
 }

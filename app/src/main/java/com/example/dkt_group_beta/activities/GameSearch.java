@@ -78,9 +78,10 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     }
 
     @Override
-    public void switchToGameLobby(boolean isHost) {
+    public void switchToGameLobby(String username, boolean isHost) {
         Intent intent = new Intent(getApplicationContext(), GameLobby.class);
         intent.putExtra("isHost", isHost);
+        intent.putExtra("username", username);
         startActivity(intent);
     }
 

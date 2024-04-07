@@ -31,9 +31,6 @@ android {
 
 }
 
-jacoco {
-    toolVersion = "0.8.11"
-}
 
 sonar {
     properties {
