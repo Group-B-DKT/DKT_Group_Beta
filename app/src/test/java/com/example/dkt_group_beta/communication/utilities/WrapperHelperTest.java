@@ -72,5 +72,6 @@ public class WrapperHelperTest {
         String expected = gson.toJson(wrapper);
 
         assertEquals(expected, WrapperHelper.toJsonFromObject(-1, Request.CONNECT, connectJsonObject));
+        assertEquals(expected, WrapperHelper.toJsonFromObject(Request.CONNECT, connectJsonObject));
     }
 }
