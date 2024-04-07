@@ -45,7 +45,7 @@ public class Login extends AppCompatActivity {
 
     public void switchToGameView (String username) {
         Log.d("debug", "Gespeicherte Namen :" + username);
-        Intent intent = new Intent(Login.this, GameSearch.class);
+        Intent intent = new Intent(Login.this, GameSearc.class);
         intent.putExtra("username", username);
         startActivity(intent);
 

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class GameSearch extends AppCompatActivity implements GameSearchAction {
+public class GameSearc extends AppCompatActivity implements GameSearchAction {
     private static final int MAX_PLAYER = 6;
     private LinearLayout scrollviewLayout;
     private GameSearchViewModel gameSearchViewModel;
@@ -41,7 +41,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_gamesearch);
+        setContentView(R.layout.activity_game_search);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
