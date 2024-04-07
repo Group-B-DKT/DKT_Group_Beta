@@ -44,7 +44,7 @@ public class GameSearchViewModel extends ViewModel {
 
 
     void handleInfo(Info info, List<GameInfo> gameInfos){
-        Log.d("DEBUG", "GameSearchViewModel::handleInfo/ " + gameInfos);
+        //Log.d("DEBUG", "GameSearchViewModel::handleInfo/ " + gameInfos);
         if (gameInfos == null) return;
 
         gameSearchAction.refreshGameListItems();
