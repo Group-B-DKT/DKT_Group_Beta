@@ -7,7 +7,7 @@ import android.util.Log;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
-import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.activities.interfaces.LoginAction;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -15,12 +15,12 @@ import java.security.GeneralSecurityException;
 
 public class LoginViewModel {
     private final Context context;
-    private final GameSearchAction gameSearchAction;
+    private final LoginAction loginAction;
 
-    public LoginViewModel(Context applicationContext, GameSearchAction gameSearchAction) {
+    public LoginViewModel(Context applicationContext, LoginAction loginAction) {
 
         context = applicationContext;
-        this.gameSearchAction = gameSearchAction;
+        this.loginAction = loginAction;
 
     }
 
@@ -35,7 +35,7 @@ public class LoginViewModel {
         } catch (GeneralSecurityException | IOException e) {
             return;
         }
-        gameSearchAction.switchToGameView(username);
+        loginAction.switchToGameView(username);
 
     }
 
@@ -53,7 +53,7 @@ public class LoginViewModel {
         if (username == null) {
             return;
         }
-        gameSearchAction.switchToGameView(username);
+        loginAction.switchToGameView(username);
     }
 
     public SharedPreferences getSharedPreference() throws GeneralSecurityException, IOException {

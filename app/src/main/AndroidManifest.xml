@@ -28,26 +28,15 @@
         </activity>
 
         <activity
-            android:name=".activities.MainActivityTest"
-            android:exported="false">
-
-        </activity>
-
-        <activity
-            android:name=".activities.gameBoard"
+            android:name=".activities.GameBoard"
             android:exported="false"
             android:screenOrientation="landscape" />
 
         <activity
-            android:name=".activities.Gamesearch"
+            android:name=".activities.GameSearch"
             android:exported="false"
             android:screenOrientation="landscape"
             />
-
-        <activity
-            android:name=".activities.LoginOld"
-            android:exported="false"
-            android:screenOrientation="landscape" />
 
     </application>
 

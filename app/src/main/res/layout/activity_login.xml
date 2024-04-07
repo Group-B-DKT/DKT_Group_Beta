@@ -14,49 +14,17 @@
         android:layout_height="wrap_content"
         android:text="@string/Login"
         android:textSize="40sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.227" />
-
-    <TextView
-        android:id="@+id/Benutzer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="220dp"
-        android:layout_marginEnd="107dp"
-        android:layout_marginBottom="164dp"
-        android:text="@string/User"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/BenutzerEingabe"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/BenutzerEingabe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="300dp"
-        android:ems="10"
-        android:inputType="text"
-        android:text=""
-        app:layout_constraintBottom_toTopOf="@+id/LoginButton2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Benutzer"
-        app:layout_constraintTop_toBottomOf="@+id/Login" />
+        app:layout_constraintVertical_bias="0.5" />
 
     <Button
         android:id="@+id/LoginButton2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:layout_marginBottom="30dp"
         android:backgroundTint="#FF0000"
         android:text="@string/Login"
         android:textColor="#FFFFFF"
@@ -66,6 +34,35 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="285dp"
+        android:layout_height="67dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/LoginButton2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Login"
+        app:layout_constraintVertical_bias="0.5">
+
+        <TextView
+            android:id="@+id/Benutzer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/User"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/BenutzerEingabe"
+            android:layout_width="285dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="256dp"
+            android:ems="10"
+            android:inputType="text"
+            android:text="fdsfsdfsdf" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

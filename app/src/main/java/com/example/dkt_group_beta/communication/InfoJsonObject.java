@@ -2,33 +2,36 @@ package com.example.dkt_group_beta.communication;
 
 
 import com.example.dkt_group_beta.communication.enums.Info;
+import com.example.dkt_group_beta.model.GameInfo;
 
-import java.util.Map;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import java.util.List;
 
 public class InfoJsonObject {
     private Info info;
-    private int gameId;
-    private Map<Integer, Integer> gameInfo;
+    private List<GameInfo> gameInfoList;
 
-    public InfoJsonObject(Info info, int gameId, Map<Integer, Integer> gameInfo) {
+    public InfoJsonObject(Info info, List<GameInfo> gameInfos) {
         this.info = info;
-        this.gameId = gameId;
-        this.gameInfo = gameInfo;
+        this.gameInfoList = gameInfos;
+    }
+
+    public InfoJsonObject(Info info){
+        this(info, null);
     }
 
     public Info getInfo() {
         return info;
     }
 
-    public int getGameId() {
-        return gameId;
+    public List<GameInfo> getGameInfoList() {
+        return gameInfoList;
     }
 
-    public Map<Integer, Integer> getGameInfo() {
-        return gameInfo;
+    @Override
+    public String toString() {
+        return "InfoJsonObject{" +
+                "info=" + info +
+                ", gameInfos=" + gameInfoList +
+                '}';
     }
 }

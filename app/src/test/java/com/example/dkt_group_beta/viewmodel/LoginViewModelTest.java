@@ -5,10 +5,9 @@ import static org.junit.Assert.assertEquals;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.security.crypto.MasterKey;
 import androidx.test.core.app.ApplicationProvider;
 
-import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.activities.interfaces.LoginAction;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +20,7 @@ import java.security.GeneralSecurityException;
 @RunWith(RobolectricTestRunner.class)
 public class LoginViewModelTest {
     private Context context;
-    private GameSearchAction gameSearchAction;
+    private LoginAction loginAction;
     private LoginViewModel loginViewModel;
 
 
@@ -29,14 +28,14 @@ public class LoginViewModelTest {
     public void setUp() {
 
         context = ApplicationProvider.getApplicationContext();
-        loginViewModel = new LoginViewModel(context, gameSearchAction);
+        loginViewModel = new LoginViewModel(context, loginAction);
     }
 
     @Test
     public void testgetSharedPreference() {
         try {
 
-            LoginViewModel loginViewModel = new LoginViewModel(context, gameSearchAction);
+            LoginViewModel loginViewModel = new LoginViewModel(context, loginAction);
             SharedPreferences sharedPreferences = loginViewModel.getSharedPreference();
             assertEquals(true, sharedPreferences != null);
         } catch (GeneralSecurityException | IOException e) {

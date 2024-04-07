@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.communication.utilities;
 
+import android.util.Log;
+
 import com.example.dkt_group_beta.communication.ActionJsonObject;
 import com.example.dkt_group_beta.communication.ConnectJsonObject;
 import com.example.dkt_group_beta.communication.InfoJsonObject;
@@ -24,6 +26,7 @@ public class WrapperHelper {
                 return gson.fromJson(object, ActionJsonObject.class);
             }
             case "InfoJsonObject": {
+                Log.d("DEBUG", "WrapperHelper::getInstanceFromWrapper/ " + gson.fromJson(object, InfoJsonObject.class));
                 return gson.fromJson(object, InfoJsonObject.class);
             }
 
