@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class GameSearc extends AppCompatActivity implements GameSearchAction {
+public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private static final int MAX_PLAYER = 6;
     private LinearLayout scrollviewLayout;
     private GameSearchViewModel gameSearchViewModel;
