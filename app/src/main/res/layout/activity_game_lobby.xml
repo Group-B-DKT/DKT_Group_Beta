@@ -8,13 +8,13 @@
     tools:context=".activities.GameSearch">
 
     <TextView
-        android:id="@+id/verbindungID"
+        android:id="@+id/txt_gameLobbyHeader"
         android:layout_width="wrap_content"
         android:layout_height="59dp"
         android:maxLines="1"
         android:text="@string/lobby_header"
         android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+        app:layout_constraintBottom_toTopOf="@+id/scrollview_GameLobby"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.5" />
 
     <ScrollView
-        android:id="@+id/scrollView2"
+        android:id="@+id/scrollview_GameLobby"
         android:layout_width="628dp"
         android:layout_height="180dp"
         android:background="#EED5D2"
@@ -31,11 +31,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/verbindungID"
+        app:layout_constraintTop_toBottomOf="@+id/txt_gameLobbyHeader"
         app:layout_constraintVertical_bias="0.5">
 
         <LinearLayout
-            android:id="@+id/scrollview_layout"
+            android:id="@+id/scrollview_gameLobby_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
@@ -50,11 +50,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/scrollView2"
+        app:layout_constraintTop_toBottomOf="@+id/scrollview_GameLobby"
         app:layout_constraintVertical_bias="0.5">
 
         <Button
-            android:id="@+id/btn_refresh"
+            android:id="@+id/btn_leave"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             android:textColor="@color/white" />
 
         <Button
-            android:id="@+id/btn_connect"
+            android:id="@+id/btn_setReady"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
