@@ -16,9 +16,9 @@ import com.example.dkt_group_beta.model.GameInfo;
 import java.util.List;
 
 public class GameSearchViewModel extends ViewModel {
-    private final InfoController infoController;
-    private final ConnectController connectController;
-    private final ActionController actionController;
+    InfoController infoController;
+    ConnectController connectController;
+    ActionController actionController;
     private final GameSearchAction gameSearchAction;
 
 
