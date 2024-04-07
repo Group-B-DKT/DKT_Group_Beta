@@ -1,6 +1,5 @@
 package com.example.dkt_group_beta.activities;
 
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -22,14 +21,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
-import com.example.dkt_group_beta.activities.interfaces.GameSearchAction2;
+import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class GameSearch extends AppCompatActivity implements GameSearchAction2 {
+public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private static final int MAX_PLAYER = 6;
     private LinearLayout scrollviewLayout;
     private GameSearchViewModel gameSearchViewModel;
