@@ -16,6 +16,7 @@ import com.example.dkt_group_beta.model.GameInfo;
 import java.util.List;
 
 public class GameSearchViewModel extends ViewModel {
+    private String username;
     private final InfoController infoController;
     private final ConnectController connectController;
     private final ActionController actionController;
@@ -28,6 +29,7 @@ public class GameSearchViewModel extends ViewModel {
         connectController = new ConnectController(this::onConnectionEstablished);
         actionController = new ActionController(this::handleAction);
         this.gameSearchAction = gameSearchAction;
+        this.username = username;
     }
 
     public void receiveGames (){
@@ -59,7 +61,11 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     void handleAction(Action action, String param, String fromPlayername){
-        if (action == Action.GAME_CREATED_SUCCESSFULLY)
-            this.receiveGames();
+        if (action == Action.GAME_CREATED_SUCCESSFULLY) {
+            Log.d("DEBUG", "GameSearchViewModel::handleAction/ " + username + " | " + fromPlayername);
+            if (fromPlayername.equals(this.username))
+                gameSearchAction.switchToGameLobby(true);
+        }
+            else this.receiveGames();
     }
 }

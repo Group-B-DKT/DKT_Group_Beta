@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -77,6 +78,13 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     }
 
     @Override
+    public void switchToGameLobby(boolean isHost) {
+        Intent intent = new Intent(getApplicationContext(), GameLobby.class);
+        intent.putExtra("isHost", isHost);
+        startActivity(intent);
+    }
+
+    @Override
     public void addGameToScrollView(int gameId, String gameName, int amountOfPLayer){
         Log.d("DEBUG", "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);
         runOnUiThread(() -> {
@@ -98,6 +106,9 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         });
 
     }
+
+
+
 
     private TextView getTextView(String text, int textAlignment,  int amountOfPLayer){
         TextView textView = new TextView(this);
