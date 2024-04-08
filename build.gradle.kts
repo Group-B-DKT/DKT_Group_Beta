@@ -12,3 +12,13 @@ sonar {
         property("sonar.host.url", "https://sonarcloud.io")
     }
 }
+jacoco {
+    toolVersion = "0.8.7" // Verwende die neueste verfügbare Version
+}
+
+tasks.withType<JacocoReport> {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+}
