@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -36,6 +37,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private Button btnRefresh;
     private Button btnConnect;
     private Button btnCreateNew;
+    private int selectedGameId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,11 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
 
         this.btnCreateNew = findViewById(R.id.btn_createNew);
         this.btnCreateNew.setOnClickListener(this::assertInputDialog);
+
+        this.btnConnect = findViewById(R.id.btn_connect);
+        this.btnConnect.setOnClickListener((v) -> gameSearchViewModel.connectToGame(this.selectedGameId));
+
+        this.selectedGameId = -1;
     }
 
     @Override
@@ -68,6 +75,14 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
             });
             this.gameFields.clear();
         });
+    }
+
+    @Override
+    public void switchToGameLobby(String username, boolean isHost) {
+        Intent intent = new Intent(getApplicationContext(), GameLobby.class);
+        intent.putExtra("isHost", isHost);
+        intent.putExtra("username", username);
+        startActivity(intent);
     }
 
     @Override
@@ -92,6 +107,9 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         });
 
     }
+
+
+
 
     private TextView getTextView(String text, int textAlignment,  int amountOfPLayer){
         TextView textView = new TextView(this);
@@ -124,9 +142,20 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         if (amountOfPLayer == MAX_PLAYER){
             linearLayout.setBackgroundColor(getColor(R.color.light_gray));
         }else {
-            linearLayout.setOnClickListener(v -> gameSearchViewModel.connectToGame(v.getId()));
+            linearLayout.setOnClickListener(v -> updateFocus(v.getId()));
         }
         return linearLayout;
+    }
+
+    private void updateFocus(int gameId){
+        this.selectedGameId = gameId;
+        this.gameFields.forEach(layout -> {
+            if (layout.getId() != gameId) {
+                int layotuId = layout.getId();
+                layout.setBackgroundColor(layotuId % 2 == 0 ? Color.LTGRAY : Color.TRANSPARENT);
+            }
+            else layout.setBackgroundColor(Color.GRAY);
+        });
     }
 
     private void assertInputDialog(View view){

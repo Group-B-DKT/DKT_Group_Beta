@@ -5,4 +5,6 @@ public interface GameSearchAction {
     void onConnectionEstablished();
 
     void refreshGameListItems();
+
+    void switchToGameLobby(String username, boolean isHost);
 }

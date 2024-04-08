@@ -38,6 +38,12 @@
             android:screenOrientation="landscape"
             />
 
+        <activity
+            android:name=".activities.GameLobby"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            />
+
     </application>
 
 </manifest>

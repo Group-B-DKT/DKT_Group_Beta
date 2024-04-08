@@ -21,6 +21,13 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
+    public void joinGame(int gameId){
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.JOIN_GAME);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+
+        WebsocketClientController.sendToServer(msg);
+    }
+
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))
             return;

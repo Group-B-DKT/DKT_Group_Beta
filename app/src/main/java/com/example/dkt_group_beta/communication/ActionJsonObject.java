@@ -6,7 +6,7 @@ import lombok.ToString;
 
 @AllArgsConstructor
 @ToString
-public class ActionJsonObject {
+public  class ActionJsonObject {
     private Action action;
     private String param;
     private String fromPlayername;

@@ -1,17 +1,19 @@
 package com.example.dkt_group_beta.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class GameInfo {
     private int id;
     private String name;
-    private int connectedPlayer;
+    private List<String> connectedPlayerNames;
 
-    public GameInfo(int id, String name, int connectedPlayer) {
+    public GameInfo(int id, String name, List<String> connectedPlayerNames) {
         this.id = id;
         this.name = name;
-        this.connectedPlayer = connectedPlayer;
+        this.connectedPlayerNames = connectedPlayerNames;
     }
 
     public int getId() {
@@ -22,7 +24,7 @@ public class GameInfo {
         return name;
     }
 
-    public int getConnectedPlayer() {
-        return connectedPlayer;
+    public List<String> getConnectedPlayerNames() {
+        return connectedPlayerNames;
     }
 }

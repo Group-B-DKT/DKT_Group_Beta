@@ -24,4 +24,16 @@ public class WebsocketClientController {
     public static void notifyMessageHandler(Object jsonObject){
         networkHandler.notifyMessageHandler(jsonObject);
     }
+
+    public static void setPlayerConnected(int gameId){
+        networkHandler.connectToGame(gameId);
+    }
+
+    public static int getConnectedGameId(){
+        return networkHandler.getConnectedGameId();
+    }
+
+    public static boolean isConnected(){
+        return networkHandler.isConnected();
+    }
 }

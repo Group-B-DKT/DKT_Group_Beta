@@ -28,6 +28,9 @@ public class JsonInputParser implements InputParser {
     public void parseInput(String client_msg) {
         Wrapper wrapper = gson.fromJson(client_msg, Wrapper.class);
         Log.d("DEBUG", "JsonInputParser::parseInput/ " + wrapper);
+        if (wrapper.getGameId() != WebsocketClientController.getConnectedGameId()){
+            WebsocketClientController.setPlayerConnected(wrapper.getGameId());
+        }
         WebsocketClientController.notifyMessageHandler(WrapperHelper.getInstanceFromWrapper(wrapper));
     }
 }

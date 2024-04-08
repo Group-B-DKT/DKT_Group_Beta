@@ -16,6 +16,7 @@ import com.example.dkt_group_beta.model.GameInfo;
 import java.util.List;
 
 public class GameSearchViewModel extends ViewModel {
+    private String username;
     private final InfoController infoController;
     private final ConnectController connectController;
     private final ActionController actionController;
@@ -28,6 +29,7 @@ public class GameSearchViewModel extends ViewModel {
         connectController = new ConnectController(this::onConnectionEstablished);
         actionController = new ActionController(this::handleAction);
         this.gameSearchAction = gameSearchAction;
+        this.username = username;
     }
 
     public void receiveGames (){
@@ -36,6 +38,7 @@ public class GameSearchViewModel extends ViewModel {
 
     public void connectToGame(int gameId){
         Log.d("DEBUG", "GameSearchViewModel::connectToGame/ " + gameId);
+        actionController.joinGame(gameId);
     }
 
     public void createGame(String inputText) {
@@ -50,7 +53,7 @@ public class GameSearchViewModel extends ViewModel {
         gameSearchAction.refreshGameListItems();
         gameInfos.forEach((gameInfo) -> gameSearchAction.addGameToScrollView(gameInfo.getId(),
                                                                              gameInfo.getName(),
-                                                                             gameInfo.getConnectedPlayer()));
+                                                                             gameInfo.getConnectedPlayerNames() == null ? 0 : gameInfo.getConnectedPlayerNames().size()));
 
     }
 
@@ -59,7 +62,16 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     void handleAction(Action action, String param, String fromPlayername){
-        if (action == Action.GAME_CREATED_SUCCESSFULLY)
+        if (!fromPlayername.equals(username)) {
             this.receiveGames();
+            return;
+        }
+
+        if (action == Action.GAME_CREATED_SUCCESSFULLY) {
+            gameSearchAction.switchToGameLobby(username, true);
+        }
+        if (action == Action.GAME_JOINED_SUCCESSFULLY){
+            gameSearchAction.switchToGameLobby(username, false);
+        }
     }
 }

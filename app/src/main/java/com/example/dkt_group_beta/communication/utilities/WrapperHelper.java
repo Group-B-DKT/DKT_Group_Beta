@@ -26,7 +26,6 @@ public class WrapperHelper {
                 return gson.fromJson(object, ActionJsonObject.class);
             }
             case "InfoJsonObject": {
-                Log.d("DEBUG", "WrapperHelper::getInstanceFromWrapper/ " + gson.fromJson(object, InfoJsonObject.class));
                 return gson.fromJson(object, InfoJsonObject.class);
             }
 
@@ -41,7 +40,7 @@ public class WrapperHelper {
         }catch (Exception e){
             return null;
         }
-        return getInstanceFromWrapper(wrapper);
+        return wrapper != null ? getInstanceFromWrapper(wrapper) : null;
     }
 
     public static String toJsonFromObject(int gameId, Request request, Object object){

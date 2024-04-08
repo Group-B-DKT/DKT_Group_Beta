@@ -1,5 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
+    jacoco
+    id("org.sonarqube") version "4.4.1.3373"
 }
 
 android {
@@ -26,6 +28,18 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+}
+
+
+sonar {
+    properties {
+        property("sonar.projectKey", "Group-B-DKT_DKT_Group_Beta")
+        property("sonar.organization", "group-b-dkt")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.java.coveragePlugin", "jacoco")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${project.projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+    }
 }
 
 dependencies {
@@ -40,6 +54,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation("org.mockito:mockito-core:3.11.2")
     testImplementation("org.robolectric:robolectric:4.7.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.8.1")
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
     implementation(libs.gson)
