@@ -48,6 +48,4 @@ public class GameLobbyViewModel {
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
         this.getConnectedPlayerNames();
     }
-
-
 }

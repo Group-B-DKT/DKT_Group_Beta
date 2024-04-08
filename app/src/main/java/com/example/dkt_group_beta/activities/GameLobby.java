@@ -42,6 +42,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
     private Button btnStart;
     private boolean isHost;
     private static int id = 1;
+    private boolean firstInList = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,6 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         isHost = getIntent().getBooleanExtra("isHost", false);
         if (isHost) addStartButton();
 
-//        addPlayerToView(getIntent().getStringExtra("username"));
         gameLobbyViewModel.getConnectedPlayerNames();
     }
 
@@ -121,7 +121,12 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(id++);
 
-            TextView textViewGameId = getTextView(username, View.TEXT_ALIGNMENT_TEXT_START);
+            String name = username;
+            if (firstInList){
+                name += " (HOST)";
+                firstInList = false;
+            }
+            TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
             linearLayout.addView(textViewGameId);
 
