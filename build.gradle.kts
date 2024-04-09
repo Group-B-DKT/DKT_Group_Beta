@@ -10,16 +10,9 @@ sonar {
         property("sonar.projectKey", "Group-B-DKT_DKT_Group_Beta")
         property("sonar.organization", "group-b-dkt")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${projectDir}/build/test-results/testDebugUnitTest ")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${projectDir}/build/test-results/testDebugUnitTest")
     }
 }
 jacoco {
-    toolVersion = "0.8.7" // Verwende die neueste verfügbare Version
-}
-
-tasks.withType<JacocoReport> {
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
+    toolVersion = "0.8.7"
 }
