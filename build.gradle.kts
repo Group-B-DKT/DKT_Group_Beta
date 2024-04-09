@@ -10,7 +10,7 @@ sonar {
         property("sonar.projectKey", "Group-B-DKT_DKT_Group_Beta")
         property("sonar.organization", "group-b-dkt")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${projectDir}/build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${projectDir}/build/test-results/testDebugUnitTest ")
     }
 }
 jacoco {
