@@ -63,8 +63,6 @@ dependencies {
     compileOnly(libs.lombok)
 
 }
-
-
 tasks.withType<JacocoReport> {
     reports {
         xml.required.set(true)
