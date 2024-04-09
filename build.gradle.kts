@@ -11,6 +11,7 @@ sonar {
         property("sonar.organization", "group-b-dkt")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.jacoco.xmlReportPaths", "${projectDir}/build/test-results/testDebugUnitTest")
+        property("sonar.core.codeCoveragePlugin", "jacoco")
     }
 }
 jacoco {
