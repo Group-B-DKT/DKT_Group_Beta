@@ -28,42 +28,27 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    tasks.register("jacocoTestReport") {
-        val jacocoTestReport = tasks.create("generateJacocoReport", JacocoReport::class.java) {
-            dependsOn("testDebugUnitTest")
+    tasks.register("jacocoTestReport", JacocoReport::class) {
+        dependsOn("testDebugUnitTest")
 
-            reports {
-                xml.required.set(true)
-                html.required.set(true)
-            }
-
-            val tree = fileTree(mapOf("dir" to ".", "includes" to listOf("**/*.class")))
-            val excludeFiles = listOf(
-                "**/R.class",
-                "**/R$*.class",
-                "**/BuildConfig.*",
-                "**/Manifest*.*",
-                "android/**/*.*",
-                "**/*Test*.*",
-                "com/example/dkt_group_beta/**/*.*"
-            )
-            classDirectories.setFrom(tree.filter { file ->
-                excludeFiles.none { exclude -> file.absolutePath.contains(exclude) }
-            })
-            sourceDirectories.setFrom(files("src/main/java"))
-            executionData.setFrom(fileTree(mapOf("dir" to ".", "includes" to listOf(
-                "build/jacoco/testDebugUnitTest.exec", // Pfad zur .exec Datei
-                "build/tmp/kotlin-classes/debug/**" // Annahme eines allgemeinen Pfades für Kotlin-Compile-Output
-            ))))
-
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
         }
 
-        jacocoTestReport.group = "Verification"
-        jacocoTestReport.description = "Generates Jacoco coverage reports after unit test execution."
+        val buildDirFile = layout.buildDirectory.get().asFile
+
+        classDirectories.setFrom(fileTree(mapOf("dir" to "$buildDirFile/tmp/kotlin-classes", "includes" to listOf("**/*.class"))))
+        sourceDirectories.setFrom(files("src/main/java"))
+        executionData.setFrom(files(
+            "${buildDirFile}/jacoco/testDebugUnitTest.exec",
+            "${buildDirFile}/tmp/kotlin-classes/debug/**"
+        ))
+
+        group = "Verification"
+        description = "Generates Jacoco coverage reports after unit test execution."
     }
-
 }
-
 
 sonar {
     properties {
