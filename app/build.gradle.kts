@@ -83,11 +83,5 @@ dependencies {
 }
 
 jacoco {
-    toolVersion = "0.8.7"
-}
-tasks.withType<JacocoReport> {
-    reports {
-        xml.required.set(true)
-        html.required.set(true)
-    }
+    toolVersion = "0.8.11"
 }

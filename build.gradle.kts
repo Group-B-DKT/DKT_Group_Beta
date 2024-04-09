@@ -15,7 +15,7 @@ sonar {
     }
 }
 jacoco {
-    toolVersion = "0.8.7"
+    toolVersion = "0.8.11"
 }
 tasks.withType<JacocoReport> {
     reports {
