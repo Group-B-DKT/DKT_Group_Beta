@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.androidApplication)
-    jacoco
+    id("jacoco")
     id("org.sonarqube") version "4.4.1.3373"
 }
 
@@ -27,6 +27,39 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    tasks.register("jacocoTestReport") {
+        val jacocoTestReport = tasks.create("generateJacocoReport", JacocoReport::class.java) {
+            dependsOn("testDebugUnitTest")
+
+            reports {
+                xml.required.set(true)
+                html.required.set(true)
+            }
+
+            val tree = fileTree(mapOf("dir" to ".", "includes" to listOf("**/*.class")))
+            val excludeFiles = listOf(
+                "**/R.class",
+                "**/R$*.class",
+                "**/BuildConfig.*",
+                "**/Manifest*.*",
+                "android/**/*.*",
+                "**/*Test*.*",
+                "com/example/dkt_group_beta/**/*.*"
+            )
+            classDirectories.setFrom(tree.filter { file ->
+                excludeFiles.none { exclude -> file.absolutePath.contains(exclude) }
+            })
+            sourceDirectories.setFrom(files("src/main/java"))
+            executionData.setFrom(fileTree(mapOf("dir" to ".", "includes" to listOf(
+                "build/jacoco/testDebugUnitTest.exec", // Pfad zur .exec Datei
+                "build/tmp/kotlin-classes/debug/**" // Annahme eines allgemeinen Pfades für Kotlin-Compile-Output
+            ))))
+
+        }
+
+        jacocoTestReport.group = "Verification"
+        jacocoTestReport.description = "Generates Jacoco coverage reports after unit test execution."
     }
 
 }
@@ -62,6 +95,10 @@ dependencies {
     implementation ("androidx.test:core:1.5.0")
     compileOnly(libs.lombok)
 
+}
+
+jacoco {
+    toolVersion = "0.8.7"
 }
 tasks.withType<JacocoReport> {
     reports {
