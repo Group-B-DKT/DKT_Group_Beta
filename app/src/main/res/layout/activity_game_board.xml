@@ -383,7 +383,7 @@
 
 
     <ImageView
-        android:id="@id/right27"
+        android:id="@+id/right27"
         android:layout_width="90dp"
         android:layout_height="44dp"
         android:layout_marginStart="315dp"
@@ -424,7 +424,7 @@
         app:layout_constraintTop_toTopOf="@id/right27" />
 
     <ImageView
-        android:id="@id/right30"
+        android:id="@+id/right30"
         android:layout_width="90dp"
         android:layout_height="44dp"
         android:layout_marginStart="315dp"
@@ -486,6 +486,8 @@
         android:hint="1000"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.534"
+        app:layout_constraintStart_toEndOf="@+id/balance"
         tools:layout_editor_absoluteY="5dp" />
 
     <EditText
@@ -517,9 +519,11 @@
         android:layout_height="wrap_content"
         android:text="@string/balance"
         android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/money"
-        tools:layout_editor_absoluteY="5dp"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toStartOf="@+id/currency"
+        app:layout_constraintHorizontal_bias="0.037"
+        app:layout_constraintStart_toEndOf="@+id/top26"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="16dp" />
 
     <TextView
         android:id="@+id/joker"
