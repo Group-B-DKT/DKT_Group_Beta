@@ -63,7 +63,11 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
-        this.btnLeave.setOnClickListener(v -> gameLobbyViewModel.leaveGame());
+        this.btnLeave.setOnClickListener(v -> {
+            gameLobbyViewModel.leaveGame();
+            removePlayerFromView("Mutlu");
+        });
+
 
 
         this.btnReady = findViewById(R.id.btn_setReady);
