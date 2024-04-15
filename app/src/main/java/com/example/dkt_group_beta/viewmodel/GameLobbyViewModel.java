@@ -29,6 +29,11 @@ public class GameLobbyViewModel {
         infoController.getConnectedPlayers();
     }
 
+    public void leaveGame() {
+        actionController.leaveGame();
+    }
+
+
     public void handleInfo(Info info, List<GameInfo> gameInfos){
         Log.d("DEBUG", "GameLobbyViewModel::handleInfo/ " + gameInfos);
         GameInfo gameInfo = gameInfos.get(0);
@@ -46,6 +51,10 @@ public class GameLobbyViewModel {
 
     public void handleAction(Action action, String param, String fromPlayername){
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
+        if(action == Action.LEAVE_GAME) {
+            gameLobbyAction.removePlayerFromView(fromPlayername);
+            gameLobbyAction.switchToGameLobby(fromPlayername);
+        }
         this.getConnectedPlayerNames();
     }
 }

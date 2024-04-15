@@ -27,6 +27,11 @@ public class ActionController {
 
         WebsocketClientController.sendToServer(msg);
     }
+    public void leaveGame() {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.LEAVE_GAME);
+        String msg = WrapperHelper.toJsonFromObject(Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
 
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))

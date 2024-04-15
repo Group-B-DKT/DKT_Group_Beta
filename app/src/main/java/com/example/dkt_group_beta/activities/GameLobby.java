@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -27,6 +28,8 @@ import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +63,9 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
+        this.btnLeave.setOnClickListener(v -> gameLobbyViewModel.leaveGame());
+
+
         this.btnReady = findViewById(R.id.btn_setReady);
 
         this.layoutButtons = findViewById(R.id.layout_gameLobby_btn);
@@ -68,7 +74,10 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         if (isHost) addStartButton();
 
         gameLobbyViewModel.getConnectedPlayerNames();
+
+
     }
+
 
     private void addStartButton(){
 //        int layout = androidx.constraintlayout.widget.R.attr.buttonBarButtonStyle;
@@ -83,7 +92,27 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         layoutButtons.addView(btnStart);
     }
 
+    public void removePlayerFromView (String username) {
+        runOnUiThread(() -> {
+            for(LinearLayout playerField: playerFields) {
+                TextView textView = (TextView) playerField.getChildAt(0);
+                String playerName = textView.getText().toString();
+                if(playerName.equals(username))  {
+                    scrollviewLayout.removeView(playerField);
+                    playerFields.remove(playerField);
+                    break;
+                }
+            }
+        });
 
+    }
+
+
+    @Override
+    public void switchToGameLobby(String username) {
+        Intent intent = new Intent(GameLobby.this, GameSearch.class);
+        startActivity(intent);
+    }
 
 
     private LinearLayout getLinearLayout(int gameId) {
