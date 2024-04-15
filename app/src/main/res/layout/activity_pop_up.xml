@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Bild 1 -->
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="500dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/los1" />
+
+            <!-- Bild 2 -->
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="500dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/bank23" />
+
+            <!-- Weitere Bilder -->
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="500dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/hafnersee2" />
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="500dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/kraftwerkforstsee12" />
+
+            <!-- Füge jedes weitere Bild als ImageView ein -->
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
