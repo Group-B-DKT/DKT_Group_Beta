@@ -67,22 +67,22 @@ sonar {
 
 dependencies {
     implementation libs.appcompat
-    implementation "androidx.security:security-crypto:1.1.0-alpha06"
+    implementation libs.security.crypto
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
     testImplementation libs.junit
-    testImplementation "org.mockito:mockito-core:3.11.2"
-    testImplementation "org.robolectric:robolectric:4.7.3"
+    testImplementation libs.mockito.core
+    testImplementation libs.robolectric
     testImplementation libs.junit.jupiter.api
     testRuntimeOnly libs.junit.jupiter.engine
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
     implementation libs.gson
     implementation libs.okhttp
-    implementation "androidx.test:core:1.5.0"
+    implementation libs.core
     compileOnly libs.lombok
 
 }
