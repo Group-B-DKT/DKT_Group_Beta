@@ -64,8 +64,11 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
         this.btnLeave.setOnClickListener(v -> {
+            Log.d("DEBUG", "Leave Button clicked");
             gameLobbyViewModel.leaveGame();
-            removePlayerFromView("Mutlu");
+            String usernameToRemove = "Mutlu";
+            Log.d("DEBUG", "Removing player: " + usernameToRemove);
+            removePlayerFromView(usernameToRemove);
         });
 
 
@@ -96,21 +99,27 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         layoutButtons.addView(btnStart);
     }
 
-    public void removePlayerFromView (String username) {
+    public void removePlayerFromView(String username) {
         runOnUiThread(() -> {
-            for(LinearLayout playerField: playerFields) {
+            Log.d("DEBUG", "Trying to remove player: " + username);
+            for (int i = 0; i < playerFields.size(); i++) {
+                LinearLayout playerField = playerFields.get(i);
                 TextView textView = (TextView) playerField.getChildAt(0);
-                String playerName = textView.getText().toString();
-                if(playerName.equals(username))  {
+                String playerName = textView.getText().toString().trim();
+                if (playerName.endsWith(" (HOST)")) {
+
+                    playerName = playerName.substring(0, playerName.length() - 7).trim();
+                }
+
+                if (playerName.equals(username.trim())) {
+                    Log.d("DEBUG", "Player found, removing: " + playerName);
                     scrollviewLayout.removeView(playerField);
                     playerFields.remove(playerField);
                     break;
                 }
             }
         });
-
     }
-
 
     @Override
     public void switchToGameLobby(String username) {
