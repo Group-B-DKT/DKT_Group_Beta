@@ -121,7 +121,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
     public void addPlayerToView(Player player) {
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(id++);
-            Log.d("DEBUG", "GameLobby::addPlayerToView/ " + player.getUsername());
+
             String name = player.getUsername();
             if (firstInList){
                 name += " (HOST)";
