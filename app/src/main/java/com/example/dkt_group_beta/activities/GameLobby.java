@@ -130,7 +130,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
             linearLayout.addView(textViewGameId);
-            String s = "ASd ".split(" ")[0];
+
             scrollviewLayout.addView(linearLayout);
             this.playerFields.add(linearLayout);
         });
