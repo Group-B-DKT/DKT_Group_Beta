@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
@@ -117,11 +118,11 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
 
     @Override
-    public void addPlayerToView(String username) {
+    public void addPlayerToView(Player player) {
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(id++);
-
-            String name = username;
+            Log.d("DEBUG", "GameLobby::addPlayerToView/ " + player.getUsername());
+            String name = player.getUsername();
             if (firstInList){
                 name += " (HOST)";
                 firstInList = false;
@@ -129,7 +130,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
             linearLayout.addView(textViewGameId);
-
+            String s = "ASd ".split(" ")[0];
             scrollviewLayout.addView(linearLayout);
             this.playerFields.add(linearLayout);
         });

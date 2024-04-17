@@ -8,12 +8,12 @@ import lombok.Getter;
 public class GameInfo {
     private int id;
     private String name;
-    private List<String> connectedPlayerNames;
+    private List<Player> connectedPlayers;
 
-    public GameInfo(int id, String name, List<String> connectedPlayerNames) {
+    public GameInfo(int id, String name, List<Player> connectedPlayers) {
         this.id = id;
         this.name = name;
-        this.connectedPlayerNames = connectedPlayerNames;
+        this.connectedPlayers = connectedPlayers;
     }
 
     public int getId() {
@@ -24,7 +24,7 @@ public class GameInfo {
         return name;
     }
 
-    public List<String> getConnectedPlayerNames() {
-        return connectedPlayerNames;
+    public List<Player> getConnectedPlayers() {
+        return connectedPlayers;
     }
 }
