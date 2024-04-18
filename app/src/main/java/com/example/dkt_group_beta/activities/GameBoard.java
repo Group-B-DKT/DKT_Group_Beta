@@ -19,7 +19,6 @@ import java.util.List;
 
 public class GameBoard extends AppCompatActivity {
     private static final int NUMBER_OF_FIELDS = 32;
-    private static final List<Integer> ROTATED_FIELDS = List.of(12,13,14,15,27,28,29,30);;
     private List<ImageView> imageViews;
 
     @Override
@@ -40,15 +39,14 @@ public class GameBoard extends AppCompatActivity {
                         .getIdentifier("field" + i, "id", this.getPackageName());
                 imageViews.add(findViewById(resourceId));
 
+                resourceId = this.getResources()
+                        .getIdentifier("field" + i, "drawable", this.getPackageName());
+
+
                 ImageView imageView = imageViews.get(i-1);
-                if (imageView != null) {
-                    if (ROTATED_FIELDS.contains(i)) {
-                        imageView.setRotation(180);
+                if (imageView != null && resourceId != 0) {
                         imageView.setImageBitmap(
-                                decodeSampledBitmapFromResource(getResources(), R.drawable.bank16gedreht, 200, 200));
-                    }
-                    else imageView.setImageBitmap(
-                            decodeSampledBitmapFromResource(getResources(), R.drawable.field1, 200, 200));
+                                decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
                 }
             }
         });
