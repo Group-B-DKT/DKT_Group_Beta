@@ -42,10 +42,13 @@ public class GameBoard extends AppCompatActivity {
 
                 ImageView imageView = imageViews.get(i-1);
                 if (imageView != null) {
-                    if (ROTATED_FIELDS.contains(i))
-                        imageView.setRotation(-90);
-                    imageView.setImageBitmap(
-                            decodeSampledBitmapFromResource(getResources(), R.drawable.annastrasse22, 100, 100));
+                    if (ROTATED_FIELDS.contains(i)) {
+                        imageView.setRotation(180);
+                        imageView.setImageBitmap(
+                                decodeSampledBitmapFromResource(getResources(), R.drawable.bank16gedreht, 200, 200));
+                    }
+                    else imageView.setImageBitmap(
+                            decodeSampledBitmapFromResource(getResources(), R.drawable.field1, 200, 200));
                 }
             }
         });

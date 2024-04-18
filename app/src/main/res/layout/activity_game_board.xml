@@ -16,6 +16,7 @@
 
 
     <!-- field -->
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="495dp"
@@ -308,20 +309,16 @@
 
     <ImageView
         android:id="@+id/field15"
-        android:layout_width="45dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="22.5dp"
-        android:layout_marginTop="-22dp"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="@+id/fragment_container"
         app:layout_constraintTop_toBottomOf="@id/field17" />
 
     <ImageView
         android:id="@+id/field14"
-        android:layout_width="45dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="22.5dp"
-        android:layout_marginTop="-45dp"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
         android:rotationX="-360"
         android:rotationY="360"
         android:scaleType="fitXY"
@@ -330,10 +327,8 @@
 
     <ImageView
         android:id="@+id/field13"
-        android:layout_width="45dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="22.5dp"
-        android:layout_marginTop="-45dp"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
         android:rotationX="-360"
         android:rotationY="360"
         android:scaleType="fitXY"
@@ -343,10 +338,8 @@
 
     <ImageView
         android:id="@+id/field12"
-        android:layout_width="45dp"
-        android:layout_height="90dp"
-        android:layout_marginStart="22.5dp"
-        android:layout_marginTop="-45dp"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="@+id/fragment_container"
@@ -361,12 +354,10 @@
 
     <ImageView
         android:id="@+id/field27"
-        android:layout_width="45dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="-22.5dp"
-        android:layout_marginEnd="22.5dp"
-        android:rotationX="-360"
-        android:rotationY="360"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
+        android:rotationX="180"
+        android:rotationY="-180"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"
         app:layout_constraintTop_toBottomOf="@+id/field26" />
@@ -374,41 +365,35 @@
 
     <ImageView
         android:id="@+id/field28"
-        android:layout_width="45dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="22.5dp"
-        android:rotationX="-360"
-        android:rotationY="360"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
+        android:rotationX="180"
+        android:rotationY="-180"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"
-        app:layout_constraintTop_toTopOf="@id/field27" />
+        app:layout_constraintTop_toBottomOf="@+id/field27" />
 
 
     <ImageView
         android:id="@+id/field29"
-        android:layout_width="45dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="88dp"
-        android:layout_marginEnd="22.5dp"
-        android:rotationX="-360"
-        android:rotationY="360"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
+        android:rotationX="180"
+        android:rotationY="-180"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"
-        app:layout_constraintTop_toTopOf="@id/field27" />
+        app:layout_constraintTop_toBottomOf="@+id/field28" />
 
     <ImageView
         android:id="@+id/field30"
-        android:layout_width="45dp"
-        android:layout_height="90dp"
-        android:layout_marginTop="132dp"
-        android:layout_marginEnd="22.5dp"
+        android:layout_width="90dp"
+        android:layout_height="45dp"
         android:rotation="180"
         android:rotationX="-180"
         android:rotationY="180"
         android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"
-        app:layout_constraintTop_toTopOf="@id/field27" />
+        app:layout_constraintTop_toBottomOf="@+id/field29" />
 
 
     <!-- endOffield-->
@@ -424,7 +409,7 @@
         app:layout_constraintBottom_toTopOf="@+id/field8"
         app:layout_constraintStart_toEndOf="@+id/field13"
         app:layout_constraintTop_toBottomOf="@+id/field19"
-        app:srcCompat="@drawable/risiko3" />
+        app:srcCompat="@drawable/field3" />
 
 
     <ImageView
@@ -437,7 +422,7 @@
         app:layout_constraintBottom_toTopOf="@+id/field5"
         app:layout_constraintEnd_toStartOf="@+id/field29"
         app:layout_constraintTop_toBottomOf="@+id/field22"
-        app:srcCompat="@drawable/bank16" />
+        app:srcCompat="@drawable/field16" />
 
 
     <!--  ENDMITTE-->
