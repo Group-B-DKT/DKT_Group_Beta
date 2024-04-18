@@ -35,10 +35,10 @@ public class GameLobbyViewModel {
 
         if (gameInfo == null) return;
 
-        gameInfo.getConnectedPlayerNames()
+        gameInfo.getConnectedPlayers()
                 .forEach(g -> {
-                    if (!this.usernames.contains(g)){
-                        this.usernames.add(g);
+                    if (!this.usernames.contains(g.getUsername())){
+                        this.usernames.add(g.getUsername());
                         gameLobbyAction.addPlayerToView(g);
                     }
                 });
