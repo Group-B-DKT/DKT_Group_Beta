@@ -311,7 +311,6 @@
         android:id="@+id/field15"
         android:layout_width="90dp"
         android:layout_height="45dp"
-        android:rotation="180"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="@+id/fragment_container"
         app:layout_constraintTop_toBottomOf="@id/field17" />
@@ -320,7 +319,6 @@
         android:id="@+id/field14"
         android:layout_width="90dp"
         android:layout_height="45dp"
-        android:rotation="180"
         android:rotationX="-360"
         android:rotationY="360"
         android:scaleType="fitXY"
@@ -331,7 +329,6 @@
         android:id="@+id/field13"
         android:layout_width="90dp"
         android:layout_height="45dp"
-        android:rotation="180"
         android:rotationX="-360"
         android:rotationY="360"
         android:scaleType="fitXY"
@@ -344,7 +341,6 @@
         android:layout_width="90dp"
         android:layout_height="45dp"
         android:adjustViewBounds="true"
-        android:rotation="180"
         android:scaleType="fitXY"
         app:layout_constraintStart_toStartOf="@+id/fragment_container"
         app:layout_constraintTop_toBottomOf="@+id/field13" />
