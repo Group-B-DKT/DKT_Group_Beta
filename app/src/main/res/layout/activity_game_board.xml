@@ -18,302 +18,282 @@
         android:id="@+id/fragment_container"
         android:layout_width="495dp"
         android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
         android:background="#c7b8b1"
-        tools:layout_editor_absoluteX="80dp"
-        tools:layout_editor_absoluteY="16dp"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp" />
 
 
-    <!-- top -->
-
+    <!-- field -->
     <ImageView
-        android:id="@+id/top16"
+        android:id="@+id/field16"
         android:layout_width="45dp"
         android:layout_height="90dp"
-        android:layout_marginStart="80dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/bank16"
 
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/fragment_container"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
-        android:id="@+id/top17"
+        android:id="@+id/field17"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="45dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/toeschling17"
-        app:layout_constraintStart_toStartOf="@id/top16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/top18"
+        android:id="@+id/field18"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="90dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/urlaubsgeld18"
-        app:layout_constraintStart_toStartOf="@id/top16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <ImageView
-        android:id="@+id/top19"
+        android:id="@+id/field19"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="135dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/stmartin19"
-        app:layout_constraintStart_toStartOf="@id/top16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/top20"
+        android:id="@+id/field20"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="180dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/risiko20"
-        app:layout_constraintStart_toStartOf="@id/top16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/top21"
+        android:id="@+id/field21"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="225dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/seeuferstrsse21"
-        app:layout_constraintStart_toStartOf="@id/top16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/top22"
+        android:id="@+id/field22"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="270dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/annastrasse22"
-        app:layout_constraintStart_toStartOf="@id/top16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/top23"
+        android:id="@+id/field23"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="315dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/bank23"
-        app:layout_constraintStart_toStartOf="@id/top16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/top24"
+        android:id="@+id/field24"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="360dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/koschatweg24"
-        app:layout_constraintStart_toStartOf="@id/top16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/top25"
+        android:id="@+id/field25"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="405dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/knast25"
-        app:layout_constraintStart_toStartOf="@id/top16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/top26"
+        android:id="@+id/field26"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginTop="5dp"
 
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/roemerweg26"
-        app:layout_constraintStart_toEndOf="@+id/top25"
+        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
+        app:layout_constraintStart_toEndOf="@+id/field25"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- endOfTop-->
 
 
-    <!-- bottom -->
+    <!-- field -->
 
     <ImageView
-        android:id="@+id/bottom11"
+        android:id="@+id/field11"
         android:layout_width="45dp"
         android:layout_height="90dp"
-        android:layout_marginStart="80dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/auen11"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/fragment_container"
 
         />
 
 
     <ImageView
-        android:id="@+id/bottom10"
+        android:id="@+id/field10"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="45dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/gesetzesverletzung10"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
     <ImageView
-        android:id="@+id/bottom9"
+        android:id="@+id/field9"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="90dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/kathreinkogel9"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
 
     <ImageView
-        android:id="@+id/bottom8"
+        android:id="@+id/field8"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="135dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/bank8"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
 
 
     <!-- picture from: 430.700+ Grafiken, lizenzfreie Vektorgrafiken und Clipart zu Schiff -  iStock | Boot, Segelschiff, Kreuzfahrtschiff https://images.app.goo.gl/TN7sypqozZqoLsAa6-->
     <ImageView
-        android:id="@+id/bottom7"
+        android:id="@+id/field7"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="180dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/woertherseeschifffahrt7"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
     <ImageView
-        android:id="@+id/bottom6"
+        android:id="@+id/field6"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="225dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/dellach6"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
     <ImageView
-        android:id="@+id/bottom5"
+        android:id="@+id/field5"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="270dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/reifnitz5"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
 
     <!-- picture from:https://www.mountainsport.at/wp-content/uploads/2019/03/logo-pyko.jpg -->
     <ImageView
-        android:id="@+id/bottom4"
+        android:id="@+id/field4"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="315dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/pyramidenkogel4"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
     <ImageView
-        android:id="@+id/bottom3"
+        android:id="@+id/field3"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="360dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/risiko3"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
     <ImageView
-        android:id="@+id/bottom2"
+        android:id="@+id/field2"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="405dp"
         android:layout_marginBottom="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        android:src="@drawable/hafnersee2"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
     <ImageView
-        android:id="@+id/bottom1"
+        android:id="@+id/field1"
         android:layout_width="45dp"
         android:layout_height="90dp"
         android:layout_marginStart="450dp"
         android:layout_marginBottom="5dp"
 
         android:scaleType="fitXY"
-        android:src="@drawable/los1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bottom11" />
+        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
+        app:layout_constraintStart_toStartOf="@id/field11" />
 
     <!-- endOfBottom-->
 
 
-    <!-- left-->
+    <!-- field-->
 
     <!--
 <ImageView
-    android:id="@id/left16"
+    android:id="@id/field16"
     android:layout_width="90dp"
     android:layout_height="44dp"
     android:layout_marginStart="80dp"
@@ -322,131 +302,116 @@
     android:rotationX="360"
     android:rotationY="360"
     android:scaleType="fitXY"
-    android:src="@drawable/bank16"
-    app:layout_constraintStart_toStartOf="parent"
+   :layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 -->
 
     <ImageView
-        android:id="@id/left15"
-        android:layout_width="90dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="0dp"
+        android:id="@+id/field15"
+        android:layout_width="45dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="22.5dp"
+        android:layout_marginTop="-22dp"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@id/field17" />
+
+    <ImageView
+        android:id="@+id/field14"
+        android:layout_width="45dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="22.5dp"
+        android:layout_marginTop="-45dp"
         android:rotationX="-360"
         android:rotationY="360"
         android:scaleType="fitXY"
-        android:src="@drawable/seecorso15"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/top17" />
+        app:layout_constraintStart_toStartOf="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@+id/field15" />
 
     <ImageView
-        android:id="@id/left14"
-        android:layout_width="90dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="0dp"
+        android:id="@+id/field13"
+        android:layout_width="45dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="22.5dp"
+        android:layout_marginTop="-45dp"
         android:rotationX="-360"
         android:rotationY="360"
         android:scaleType="fitXY"
-        android:src="@drawable/casinoplatz14"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/left15" />
+        app:layout_constraintStart_toStartOf="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@+id/field14" />
+
 
     <ImageView
-        android:id="@id/left13"
-        android:layout_width="90dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginBottom="10dp"
+        android:id="@+id/field12"
+        android:layout_width="45dp"
+        android:layout_height="90dp"
+        android:layout_marginStart="22.5dp"
+        android:layout_marginTop="-45dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        app:layout_constraintStart_toStartOf="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@+id/field13" />
+
+
+    <!-- endOffield-->
+
+
+    <!-- field-->
+
+
+    <ImageView
+        android:id="@+id/field27"
+        android:layout_width="45dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="-22.5dp"
+        android:layout_marginEnd="22.5dp"
         android:rotationX="-360"
         android:rotationY="360"
         android:scaleType="fitXY"
-        android:src="@drawable/tierparkrosegg13"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/left15" />
+        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@+id/field26" />
 
 
     <ImageView
-        android:id="@id/left12"
-        android:layout_width="90dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="80dp"
-        android:layout_marginTop="90dp"
-        android:layout_marginBottom="95dp"
-        android:rotationX="-360"
-        android:rotationY="360"
-        android:scaleType="fitXY"
-        android:src="@drawable/kraftwerkforstsee12"
-        app:layout_constraintBottom_toBottomOf="@id/bottom11"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/left15" />
-
-
-    <!-- endOfLeft-->
-
-
-    <!-- right-->
-
-
-    <ImageView
-        android:id="@+id/right27"
-        android:layout_width="90dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="315dp"
-        android:layout_marginTop="95dp"
-        android:rotationX="-360"
-        android:rotationY="360"
-        android:scaleType="fitXY"
-        android:src="@drawable/reptilienzoo27"
-        app:layout_constraintStart_toEndOf="@+id/left15"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <ImageView
-        android:id="@id/right28"
-        android:layout_width="90dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="315dp"
+        android:id="@+id/field28"
+        android:layout_width="45dp"
+        android:layout_height="90dp"
         android:layout_marginTop="44dp"
+        android:layout_marginEnd="22.5dp"
         android:rotationX="-360"
         android:rotationY="360"
         android:scaleType="fitXY"
-        android:src="@drawable/lorettoweg28"
-        app:layout_constraintStart_toEndOf="@+id/left14"
-        app:layout_constraintTop_toTopOf="@id/right27" />
+        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
+        app:layout_constraintTop_toTopOf="@id/field27" />
 
 
     <ImageView
-        android:id="@id/right29"
-        android:layout_width="90dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="315dp"
+        android:id="@+id/field29"
+        android:layout_width="45dp"
+        android:layout_height="90dp"
         android:layout_marginTop="88dp"
+        android:layout_marginEnd="22.5dp"
         android:rotationX="-360"
         android:rotationY="360"
         android:scaleType="fitXY"
-        android:src="@drawable/sueduferstrasse29"
-        app:layout_constraintStart_toEndOf="@+id/left13"
-        app:layout_constraintTop_toTopOf="@id/right27" />
+        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
+        app:layout_constraintTop_toTopOf="@id/field27" />
 
     <ImageView
-        android:id="@+id/right30"
-        android:layout_width="90dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="315dp"
+        android:id="@+id/field30"
+        android:layout_width="45dp"
+        android:layout_height="90dp"
         android:layout_marginTop="132dp"
+        android:layout_marginEnd="22.5dp"
         android:rotation="180"
         android:rotationX="-180"
         android:rotationY="180"
         android:scaleType="fitXY"
-        android:src="@drawable/minimundus30"
-        app:layout_constraintStart_toEndOf="@+id/left12"
-        app:layout_constraintTop_toTopOf="@id/right27" />
+        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
+        app:layout_constraintTop_toTopOf="@id/field27" />
 
 
-    <!-- endOfRight-->
+    <!-- endOffield-->
 
     <!-- MITTE-->
     <ImageView
@@ -457,10 +422,10 @@
         android:layout_marginTop="71dp"
         android:layout_marginEnd="205dp"
         android:layout_marginBottom="73dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom8"
-        app:layout_constraintEnd_toStartOf="@+id/right28"
-        app:layout_constraintStart_toEndOf="@+id/left14"
-        app:layout_constraintTop_toBottomOf="@+id/top19"
+        app:layout_constraintBottom_toTopOf="@+id/field8"
+        app:layout_constraintEnd_toStartOf="@+id/field28"
+        app:layout_constraintStart_toEndOf="@+id/field14"
+        app:layout_constraintTop_toBottomOf="@+id/field19"
         app:srcCompat="@drawable/risiko3" />
 
 
@@ -471,9 +436,9 @@
         android:layout_marginTop="71dp"
         android:layout_marginEnd="68dp"
         android:layout_marginBottom="73dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottom5"
-        app:layout_constraintEnd_toStartOf="@+id/right29"
-        app:layout_constraintTop_toBottomOf="@+id/top22"
+        app:layout_constraintBottom_toTopOf="@+id/field5"
+        app:layout_constraintEnd_toStartOf="@+id/field29"
+        app:layout_constraintTop_toBottomOf="@+id/field22"
         app:srcCompat="@drawable/bank16" />
 
 
@@ -529,7 +494,7 @@
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/currency"
         app:layout_constraintHorizontal_bias="0.037"
-        app:layout_constraintStart_toEndOf="@+id/top26"
+        app:layout_constraintStart_toEndOf="@+id/field26"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="16dp" />
 
@@ -546,19 +511,19 @@
 
 
     <!-- Anzeige für die Besitztümer-->
-    <ScrollView
-        android:layout_width="337dp"
-        android:layout_height="287dp"
-        android:layout_marginEnd="1dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="123dp"
-        tools:ignore="MissingConstraints">
+<!--    <ScrollView-->
+<!--        android:layout_width="337dp"-->
+<!--        android:layout_height="287dp"-->
+<!--        android:layout_marginEnd="1dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        tools:layout_editor_absoluteY="123dp"-->
+<!--        tools:ignore="MissingConstraints">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical" />-->
+<!--    </ScrollView>-->
 
     <!-- ende Besitztümer-->
 
