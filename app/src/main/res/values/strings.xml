@@ -19,4 +19,5 @@
     <string name="create_game_input_dialog">Game Name</string>
     <string name="create_game_btn_create">Create</string>
     <string name="create_game_btn_cancel">Cancel</string>
+    <string name="choose_character">Choose your character:</string>
 </resources>
