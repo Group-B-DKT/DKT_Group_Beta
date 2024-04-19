@@ -36,4 +36,5 @@ public class WebsocketClientController {
     public static boolean isConnected(){
         return networkHandler.isConnected();
     }
+
 }
