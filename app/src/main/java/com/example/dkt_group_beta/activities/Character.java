@@ -1,6 +1,9 @@
 package com.example.dkt_group_beta.activities;
 
+import static com.example.dkt_group_beta.activities.GameBoard.decodeSampledBitmapFromResource;
+
 import android.os.Bundle;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +13,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Character extends AppCompatActivity {
+    public List<ImageView> characterViews;
+
+    private static final int NUMBER_OF_CHARACTERS = 6;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,5 +32,37 @@ public class Character extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+
+
+        characterViews =new ArrayList<>();
+
+        runOnUiThread(() ->
+
+        {
+            for (int i = 1; i <= NUMBER_OF_CHARACTERS; i++) {
+                int resourceId = this.getResources()
+                        .getIdentifier("character" + i, "id", this.getPackageName());
+                characterViews.add(findViewById(resourceId));
+
+                resourceId = this.getResources()
+                        .getIdentifier("character" + i, "drawable", this.getPackageName());
+
+
+                ImageView imageView = characterViews.get(i - 1);
+                if (imageView != null && resourceId != 0) {
+                    imageView.setImageBitmap(
+                            decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+                }
+            }
+        });
+
+
+
     }
+
+
+
+
+
 }
