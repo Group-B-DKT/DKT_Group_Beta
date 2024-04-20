@@ -89,10 +89,11 @@ public class Character extends AppCompatActivity {
 
 
 
-    public void animation(ImageView characterImageView){
+    public void animation(ImageView characterImageView, int repetition){
 
 
         Animation animation = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator);
+        animation.setRepeatCount(repetition);
         characterImageView.startAnimation(animation);
 
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -103,7 +104,7 @@ public class Character extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                float endPosition = characterImageView.getX() + 100; // Hier musst du die Endposition berechnen
+                float endPosition = characterImageView.getX() + 100*repetition; // Hier musst du die Endposition berechnen
                 characterImageView.setX(endPosition);
                 imageView.setX(endPosition);
             }
