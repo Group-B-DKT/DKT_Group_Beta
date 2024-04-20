@@ -51,6 +51,15 @@ public class GameBoard extends AppCompatActivity {
             }
         });
 
+
+
+        ImageView characterImageView = findViewById(R.id.character);
+        Character character = new Character(characterImageView);
+        ImageView field1 = findViewById(R.id.field1);
+        float position = field1.getX();
+        character.setStartPosition(position);
+        character.animation(characterImageView);
+
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
@@ -85,4 +94,10 @@ public class GameBoard extends AppCompatActivity {
 
         return inSampleSize;
     }
+
+
+
+
+
+
 }
