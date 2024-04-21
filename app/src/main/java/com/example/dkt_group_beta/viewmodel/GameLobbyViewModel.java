@@ -30,7 +30,6 @@ public class GameLobbyViewModel {
     }
 
     public void leaveGame() {
-        Log.d("DEBUG", "GameLobbyViewModel::leaveGame()");
         actionController.leaveGame();
 
     }
@@ -54,7 +53,6 @@ public class GameLobbyViewModel {
     public void handleAction(Action action, String param, String fromPlayername){
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
         if(action == Action.LEAVE_GAME) {
-            Log.d("DEBUG", "Leaving game...");
             gameLobbyAction.removePlayerFromView(fromPlayername);
             gameLobbyAction.switchToGameLobby(fromPlayername);
         }
