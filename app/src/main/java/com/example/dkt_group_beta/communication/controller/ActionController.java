@@ -39,6 +39,7 @@ public class ActionController {
             return;
 
         String msg = WrapperHelper.toJsonFromObject(connectedGameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
     }
 
     private void onMessageReceived(Object actionObject) {
