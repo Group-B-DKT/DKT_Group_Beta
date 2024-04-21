@@ -144,7 +144,14 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
     @Override
     public void readyStateChanged(String username, boolean isReady) {
-        // Todo Update isReady State
+        playerFields.forEach(pf -> {
+            TextView childAt = (TextView) pf.getChildAt(0);
+            if (childAt.getText().equals(username)){
+                TextView childIsReady = (TextView) pf.getChildAt(1);
+                String isReadyTxt = isReady ? "READY" : "NOT READY";
+                childIsReady.setText(isReadyTxt);
+            }
+        });
     }
 
     public void changeReadyBtnText(String text) {
