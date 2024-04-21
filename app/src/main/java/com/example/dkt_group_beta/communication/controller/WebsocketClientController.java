@@ -2,6 +2,7 @@ package com.example.dkt_group_beta.communication.controller;
 
 import android.util.Log;
 
+import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.networking.WebSocketClient;
 import com.example.dkt_group_beta.networking.WebSocketMessageHandler;
 
@@ -36,4 +37,6 @@ public class WebsocketClientController {
     public static boolean isConnected(){
         return networkHandler.isConnected();
     }
+
+    public static Player getPlayer(){return networkHandler.getPlayer();}
 }

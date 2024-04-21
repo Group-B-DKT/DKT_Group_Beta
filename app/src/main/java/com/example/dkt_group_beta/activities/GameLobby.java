@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
@@ -62,6 +63,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
         this.btnReady = findViewById(R.id.btn_setReady);
+        this.btnReady.setOnClickListener((v) -> gameLobbyViewModel.setReady());
 
         this.layoutButtons = findViewById(R.id.layout_gameLobby_btn);
 
@@ -138,5 +140,10 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             scrollviewLayout.addView(linearLayout);
             this.playerFields.add(linearLayout);
         });
+    }
+
+    @Override
+    public void changeReadyBtnText(String text) {
+        this.btnReady.setText(text);
     }
 }

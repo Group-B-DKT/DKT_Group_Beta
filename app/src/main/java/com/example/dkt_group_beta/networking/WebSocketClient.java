@@ -103,4 +103,7 @@ public class WebSocketClient {
     }
 
 
+    public Player getPlayer() {
+        return this.player;
+    }
 }

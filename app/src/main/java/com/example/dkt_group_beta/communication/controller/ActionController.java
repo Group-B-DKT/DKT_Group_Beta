@@ -28,6 +28,19 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
+    public void isReady(boolean isReady){
+        ActionJsonObject actionJsonObject;
+        if (isReady)
+            actionJsonObject = new ActionJsonObject(Action.READY);
+        else actionJsonObject = new ActionJsonObject(Action.NOT_READY);
+
+        int connectedGameId = WebsocketClientController.getConnectedGameId();
+        if (connectedGameId == -1)
+            return;
+
+        String msg = WrapperHelper.toJsonFromObject(connectedGameId, Request.ACTION, actionJsonObject);
+    }
+
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))
             return;
