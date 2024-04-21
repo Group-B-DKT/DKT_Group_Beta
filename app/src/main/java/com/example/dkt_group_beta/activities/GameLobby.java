@@ -129,7 +129,11 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             }
             TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
+            String isReady = player.isReady() ? "READY" : "NOT READY";
+            TextView textViewIsReady = getTextView(isReady, View.TEXT_ALIGNMENT_TEXT_END);
+
             linearLayout.addView(textViewGameId);
+            linearLayout.addView(textViewIsReady);
 
             scrollviewLayout.addView(linearLayout);
             this.playerFields.add(linearLayout);
