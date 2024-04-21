@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
@@ -117,11 +118,11 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
 
     @Override
-    public void addPlayerToView(String username) {
+    public void addPlayerToView(Player player) {
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(id++);
 
-            String name = username;
+            String name = player.getUsername();
             if (firstInList){
                 name += " (HOST)";
                 firstInList = false;

@@ -53,7 +53,7 @@ public class GameSearchViewModel extends ViewModel {
         gameSearchAction.refreshGameListItems();
         gameInfos.forEach((gameInfo) -> gameSearchAction.addGameToScrollView(gameInfo.getId(),
                                                                              gameInfo.getName(),
-                                                                             gameInfo.getConnectedPlayerNames() == null ? 0 : gameInfo.getConnectedPlayerNames().size()));
+                                                                             gameInfo.getConnectedPlayers() == null ? 0 : gameInfo.getConnectedPlayers().size()));
 
     }
 
