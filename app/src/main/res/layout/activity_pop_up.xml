@@ -9,36 +9,35 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/imageContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Bild 1 -->
             <ImageView
+                android:id="@+id/hafnersee"
                 android:layout_width="300dp"
                 android:layout_height="500dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/los1" />
-
-            <!-- Bild 2 -->
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="500dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/bank23" />
-
-            <!-- Weitere Bilder -->
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="500dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/hafnersee2" />
+                 />
 
             <ImageView
+                android:id="@+id/pyramidenkogel"
                 android:layout_width="300dp"
                 android:layout_height="500dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/kraftwerkforstsee12" />
+                android:scaleType="fitXY" />
+
+            <ImageView
+                android:id="@+id/reifniz"
+                android:layout_width="300dp"
+                android:layout_height="500dp"
+                android:scaleType="fitXY" />
+
+            <ImageView
+                android:id="@+id/dellach"
+                android:layout_width="300dp"
+                android:layout_height="500dp"
+                android:scaleType="fitXY"/>
 
             <!-- Füge jedes weitere Bild als ImageView ein -->
 
