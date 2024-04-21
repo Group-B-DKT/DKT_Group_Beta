@@ -89,7 +89,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
 
 
-    private LinearLayout getLinearLayout(int gameId) {
+    private LinearLayout getLinearLayout(int id) {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setPadding(30,0,30,0);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -97,9 +97,9 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setId(gameId);
+        linearLayout.setId(id);
 
-        if (gameId % 2 == 0)
+        if (id % 2 == 0)
             linearLayout.setBackgroundColor(Color.LTGRAY);
 
         return linearLayout;
@@ -143,6 +143,10 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
     }
 
     @Override
+    public void readyStateChanged(String username, boolean isReady) {
+        // Todo Update isReady State
+    }
+
     public void changeReadyBtnText(String text) {
         this.btnReady.setText(text);
     }

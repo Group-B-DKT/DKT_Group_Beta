@@ -5,5 +5,7 @@ import com.example.dkt_group_beta.model.Player;
 public interface GameLobbyAction {
     void addPlayerToView(Player player);
 
-    void changeReadyBtnText(String text);
+    void readyStateChanged(String username, boolean isReady);
+
+    public void changeReadyBtnText(String text);
 }

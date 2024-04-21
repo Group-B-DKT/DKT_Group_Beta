@@ -59,6 +59,18 @@ public class GameLobbyViewModel {
 
     public void handleAction(Action action, String param, Player fromPlayer){
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
-        this.getConnectedPlayerNames();
+
+        if (action == Action.GAME_JOINED_SUCCESSFULLY) {
+            this.getConnectedPlayerNames();
+        }
+        if (action == Action.CHANGED_READY_STATUS){
+            if (player.getId().equals(fromPlayer.getId())){
+                String isReady = player.isReady() ? "READY" : "NOT READY";
+                gameLobbyAction.changeReadyBtnText(isReady);
+            }
+            else{
+                gameLobbyAction.readyStateChanged(fromPlayer.getUsername(), fromPlayer.isReady());
+            }
+        }
     }
 }
