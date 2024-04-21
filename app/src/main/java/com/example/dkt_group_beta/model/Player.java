@@ -16,6 +16,7 @@ public class Player {
     @Getter
     private int gameId;
 
+    private boolean isReady;
 
     public Player(String username, String id) {
         this.username = username;
@@ -47,5 +48,13 @@ public class Player {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
     }
 }

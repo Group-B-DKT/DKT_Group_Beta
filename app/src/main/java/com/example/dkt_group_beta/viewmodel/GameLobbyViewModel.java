@@ -8,6 +8,7 @@ import com.example.dkt_group_beta.communication.controller.InfoController;
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Info;
 import com.example.dkt_group_beta.model.GameInfo;
+import com.example.dkt_group_beta.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,7 @@ public class GameLobbyViewModel {
                 });
     }
 
-    public void handleAction(Action action, String param, String fromPlayername){
+    public void handleAction(Action action, String param, Player fromPlayer){
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
         this.getConnectedPlayerNames();
     }

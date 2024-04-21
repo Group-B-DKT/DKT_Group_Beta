@@ -35,6 +35,6 @@ public class ActionController {
         Log.d("DEBUG", "ActionController::onMessageReceived/ " + ((ActionJsonObject) actionObject).getAction());
 
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
-        handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayername());
+        handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer());
     }
 }

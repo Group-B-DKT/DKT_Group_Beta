@@ -12,6 +12,7 @@ import com.example.dkt_group_beta.communication.controller.WebsocketClientContro
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Info;
 import com.example.dkt_group_beta.model.GameInfo;
+import com.example.dkt_group_beta.model.Player;
 
 import java.util.List;
 
@@ -61,8 +62,8 @@ public class GameSearchViewModel extends ViewModel {
         gameSearchAction.onConnectionEstablished();
     }
 
-    void handleAction(Action action, String param, String fromPlayername){
-        if (!fromPlayername.equals(username)) {
+    void handleAction(Action action, String param, Player fromPlayer){
+        if (fromPlayer == null || !fromPlayer.getUsername().equals(username)) {
             this.receiveGames();
             return;
         }
