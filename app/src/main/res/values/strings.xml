@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">DKT_Group_Beta</string>
+    <string name="currency">€</string>
+    <string name="balance">Kontostand:</string>
+    <string name="joker">Joker:</string>
     <string name="User">Benutzername: </string>
     <string name="connection">Search Games</string>
     <string name="lobby_header">Game Lobby</string>
