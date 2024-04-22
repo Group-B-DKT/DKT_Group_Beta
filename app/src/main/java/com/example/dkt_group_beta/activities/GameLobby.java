@@ -56,6 +56,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        isHost = WebsocketClientController.getPlayer().isHost();
 
         this.gameLobbyViewModel = new GameLobbyViewModel(this);
         this.playerFields = new ArrayList<>();
@@ -67,7 +68,6 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
         this.layoutButtons = findViewById(R.id.layout_gameLobby_btn);
 
-        isHost = getIntent().getBooleanExtra("isHost", false);
         if (isHost) addStartButton();
 
         gameLobbyViewModel.getConnectedPlayerNames();
@@ -125,10 +125,9 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             LinearLayout linearLayout = getLinearLayout(id++);
 
             String name = player.getUsername();
-            if (firstInList){
+            if (player.isHost())
                 name += " (HOST)";
-                firstInList = false;
-            }
+
             TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
             String isReady = player.isReady() ? "READY" : "NOT READY";
@@ -144,11 +143,12 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
     @Override
     public void readyStateChanged(String username, boolean isReady) {
+        Log.d("DEBUG", "GameLobby::readyStateChanged/ " + username + " " + isReady);
         playerFields.forEach(pf -> {
             TextView childAt = (TextView) pf.getChildAt(0);
-            if (childAt.getText().equals(username)){
+            if (childAt.getText().toString().split(" ")[0].equals(username)){
                 TextView childIsReady = (TextView) pf.getChildAt(1);
-                String isReadyTxt = isReady ? "READY" : "NOT READY";
+                String isReadyTxt = isReady ? "NOT READY" : "READY";
                 childIsReady.setText(isReadyTxt);
             }
         });

@@ -69,10 +69,11 @@ public class GameSearchViewModel extends ViewModel {
         }
 
         if (action == Action.GAME_CREATED_SUCCESSFULLY) {
-            gameSearchAction.switchToGameLobby(username, true);
+            WebsocketClientController.getPlayer().setHost(true);
+            gameSearchAction.switchToGameLobby(username);
         }
         if (action == Action.GAME_JOINED_SUCCESSFULLY){
-            gameSearchAction.switchToGameLobby(username, false);
+            gameSearchAction.switchToGameLobby(username);
         }
     }
 }

@@ -43,7 +43,7 @@ public class GameLobbyViewModel {
 
 
     public void handleInfo(Info info, List<GameInfo> gameInfos){
-        Log.d("DEBUG", "GameLobbyViewModel::handleInfo/ " + gameInfos);
+        Log.d("DEBUG", "GameLobbyViewModel::handleInfo/ " + gameInfos.get(0).getConnectedPlayers());
         GameInfo gameInfo = gameInfos.get(0);
 
         if (gameInfo == null) return;
@@ -64,13 +64,13 @@ public class GameLobbyViewModel {
             this.getConnectedPlayerNames();
         }
         if (action == Action.CHANGED_READY_STATUS){
+            Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + fromPlayer.getUsername());
             if (player.getId().equals(fromPlayer.getId())){
                 String isReady = player.isReady() ? "READY" : "NOT READY";
                 gameLobbyAction.changeReadyBtnText(isReady);
+
             }
-            else{
-                gameLobbyAction.readyStateChanged(fromPlayer.getUsername(), fromPlayer.isReady());
-            }
+            gameLobbyAction.readyStateChanged(fromPlayer.getUsername(), fromPlayer.isReady());
         }
     }
 }

@@ -31,14 +31,15 @@ public class ActionController {
     public void isReady(boolean isReady){
         ActionJsonObject actionJsonObject;
         if (isReady)
-            actionJsonObject = new ActionJsonObject(Action.READY);
-        else actionJsonObject = new ActionJsonObject(Action.NOT_READY);
+            actionJsonObject = new ActionJsonObject(Action.READY, null, WebsocketClientController.getPlayer());
+        else actionJsonObject = new ActionJsonObject(Action.NOT_READY, null, WebsocketClientController.getPlayer());
 
         int connectedGameId = WebsocketClientController.getConnectedGameId();
         if (connectedGameId == -1)
             return;
 
         String msg = WrapperHelper.toJsonFromObject(connectedGameId, Request.ACTION, actionJsonObject);
+        Log.d("DEBUG", msg);
         WebsocketClientController.sendToServer(msg);
     }
 

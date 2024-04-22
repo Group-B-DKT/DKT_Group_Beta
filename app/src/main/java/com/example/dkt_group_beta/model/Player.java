@@ -18,6 +18,8 @@ public class Player {
 
     private boolean isReady;
 
+    private boolean isHost;
+
     public Player(String username, String id) {
         this.username = username;
         this.id = id;
@@ -56,5 +58,13 @@ public class Player {
 
     public void setReady(boolean ready) {
         isReady = ready;
+    }
+
+    public boolean isHost() {
+        return isHost;
+    }
+
+    public void setHost(boolean host) {
+        isHost = host;
     }
 }
