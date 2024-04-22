@@ -91,6 +91,7 @@ public class GameBoard extends AppCompatActivity {
         return inSampleSize;
     }
 
+
     public void my_button_onClick_working(View view) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.activity_pop_up, null);
