@@ -20,17 +20,19 @@
         <activity
             android:name=".activities.Login"
             android:screenOrientation="landscape"
-            android:exported="true">
+            android:exported="false">
+
+        </activity>
+
+        <activity
+            android:name=".activities.GameBoard"
+            android:exported="true"
+            android:screenOrientation="landscape" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-
-        <activity
-            android:name=".activities.GameBoard"
-            android:exported="false"
-            android:screenOrientation="landscape" />
 
         <activity
             android:name=".activities.GameSearch"
