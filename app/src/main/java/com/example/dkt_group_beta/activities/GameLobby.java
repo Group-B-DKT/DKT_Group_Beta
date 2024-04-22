@@ -57,7 +57,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        String username = getIntent().getStringExtra("username");
         this.gameLobbyViewModel = new GameLobbyViewModel(this);
         this.playerFields = new ArrayList<>();
 
@@ -65,8 +65,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         this.btnLeave = findViewById(R.id.btn_leave);
         this.btnLeave.setOnClickListener(v -> {
             gameLobbyViewModel.leaveGame();
-            String usernameToRemove = "Mutlu";
-            removePlayerFromView(usernameToRemove);
+            removePlayerFromView(username);
         });
 
 
