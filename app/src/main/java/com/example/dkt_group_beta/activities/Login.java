@@ -20,11 +20,13 @@ import com.example.dkt_group_beta.viewmodel.LoginViewModel;
 public class Login extends AppCompatActivity {
 
     private Button buttonLogin;
+
     private EditText etUsername;
     private LoginViewModel loginViewModel;
 
 
     private Button test;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class Login extends AppCompatActivity {
         });
         Log.d("debug", "Gespeicherte Namen" + loginViewModel.getSavedUsername());
 
+
         test = findViewById(R.id.test_button);
         test.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +59,7 @@ public class Login extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
 
 
     }
