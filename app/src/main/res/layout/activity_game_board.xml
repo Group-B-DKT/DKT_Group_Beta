@@ -524,6 +524,7 @@
         android:layout_marginStart="90dp"
         android:backgroundTint="#FF0000"
         android:text="See All Cards"
+        android:onClick="my_button_onClick_working"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"
         app:layout_constraintHorizontal_bias="0.327"
