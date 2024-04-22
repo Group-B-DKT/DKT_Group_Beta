@@ -1,12 +1,12 @@
 package com.example.dkt_group_beta.activities;
 
-
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
+import android.os.Bundle;
+import android.util.DisplayMetrics;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -57,5 +57,4 @@ public class PopUp extends AppCompatActivity {
             //imageView.setImageBitmap(bitmap);
             //container.addView(imageView);
         }
-    }
 }
