@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
+import com.example.dkt_group_beta.communication.controller.ConnectController;
 import com.example.dkt_group_beta.communication.controller.InfoController;
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Info;
@@ -16,6 +17,7 @@ public class GameLobbyViewModel {
     private List<String> usernames;
     private InfoController infoController;
     private ActionController actionController;
+    private ConnectController connectController;
     private GameLobbyAction gameLobbyAction;
 
     public GameLobbyViewModel(GameLobbyAction gameLobbyAction){
@@ -31,6 +33,7 @@ public class GameLobbyViewModel {
 
     public void leaveGame() {
         actionController.leaveGame();
+
 
     }
 
@@ -52,7 +55,9 @@ public class GameLobbyViewModel {
 
     public void handleAction(Action action, String param, String fromPlayername){
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
+
         if(action == Action.LEAVE_GAME) {
+
             gameLobbyAction.removePlayerFromView(fromPlayername);
             gameLobbyAction.switchToGameLobby(fromPlayername);
         }

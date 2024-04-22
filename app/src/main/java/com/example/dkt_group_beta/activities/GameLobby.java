@@ -118,8 +118,11 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
     @Override
     public void switchToGameLobby(String username) {
-        Intent intent = new Intent(GameLobby.this, GameSearch.class);
-        startActivity(intent);
+        String currentUsername = getIntent().getStringExtra("username");
+        if(username.equals(currentUsername)) {
+            Intent intent = new Intent(GameLobby.this, GameSearch.class);
+            startActivity(intent);
+        }
     }
 
 
