@@ -4,14 +4,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#818979"
-
-
-
-
     android:id="@+id/main"
+
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#818979"
     tools:context=".activities.GameBoard">
 
 
@@ -203,7 +201,6 @@
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@id/field11" />
-
 
 
     <!-- picture from: 430.700+ Grafiken, lizenzfreie Vektorgrafiken und Clipart zu Schiff -  iStock | Boot, Segelschiff, Kreuzfahrtschiff https://images.app.goo.gl/TN7sypqozZqoLsAa6-->
@@ -431,8 +428,6 @@
     <!--  ENDMITTE-->
 
 
-
-
     <!-- Seitenmenü-->
 
 
@@ -440,36 +435,42 @@
         android:id="@+id/money"
         android:layout_width="100dp"
         android:layout_height="38dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="350dp"
         android:ems="8"
         android:hint="1000"
         android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.534"
         app:layout_constraintStart_toEndOf="@+id/balance"
-        tools:layout_editor_absoluteY="5dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/jokeramount"
         android:layout_width="100dp"
         android:layout_height="38dp"
-        android:layout_marginTop="41dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="32dp"
         android:ems="8"
         android:hint="1"
         android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/money" />
+        app:layout_constraintTop_toBottomOf="@+id/money"
+        app:layout_constraintVertical_bias="0.007" />
 
     <TextView
         android:id="@+id/currency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="36dp"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="44dp"
         android:text="@string/currency"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="5dp"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -477,44 +478,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/balance"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/currency"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.037"
         app:layout_constraintStart_toEndOf="@+id/field26"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="16dp" />
 
-    <TextView
-        android:id="@+id/joker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="4dp"
-        android:text="@string/joker"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/jokeramount"
-        app:layout_constraintTop_toBottomOf="@+id/balance" />
-
 
     <!-- Anzeige für die Besitztümer-->
-<!--    <ScrollView-->
-<!--        android:layout_width="337dp"-->
-<!--        android:layout_height="287dp"-->
-<!--        android:layout_marginEnd="1dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        tools:layout_editor_absoluteY="123dp"-->
-<!--        tools:ignore="MissingConstraints">-->
+    <!--    <ScrollView-->
+    <!--        android:layout_width="337dp"-->
+    <!--        android:layout_height="287dp"-->
+    <!--        android:layout_marginEnd="1dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        tools:layout_editor_absoluteY="123dp"-->
+    <!--        tools:ignore="MissingConstraints">-->
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical" />-->
-<!--    </ScrollView>-->
+    <!--        <LinearLayout-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:orientation="vertical" />-->
+    <!--    </ScrollView>-->
 
     <!-- ende Besitztümer-->
 
     <!-- Ende Seitenmenü-->
 
+
+    <TextView
+        android:id="@+id/joker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/joker"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@+id/jokeramount"
+        app:layout_constraintTop_toBottomOf="@+id/balance" />
 
     <Button
         android:id="@+id/popUpCards"
@@ -529,6 +530,8 @@
         app:layout_constraintStart_toStartOf="@+id/fragment_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
