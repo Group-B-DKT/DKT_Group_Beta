@@ -1,8 +1,10 @@
 package com.example.dkt_group_beta.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -21,6 +23,9 @@ public class Login extends AppCompatActivity {
     private EditText etUsername;
     private LoginViewModel loginViewModel;
 
+
+    private Button test;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +46,18 @@ public class Login extends AppCompatActivity {
         buttonLogin.setOnClickListener(v -> {loginViewModel.onLogin(etUsername.getText().toString());
         });
         Log.d("debug", "Gespeicherte Namen" + loginViewModel.getSavedUsername());
+
+        test = findViewById(R.id.test_button);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+                intent = new Intent(Login.this, GameBoard.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     public void switchToGameView (String username) {

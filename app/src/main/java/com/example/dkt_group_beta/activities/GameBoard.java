@@ -53,14 +53,6 @@ public class GameBoard extends AppCompatActivity {
 
 
 
-        ImageView characterImageView = findViewById(R.id.character);
-        Character character = new Character(characterImageView);
-        ImageView field1 = findViewById(R.id.field1);
-        float position = field1.getX();
-        character.setStartPosition(position);
-        //change to the dice number later
-        int repetition = 2;
-        character.animation(characterImageView, repetition);
 
     }
 
