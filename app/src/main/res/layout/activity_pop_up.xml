@@ -9,15 +9,12 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-<<<<<<< HEAD
             android:id="@+id/imageContainer"
-=======
->>>>>>> 54333e2 (added PopUp class and temporarily design)
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-<<<<<<< HEAD
+            <!-- Bild 1 -->
             <ImageView
                 android:id="@+id/hafnersee"
                 android:layout_width="300dp"
@@ -42,34 +39,6 @@
                 android:layout_width="300dp"
                 android:layout_height="500dp"
                 android:scaleType="fitXY"/>
-=======
-            <!-- Bild 1 -->
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="500dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/los1" />
-
-            <!-- Bild 2 -->
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="500dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/bank23" />
-
-            <!-- Weitere Bilder -->
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="500dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/hafnersee2" />
-
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="500dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/kraftwerkforstsee12" />
->>>>>>> 54333e2 (added PopUp class and temporarily design)
 
             <!-- Füge jedes weitere Bild als ImageView ein -->
 
