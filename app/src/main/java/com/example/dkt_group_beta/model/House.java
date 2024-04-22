@@ -8,7 +8,7 @@ public class House extends Building{
     @Getter
     private static final int HOUSE_PRICE = 200;
     @Getter
-    private int MAX_AMOUNT = 4;
+    private static final int MAX_AMOUNT = 4;
 
     public House(int HOUSE_PRICE, Player owner, int position) {
         super(HOUSE_PRICE, owner, position);
@@ -18,7 +18,7 @@ public class House extends Building{
         return HOUSE_PRICE;
     }
 
-    public int getMAX_AMOUNT(){
+    public int getMaxAmount(){
         return MAX_AMOUNT;
     }
 }
