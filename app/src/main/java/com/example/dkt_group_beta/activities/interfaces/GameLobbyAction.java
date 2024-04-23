@@ -7,5 +7,5 @@ public interface GameLobbyAction {
 
     void readyStateChanged(String username, boolean isReady);
 
-    public void changeReadyBtnText(String text);
+    public void changeReadyBtnText(boolean isReady);
 }

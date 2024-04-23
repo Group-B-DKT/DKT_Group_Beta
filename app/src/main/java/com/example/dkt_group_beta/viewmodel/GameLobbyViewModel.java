@@ -66,8 +66,7 @@ public class GameLobbyViewModel {
         if (action == Action.CHANGED_READY_STATUS){
             Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + fromPlayer.getUsername());
             if (player.getId().equals(fromPlayer.getId())){
-                String isReady = player.isReady() ? "READY" : "NOT READY";
-                gameLobbyAction.changeReadyBtnText(isReady);
+                gameLobbyAction.changeReadyBtnText(fromPlayer.isReady());
 
             }
             gameLobbyAction.readyStateChanged(fromPlayer.getUsername(), fromPlayer.isReady());

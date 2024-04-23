@@ -130,7 +130,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
             TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
-            String isReady = player.isReady() ? "READY" : "NOT READY";
+            String isReady = player.isReady() ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
             TextView textViewIsReady = getTextView(isReady, View.TEXT_ALIGNMENT_TEXT_END);
 
             linearLayout.addView(textViewGameId);
@@ -148,13 +148,14 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             TextView childAt = (TextView) pf.getChildAt(0);
             if (childAt.getText().toString().split(" ")[0].equals(username)){
                 TextView childIsReady = (TextView) pf.getChildAt(1);
-                String isReadyTxt = isReady ? "NOT READY" : "READY";
+                String isReadyTxt = isReady ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
                 childIsReady.setText(isReadyTxt);
             }
         });
     }
 
-    public void changeReadyBtnText(String text) {
-        this.btnReady.setText(text);
+    public void changeReadyBtnText(boolean isReady) {
+        String isReadyTxt = isReady ? getString(R.string.btn_is_not_ready) : getString(R.string.btn_is_ready);
+        this.btnReady.setText(isReadyTxt);
     }
 }
