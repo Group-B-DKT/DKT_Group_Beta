@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.activities;
 
+import static com.example.dkt_group_beta.activities.GameBoard.decodeSampledBitmapFromResource;
+
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -19,6 +21,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PopUp extends AppCompatActivity {
+    private static final String[] IMAGE_NAMES = {
+            "reifnitz",
+            "minimundus",
+            "kathreinkogel",
+            "stmartin",
+            "knast",
+            "koschatweg",
+            "hafnersee",
+            "tierparkrosegg",
+            "dellach",
+            "lorettoweg",
+            "seecorso",
+            "schifffahrt",
+            "zoo",
+            "seeuferstrasse",
+            "rauschelesee",
+            "sueduferstrasse",
+            "romerweg",
+            "kraftwerk",
+            "toeschling",
+            "casinoplatz",
+            "pyramidenkogel",
+            "lorettoweg",
+            "annastrasse"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

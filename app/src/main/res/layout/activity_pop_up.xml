@@ -15,12 +15,12 @@
             android:orientation="vertical">
 
             <!-- Bild 1 -->
+
             <ImageView
                 android:id="@+id/hafnersee"
                 android:layout_width="300dp"
                 android:layout_height="500dp"
-                android:scaleType="fitXY"
-                 />
+                android:scaleType="fitXY" />
 
             <ImageView
                 android:id="@+id/pyramidenkogel"
