@@ -81,10 +81,11 @@ public class GameLobbyViewModel {
                 }
             }
             if(action == Action.HOST_CHANGED) {
-                Log.d("fortnite", fromPlayer.getUsername());
+                gameLobbyAction.removePlayerFromView(fromPlayer);
+                gameLobbyAction.addPlayerToView(fromPlayer);
+                gameLobbyAction.addStartButton();
             }
             this.getConnectedPlayerNames();
-
 
             if (action == Action.GAME_JOINED_SUCCESSFULLY) {
                 this.getConnectedPlayerNames();

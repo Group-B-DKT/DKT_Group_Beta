@@ -13,5 +13,6 @@ public interface GameLobbyAction {
     void readyStateChanged(String username, boolean isReady);
 
     void changeReadyBtnText(boolean isReady);
+    void addStartButton();
 
 }

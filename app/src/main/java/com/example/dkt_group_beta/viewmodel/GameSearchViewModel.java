@@ -63,9 +63,7 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     void handleAction(Action action, String param, Player fromPlayer){
-        Log.d("fortnite", action.toString());
         if (fromPlayer == null || !fromPlayer.getUsername().equals(username)) {
-            Log.d("fortnite", fromPlayer.getUsername() + " | " + username);
             this.receiveGames();
             return;
         }

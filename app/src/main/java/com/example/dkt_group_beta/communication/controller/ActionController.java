@@ -34,6 +34,7 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
+
     public void isReady(boolean isReady){
         ActionJsonObject actionJsonObject;
         if (isReady)
