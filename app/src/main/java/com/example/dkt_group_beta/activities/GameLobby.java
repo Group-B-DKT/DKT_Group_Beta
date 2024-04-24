@@ -26,6 +26,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
@@ -57,7 +59,12 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         String username = getIntent().getStringExtra("username");
+
+        isHost = WebsocketClientController.getPlayer().isHost();
+
+
         this.gameLobbyViewModel = new GameLobbyViewModel(this);
         this.playerFields = new ArrayList<>();
 
@@ -71,10 +78,10 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
 
         this.btnReady = findViewById(R.id.btn_setReady);
+        this.btnReady.setOnClickListener((v) -> gameLobbyViewModel.setReady());
 
         this.layoutButtons = findViewById(R.id.layout_gameLobby_btn);
 
-        isHost = getIntent().getBooleanExtra("isHost", false);
         if (isHost) addStartButton();
 
         gameLobbyViewModel.getConnectedPlayerNames();
@@ -95,8 +102,8 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
                 ColorStateList.valueOf(Color.GREEN));
         layoutButtons.addView(btnStart);
     }
-
-    public void removePlayerFromView(String username) {
+    @Override
+    public void removePlayerFromView(Player player) {
         runOnUiThread(() -> {
             for (int i = 0; i < playerFields.size(); i++) {
                 LinearLayout playerField = playerFields.get(i);
@@ -107,7 +114,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
                     playerName = playerName.substring(0, playerName.length() - 7).trim();
                 }
 
-                if (playerName.equals(username.trim())) {
+                if (playerName.equals(player.getUsername().trim())) {
                     scrollviewLayout.removeView(playerField);
                     playerFields.remove(playerField);
                     break;
@@ -117,16 +124,16 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
     }
 
     @Override
-    public void switchToGameLobby(String username) {
+    public void switchToGameLobby(Player player) {
         String currentUsername = getIntent().getStringExtra("username");
-        if(username.equals(currentUsername)) {
-            Intent intent = new Intent(GameLobby.this, GameSearch.class);
-            startActivity(intent);
-        }
+        Intent intent = new Intent(GameLobby.this, GameSearch.class);
+        intent.putExtra("username", currentUsername);
+        startActivity(intent);
+
     }
 
 
-    private LinearLayout getLinearLayout(int gameId) {
+    private LinearLayout getLinearLayout(int id) {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setPadding(30,0,30,0);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -134,9 +141,9 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setId(gameId);
+        linearLayout.setId(id);
 
-        if (gameId % 2 == 0)
+        if (id % 2 == 0)
             linearLayout.setBackgroundColor(Color.LTGRAY);
 
         return linearLayout;
@@ -157,21 +164,42 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
 
     @Override
-    public void addPlayerToView(String username) {
+    public void addPlayerToView(Player player) {
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(id++);
 
-            String name = username;
-            if (firstInList){
+            String name = player.getUsername();
+            if (player.isHost())
                 name += " (HOST)";
-                firstInList = false;
-            }
+
             TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
+            String isReady = player.isReady() ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
+            TextView textViewIsReady = getTextView(isReady, View.TEXT_ALIGNMENT_TEXT_END);
+
             linearLayout.addView(textViewGameId);
+            linearLayout.addView(textViewIsReady);
 
             scrollviewLayout.addView(linearLayout);
             this.playerFields.add(linearLayout);
         });
+    }
+
+    @Override
+    public void readyStateChanged(String username, boolean isReady) {
+        Log.d("DEBUG", "GameLobby::readyStateChanged/ " + username + " " + isReady);
+        playerFields.forEach(pf -> {
+            TextView childAt = (TextView) pf.getChildAt(0);
+            if (childAt.getText().toString().split(" ")[0].equals(username)){
+                TextView childIsReady = (TextView) pf.getChildAt(1);
+                String isReadyTxt = isReady ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
+                childIsReady.setText(isReadyTxt);
+            }
+        });
+    }
+
+    public void changeReadyBtnText(boolean isReady) {
+        String isReadyTxt = isReady ? getString(R.string.btn_is_not_ready) : getString(R.string.btn_is_ready);
+        this.btnReady.setText(isReadyTxt);
     }
 }
