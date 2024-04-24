@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
@@ -55,6 +56,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        isHost = WebsocketClientController.getPlayer().isHost();
 
         this.gameLobbyViewModel = new GameLobbyViewModel(this);
         this.playerFields = new ArrayList<>();
@@ -62,10 +64,10 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
         this.btnReady = findViewById(R.id.btn_setReady);
+        this.btnReady.setOnClickListener((v) -> gameLobbyViewModel.setReady());
 
         this.layoutButtons = findViewById(R.id.layout_gameLobby_btn);
 
-        isHost = getIntent().getBooleanExtra("isHost", false);
         if (isHost) addStartButton();
 
         gameLobbyViewModel.getConnectedPlayerNames();
@@ -87,7 +89,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
 
 
-    private LinearLayout getLinearLayout(int gameId) {
+    private LinearLayout getLinearLayout(int id) {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setPadding(30,0,30,0);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -95,9 +97,9 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
                 LinearLayout.LayoutParams.WRAP_CONTENT
         ));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
-        linearLayout.setId(gameId);
+        linearLayout.setId(id);
 
-        if (gameId % 2 == 0)
+        if (id % 2 == 0)
             linearLayout.setBackgroundColor(Color.LTGRAY);
 
         return linearLayout;
@@ -123,16 +125,37 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             LinearLayout linearLayout = getLinearLayout(id++);
 
             String name = player.getUsername();
-            if (firstInList){
+            if (player.isHost())
                 name += " (HOST)";
-                firstInList = false;
-            }
+
             TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
+            String isReady = player.isReady() ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
+            TextView textViewIsReady = getTextView(isReady, View.TEXT_ALIGNMENT_TEXT_END);
+
             linearLayout.addView(textViewGameId);
+            linearLayout.addView(textViewIsReady);
 
             scrollviewLayout.addView(linearLayout);
             this.playerFields.add(linearLayout);
         });
+    }
+
+    @Override
+    public void readyStateChanged(String username, boolean isReady) {
+        Log.d("DEBUG", "GameLobby::readyStateChanged/ " + username + " " + isReady);
+        playerFields.forEach(pf -> {
+            TextView childAt = (TextView) pf.getChildAt(0);
+            if (childAt.getText().toString().split(" ")[0].equals(username)){
+                TextView childIsReady = (TextView) pf.getChildAt(1);
+                String isReadyTxt = isReady ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
+                childIsReady.setText(isReadyTxt);
+            }
+        });
+    }
+
+    public void changeReadyBtnText(boolean isReady) {
+        String isReadyTxt = isReady ? getString(R.string.btn_is_not_ready) : getString(R.string.btn_is_ready);
+        this.btnReady.setText(isReadyTxt);
     }
 }

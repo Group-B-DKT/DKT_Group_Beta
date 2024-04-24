@@ -1,6 +1,8 @@
 package com.example.dkt_group_beta.communication;
 
 import com.example.dkt_group_beta.communication.enums.Action;
+import com.example.dkt_group_beta.model.Player;
+
 import lombok.AllArgsConstructor;
 import lombok.ToString;
 
@@ -9,13 +11,13 @@ import lombok.ToString;
 public  class ActionJsonObject {
     private Action action;
     private String param;
-    private String fromPlayername;
+    private Player fromPlayer;
 
 
-    public ActionJsonObject(Action action, String param, String fromPlayername) {
+    public ActionJsonObject(Action action, String param, Player fromPlayer) {
         this.action = action;
         this.param = param;
-        this.fromPlayername = fromPlayername;
+        this.fromPlayer = fromPlayer;
     }
 
     public ActionJsonObject(Action action, String param) {
@@ -33,6 +35,6 @@ public  class ActionJsonObject {
         return param;
     }
 
-    public String getFromPlayername(){return fromPlayername;}
+    public Player getFromPlayer(){return fromPlayer;}
 
 }
