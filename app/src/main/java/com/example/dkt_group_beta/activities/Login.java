@@ -25,7 +25,7 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        Log.d("debug", "Total sinnlos nur zum test");
 
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
