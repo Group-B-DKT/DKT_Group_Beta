@@ -4,7 +4,13 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,6 +22,7 @@ import com.example.dkt_group_beta.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class GameBoard extends AppCompatActivity {
     private static final int NUMBER_OF_FIELDS = 32;
@@ -84,5 +91,36 @@ public class GameBoard extends AppCompatActivity {
         }
 
         return inSampleSize;
+    }
+
+    public void dicePopUp(View view){
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.activity_popup_dice, null);
+
+        ImageView diceImageView1 = popupView.findViewById(R.id.diceImageView1);
+        ImageView diceImageView2 = popupView.findViewById(R.id.diceImageView2);
+
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        Button rollButton = popupView.findViewById(R.id.rollButton);
+        rollButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Roll the dice and update the images
+                rollDice(diceImageView1);
+                rollDice(diceImageView2);
+            }
+        });
+    }
+    private void rollDice(ImageView imageView) {
+        Random random = new Random();
+        int diceResult = random.nextInt(6) + 1; // Random number between 1 and 6
+        int drawableResource = getResources().getIdentifier("dice" + diceResult, "drawable", getPackageName());
+        imageView.setImageResource(drawableResource);
     }
 }
