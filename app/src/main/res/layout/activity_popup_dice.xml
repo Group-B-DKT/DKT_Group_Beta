@@ -19,6 +19,7 @@
             android:id="@+id/diceImageView1"
             android:layout_width="60dp"
             android:layout_height="60dp"
+            android:layout_marginEnd="10dp"
             android:layout_gravity="center_horizontal"
             android:contentDescription="@null"
             android:src="@drawable/dice1" />
