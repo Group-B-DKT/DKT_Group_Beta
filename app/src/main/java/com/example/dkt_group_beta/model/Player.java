@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.model;
 
+import java.util.Objects;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -66,5 +68,18 @@ public class Player {
 
     public void setHost(boolean host) {
         isHost = host;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Player player = (Player) object;
+        return Objects.equals(username, player.username) && Objects.equals(id, player.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, id, isConnected, gameId, isReady, isHost);
     }
 }

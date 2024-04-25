@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameLobbyViewModel {
-    private List<String> usernames;
+    private List<Player> connectedPlayers;
     private InfoController infoController;
     private ActionController actionController;
     private ConnectController connectController;
@@ -30,7 +30,7 @@ public class GameLobbyViewModel {
         this.infoController = new InfoController(this::handleInfo);
         this.actionController = new ActionController(this::handleAction);
         this.gameLobbyAction = gameLobbyAction;
-        this.usernames = new ArrayList<>();
+        this.connectedPlayers = new ArrayList<>();
         this.player = WebsocketClientController.getPlayer();
     }
 
@@ -59,8 +59,8 @@ public class GameLobbyViewModel {
 
             gameInfo.getConnectedPlayers()
                     .forEach(g -> {
-                        if (!this.usernames.contains(g.getUsername())) {
-                            this.usernames.add(g.getUsername());
+                        if (!this.connectedPlayers.contains(g)) {
+                            this.connectedPlayers.add(g);
                             gameLobbyAction.addPlayerToView(g);
                         }
                     });
@@ -77,15 +77,19 @@ public class GameLobbyViewModel {
                     player.setHost(false);
 
                 }else{
-                    this.usernames.remove(fromPlayer.getUsername());
+                    this.connectedPlayers.remove(fromPlayer);
                 }
             }
             if(action == Action.HOST_CHANGED) {
-                gameLobbyAction.removePlayerFromView(fromPlayer);
-                gameLobbyAction.addPlayerToView(fromPlayer);
+                this.connectedPlayers.remove(fromPlayer);
+                this.connectedPlayers.add(fromPlayer);
+
+                this.connectedPlayers.forEach(p -> {
+                    gameLobbyAction.removePlayerFromView(p);
+                    gameLobbyAction.addPlayerToView(p);
+                });
                 gameLobbyAction.addStartButton();
             }
-            this.getConnectedPlayerNames();
 
             if (action == Action.GAME_JOINED_SUCCESSFULLY) {
                 this.getConnectedPlayerNames();
