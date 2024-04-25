@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -112,10 +115,32 @@ public class GameBoard extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Roll the dice and update the images
-                rollDice(diceImageView1);
-                rollDice(diceImageView2);
+                rollDiceAnimation(diceImageView1);
+                rollDiceAnimation(diceImageView2);
             }
         });
+    }
+    private void rollDiceAnimation(ImageView imageView){
+        RotateAnimation rotateAnimation = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,
+                0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setDuration(500);
+        rotateAnimation.setInterpolator(new LinearInterpolator());
+
+        rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                rollDice(imageView);
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        imageView.startAnimation(rotateAnimation);
     }
     private void rollDice(ImageView imageView) {
         Random random = new Random();
