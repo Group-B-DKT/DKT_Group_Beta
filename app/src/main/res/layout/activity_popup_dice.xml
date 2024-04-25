@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="180dp"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         android:layout_gravity="center_horizontal">
@@ -19,8 +19,8 @@
             android:id="@+id/diceImageView1"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginEnd="10dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"
             android:contentDescription="@null"
             android:src="@drawable/dice1" />
 
@@ -28,7 +28,7 @@
             android:id="@+id/diceImageView2"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center"
             android:contentDescription="@null"
             android:src="@drawable/dice1" />
     </LinearLayout>
