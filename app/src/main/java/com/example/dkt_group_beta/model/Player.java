@@ -2,20 +2,14 @@ package com.example.dkt_group_beta.model;
 
 import java.util.Objects;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
-@AllArgsConstructor
 public class Player {
-    @Getter
     private String username;
-    @Getter
+
     private String id;
-    @Getter
-    @Setter
+
     private boolean isConnected;
-    @Getter
+
     private int gameId;
 
     private boolean isReady;
