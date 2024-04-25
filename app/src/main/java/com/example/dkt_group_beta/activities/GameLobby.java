@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
@@ -30,6 +31,8 @@ import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -56,37 +59,80 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        String username = getIntent().getStringExtra("username");
+
         isHost = WebsocketClientController.getPlayer().isHost();
+
 
         this.gameLobbyViewModel = new GameLobbyViewModel(this);
         this.playerFields = new ArrayList<>();
 
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
+        this.btnLeave.setOnClickListener(v -> {
+            gameLobbyViewModel.leaveGame();
+
+        });
+
+
+
         this.btnReady = findViewById(R.id.btn_setReady);
         this.btnReady.setOnClickListener((v) -> gameLobbyViewModel.setReady());
 
         this.layoutButtons = findViewById(R.id.layout_gameLobby_btn);
-
         if (isHost) addStartButton();
 
         gameLobbyViewModel.getConnectedPlayerNames();
+
+
     }
 
-    private void addStartButton(){
+
+    public void addStartButton(){
 //        int layout = androidx.constraintlayout.widget.R.attr.buttonBarButtonStyle;
-        btnStart = new Button(this);
-        btnStart.setBackgroundTintList(this.btnReady.getBackgroundTintList());
-        btnStart.setText(getString(R.string.btn_startGame));
-        btnStart.setLayoutParams(this.btnReady.getLayoutParams());
-        btnStart.setTextColor(Color.GREEN);
-        ViewCompat.setBackgroundTintList(
-                layoutButtons,
-                ColorStateList.valueOf(Color.GREEN));
-        layoutButtons.addView(btnStart);
+        runOnUiThread(()->{
+            btnStart = new Button(this);
+            btnStart.setBackgroundTintList(this.btnReady.getBackgroundTintList());
+            btnStart.setText(getString(R.string.btn_startGame));
+            btnStart.setLayoutParams(this.btnReady.getLayoutParams());
+            btnStart.setTextColor(Color.GREEN);
+            ViewCompat.setBackgroundTintList(
+                    layoutButtons,
+                    ColorStateList.valueOf(Color.GREEN));
+            layoutButtons.addView(btnStart);
+        });
+
+    }
+    @Override
+    public void removePlayerFromView(Player player) {
+        runOnUiThread(() -> {
+            for (int i = 0; i < playerFields.size(); i++) {
+                LinearLayout playerField = playerFields.get(i);
+                TextView textView = (TextView) playerField.getChildAt(0);
+                String playerName = textView.getText().toString().trim();
+                if (playerName.endsWith(" (HOST)")) {
+
+                    playerName = playerName.substring(0, playerName.length() - 7).trim();
+                }
+
+                if (playerName.equals(player.getUsername().trim())) {
+                    scrollviewLayout.removeView(playerField);
+                    playerFields.remove(playerField);
+                    break;
+                }
+            }
+        });
     }
 
+    @Override
+    public void switchToGameLobby(Player player) {
+        String currentUsername = getIntent().getStringExtra("username");
+        Intent intent = new Intent(GameLobby.this, GameSearch.class);
+        intent.putExtra("username", currentUsername);
+        startActivity(intent);
 
+    }
 
 
     private LinearLayout getLinearLayout(int id) {
