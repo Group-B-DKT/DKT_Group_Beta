@@ -1,9 +1,9 @@
 package com.example.dkt_group_beta.communication.utilities;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.dkt_group_beta.communication.ActionJsonObject;
 import com.example.dkt_group_beta.communication.ConnectJsonObject;
@@ -15,10 +15,13 @@ import com.example.dkt_group_beta.communication.enums.Info;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.google.gson.Gson;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 public class WrapperHelperTest {
     private static Gson gson;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp(){
         System.out.println("ASD");
         gson = new Gson();
