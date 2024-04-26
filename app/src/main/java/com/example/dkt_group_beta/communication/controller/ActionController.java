@@ -27,6 +27,13 @@ public class ActionController {
 
         WebsocketClientController.sendToServer(msg);
     }
+    public void leaveGame() {
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.LEAVE_GAME);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
 
     public void isReady(boolean isReady){
         ActionJsonObject actionJsonObject;
@@ -52,4 +59,5 @@ public class ActionController {
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
         handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer());
     }
+
 }
