@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -55,7 +56,22 @@ public class GameBoard extends AppCompatActivity {
                 }
             }
         });
-
+        for (int i = 1; i <= NUMBER_OF_FIELDS; i++) {
+            int resourceId = this.getResources().getIdentifier("field" + i, "id", this.getPackageName());
+            ImageView imageView = findViewById(resourceId);
+            if (imageView != null) {
+                imageViews.add(imageView);
+                String resourceName = getResources().getResourceEntryName(imageView.getId());
+                // enable clicking on an image view and opening pop-up
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("ImageView", "ImageView ID: " + imageView.getId());
+                        showCard(v, resourceName);
+                    }
+                });
+            }
+        }
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
@@ -102,5 +118,20 @@ public class GameBoard extends AppCompatActivity {
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+    }
+
+    private void showCard(View view, String viewID) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
+        int imageResourceId = getResources().getIdentifier("card" + viewID, "drawable", getPackageName());
+        popupImageView.setImageResource(imageResourceId);
     }
 }
