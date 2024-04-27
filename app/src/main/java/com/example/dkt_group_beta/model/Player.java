@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.model;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,11 @@ public class Player {
     private boolean isConnected;
     @Getter
     private int gameId;
+    @Getter
+    private double playerMoney;
+    @Getter
+    private List<Field> ownedFields;
+
 
 
     public Player(String username, String id) {
