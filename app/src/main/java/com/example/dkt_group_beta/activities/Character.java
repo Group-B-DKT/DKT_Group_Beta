@@ -37,16 +37,16 @@ public class Character extends AppCompatActivity {
 
     }
 
-    public void setStartPosition(float position) {
-        if(imageView != null){
-            this.startPosition = position;
-            imageView.setX(position);
-        }
-    }
+   /* public void setStartPosition() {
 
-    public float getStartPosition() {
-        return startPosition;
-    }
+        ImageView field1 = findViewById(R.id.field1);
+        float field1Pos = field1.getX();
+        if(imageView != null){
+            this.startPosition = field1Pos;
+            imageView.setX(field1Pos);
+        }
+    }*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,32 +89,7 @@ public class Character extends AppCompatActivity {
 
 
 
-    public void animation(ImageView characterImageView, int repetition){
 
-
-        Animation animation = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator);
-        animation.setRepeatCount(repetition);
-        characterImageView.startAnimation(animation);
-
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                float endPosition = characterImageView.getX() + 100*repetition; // Hier musst du die Endposition berechnen
-                characterImageView.setX(endPosition);
-                imageView.setX(endPosition);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
-    }
 
 
 }
