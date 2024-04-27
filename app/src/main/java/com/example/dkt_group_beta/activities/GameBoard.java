@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -12,6 +13,7 @@ import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -19,26 +21,29 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.dkt_group_beta.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GameBoard extends AppCompatActivity {
     private static final int NUMBER_OF_FIELDS = 32;
     private List<ImageView> imageViews;
 
-    private float startPosition;
+    HashMap<Integer, Float> XKoordinates = new HashMap();
+    HashMap<Integer, Float> YKoordinates = new HashMap();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game_board);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.gameboard), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        setStartPosition();
+
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -60,8 +65,8 @@ public class GameBoard extends AppCompatActivity {
         });
 
 
-        Log.d("FIELD1", String.valueOf(findViewById(R.id.field10).getX()));
-
+        getPositions(); //Positionen der Felder speichern
+        setStartPosition();
 
 
 
@@ -103,10 +108,45 @@ public class GameBoard extends AppCompatActivity {
     }
 
 
+
+    public void getPositions(){
+
+        ConstraintLayout constraintLayout = findViewById(R.id.gameboard);
+        constraintLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                // Hier wird der Code ausgeführt, wenn das Layout vollständig erstellt wurde
+
+
+                for(int i = 1; i <= 30; i++){
+
+                    String fieldName = "field" + i; // Erstelle den dynamischen ID-Namen
+                    int resourceId = getResources().getIdentifier(fieldName, "id", getPackageName());
+
+                    ImageView imageView = findViewById(resourceId);
+
+                    XKoordinates.put(i, imageView.getX());
+                    YKoordinates.put(i, imageView.getY());
+                    Log.d("ABC", String.valueOf(imageView.getX()));
+
+                }
+
+                // Entfernen des Listeners, um Memory-Leaks zu vermeiden
+                constraintLayout.removeOnLayoutChangeListener(this);
+            }
+        });
+
+
+
+
+    }
+
+
     public void setStartPosition(){
 
 
-        ImageView field1 = findViewById(R.id.field1);
+      /* ImageView field1 = findViewById(R.id.field1);
         field1.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -123,14 +163,19 @@ public class GameBoard extends AppCompatActivity {
                 characterImageView.setY(y);
 
 
-                //change to the dice number later
-                int repetition = 2;
-                animation(characterImageView, repetition);
+
             }
-        });
+        });*/
+        ImageView character = findViewById(R.id.character);
+        float x = XKoordinates.get(1);
+        character.setX(XKoordinates.get(1));
+        character.setY(YKoordinates.get(1));
 
+        Log.d("STARTPOSTION", String.valueOf(x));
 
-
+        //change to the dice number later
+        int repetition = 2;
+        animation(character, repetition);
 
 
 
