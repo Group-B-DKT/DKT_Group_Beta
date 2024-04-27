@@ -15,4 +15,8 @@ public class Field {
         this.name = name;
     }
 
+    public void checkField(){
+        //TODO: checks how many buildings are on the specific field
+    }
+
 }
