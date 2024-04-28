@@ -31,6 +31,9 @@ public class GameBoard extends AppCompatActivity {
     HashMap<Integer, Float> XKoordinates = new HashMap();
     HashMap<Integer, Float> YKoordinates = new HashMap();
 
+    ImageView character;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +46,7 @@ public class GameBoard extends AppCompatActivity {
             return insets;
         });
 
-
+        character = findViewById(R.id.character);
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -58,8 +61,8 @@ public class GameBoard extends AppCompatActivity {
 
                 ImageView imageView = imageViews.get(i-1);
                 if (imageView != null && resourceId != 0) {
-                        imageView.setImageBitmap(
-                                decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+                    imageView.setImageBitmap(
+                            decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
                 }
             }
         });
@@ -67,6 +70,17 @@ public class GameBoard extends AppCompatActivity {
 
         getPositions(); //Positionen der Felder speichern
         setStartPosition();
+
+
+
+
+
+        int repetition = 2;
+        animation(character, repetition);
+
+
+
+
 
 
 
@@ -146,36 +160,33 @@ public class GameBoard extends AppCompatActivity {
     public void setStartPosition(){
 
 
-      /* ImageView field1 = findViewById(R.id.field1);
+        ImageView field1 = findViewById(R.id.field1);
         field1.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                float x = field1.getX();
-                float y = field1.getY();
-                Log.d("Position", "X: " + x + ", Y: " + y);
+
+                float x = XKoordinates.get(1);
+                character.setX(XKoordinates.get(1));
+                character.setY(YKoordinates.get(1));
+
+                Log.d("STARTPOSTION", String.valueOf(x));
                 // Entfernen des Listeners, um Memory-Leaks zu vermeiden
                 field1.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
 
-                ImageView characterImageView = findViewById(R.id.character);
 
-                characterImageView.setX(x);
-                characterImageView.setY(y);
+
+
 
 
 
             }
-        });*/
-        ImageView character = findViewById(R.id.character);
-        float x = XKoordinates.get(1);
-        character.setX(XKoordinates.get(1));
-        character.setY(YKoordinates.get(1));
+        });
 
-        Log.d("STARTPOSTION", String.valueOf(x));
 
-        //change to the dice number later
-        int repetition = 2;
-        animation(character, repetition);
+
+
+
 
 
 
