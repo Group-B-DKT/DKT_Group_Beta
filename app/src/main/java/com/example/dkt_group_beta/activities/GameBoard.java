@@ -80,7 +80,13 @@ public class GameBoard extends AppCompatActivity {
         int repetition = 3;
         animation(character, repetition);
 
-        animation(character, 9);
+        animation(character, 7);
+
+        animation(character, 6);
+
+
+
+
 
 
 
@@ -201,7 +207,7 @@ public class GameBoard extends AppCompatActivity {
 
     public void setPosition(ImageView characterView, int field){
 
-        int newPosition = field -5; //fährt immer 2 zu weit - überarbeitens
+        int newPosition = field +3; //fährt nicht exakt - überarbeiten
         characterView.setX(XKoordinates.get(newPosition));
         characterView.setY(YKoordinates.get(newPosition));
     }
@@ -250,7 +256,7 @@ public class GameBoard extends AppCompatActivity {
            });
 
 
-       } else if (currentplace >= 11 && currentplace <= 15) { //movement field 12 to 15
+       } else if (currentplace >= 11 && currentplace < 15) { //movement field 12 to 15
 
 
            Animation animation_left = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_vertical_left);
@@ -280,7 +286,7 @@ public class GameBoard extends AppCompatActivity {
 
 
 
-       } else if (currentplace > 16  && currentplace <= 26) {
+       } else if (currentplace >= 15  && currentplace < 27) {
 
            Animation animation_top = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_horizontal_top);
            animation_top.setRepeatCount(repetition);
@@ -289,6 +295,34 @@ public class GameBoard extends AppCompatActivity {
 
 
            animation_top.setAnimationListener(new Animation.AnimationListener() {
+               @Override
+               public void onAnimationStart(Animation animation) {
+
+               }
+
+               @Override
+               public void onAnimationEnd(Animation animation) {
+                   currentplace += repetition;
+
+                   setPosition(characterImageView, currentplace );
+               }
+
+               @Override
+               public void onAnimationRepeat(Animation animation) {
+
+               }
+           });
+
+
+
+       }else{
+
+
+           Animation animation_right = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_vertical_right);
+           animation_right.setRepeatCount(repetition);
+           characterImageView.startAnimation(animation_right);
+
+           animation_right.setAnimationListener(new Animation.AnimationListener() {
                @Override
                public void onAnimationStart(Animation animation) {
 
