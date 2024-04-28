@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.activities;
 
+import static android.os.SystemClock.sleep;
+
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -32,6 +35,8 @@ public class GameBoard extends AppCompatActivity {
     HashMap<Integer, Float> YKoordinates = new HashMap();
 
     ImageView character;
+
+    int currentplace = 0;
 
 
 
@@ -75,8 +80,14 @@ public class GameBoard extends AppCompatActivity {
 
 
 
-        int repetition = 2;
+        int repetition = 1;
         animation(character, repetition);
+
+
+
+
+        int repetition2 = 3;
+        animation(character, repetition2);
 
 
 
@@ -168,16 +179,11 @@ public class GameBoard extends AppCompatActivity {
                 float x = XKoordinates.get(1);
                 character.setX(XKoordinates.get(1));
                 character.setY(YKoordinates.get(1));
+                currentplace = 1;
 
                 Log.d("STARTPOSTION", String.valueOf(x));
                 // Entfernen des Listeners, um Memory-Leaks zu vermeiden
                 field1.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-
-
-
-
-
 
 
             }
@@ -192,32 +198,61 @@ public class GameBoard extends AppCompatActivity {
 
     }
 
+
+
+    public void setPosition(ImageView characterView, int field){
+
+        character.setX(XKoordinates.get(field));
+        character.setY(YKoordinates.get(field));
+    }
+
     public void animation(ImageView characterImageView, int repetition){
 
+
+        final float[] endeX = {0.0F};
+        final float[] endeY = {0.0F};
 
 
         Animation animation = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator);
         animation.setRepeatCount(repetition);
         characterImageView.startAnimation(animation);
 
+
         animation.setAnimationListener(new Animation.AnimationListener() {
+            int currentRepetition = 0;
+            float startX, startY;
+
             @Override
             public void onAnimationStart(Animation animation) {
+                // Animation startet
+                startX = characterImageView.getX();
+                startY = characterImageView.getY();
 
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                float endPosition = characterImageView.getX() + 100*repetition; // Hier musst du die Endposition berechnen
-                characterImageView.setX(endPosition);
-                characterImageView.setX(endPosition);
+                // Aktuelle Position nach der Animation erhalten
+               float endX = characterImageView.getX();
+               float endY = characterImageView.getY();
+                currentplace += repetition;
+
+                setPosition(characterImageView, currentplace + repetition);
+
+
+
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
-
+                currentRepetition++;
             }
         });
+
+
+
+
+
     }
 
 

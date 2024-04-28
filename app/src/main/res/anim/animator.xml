@@ -4,6 +4,6 @@
     <translate
         android:duration="1000"
         android:fromXDelta="0dp"
-        android:toXDelta="45dp" />
+        android:toXDelta="-5dp" />
 
 </set>
