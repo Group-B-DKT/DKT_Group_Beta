@@ -212,7 +212,7 @@ public class GameBoard extends AppCompatActivity {
 
        if(currentplace < 11) { //movement for fields 1 to 11
 
-           Animation animation = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator);
+           Animation animation = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_horizontal_bottom);
            animation.setRepeatCount(repetition);
            characterImageView.startAnimation(animation);
 
