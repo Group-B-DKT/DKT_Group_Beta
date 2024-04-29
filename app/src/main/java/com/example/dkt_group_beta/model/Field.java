@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.model;
 
+import android.content.Context;
+
 import com.example.dkt_group_beta.io.CSVReader;
 
 import lombok.Getter;
@@ -57,8 +59,8 @@ public class Field {
         return owner;
     }
 
-    public static ArrayList<Field> loadFields() {
-        return CSVReader.readFields();
+    public static ArrayList<Field> loadFields(Context context) {
+        return CSVReader.readFields(context);
     }
 
     @Override
