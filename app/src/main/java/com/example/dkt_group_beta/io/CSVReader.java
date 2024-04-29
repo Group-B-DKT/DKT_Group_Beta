@@ -29,7 +29,7 @@ public class CSVReader {
             }
             br.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return list;
     }
