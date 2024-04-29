@@ -1,19 +1,15 @@
 package com.example.dkt_group_beta.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Objects;
 
-@AllArgsConstructor
+
 public class Player {
-    @Getter
     private String username;
-    @Getter
+
     private String id;
-    @Getter
-    @Setter
+
     private boolean isConnected;
-    @Getter
+
     private int gameId;
 
     private boolean isReady;
@@ -66,5 +62,18 @@ public class Player {
 
     public void setHost(boolean host) {
         isHost = host;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Player player = (Player) object;
+        return Objects.equals(username, player.username) && Objects.equals(id, player.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, id, isConnected, gameId, isReady, isHost);
     }
 }
