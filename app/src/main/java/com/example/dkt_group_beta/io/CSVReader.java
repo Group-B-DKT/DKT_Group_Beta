@@ -14,14 +14,15 @@ import java.util.ArrayList;
 import android.util.Log;
 
 public class CSVReader {
-    public static ArrayList<Field> readFields(Context context) {
+    public static ArrayList<Field> readFields(Context context) throws IOException {
         ArrayList<Field> list = new ArrayList<>();
 
         String path = "fields.csv";
+        BufferedReader br = null;
         try {
             AssetManager am = context.getAssets();
             InputStream is = am.open(path);
-            final BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            br = new BufferedReader(new InputStreamReader(is));
 
             Log.d("LOAD FIELDS", br.readLine());
             String line;
@@ -32,6 +33,10 @@ public class CSVReader {
             br.close();
         } catch (IOException e) {
             //e.printStackTrace();
+        }
+        finally {
+            assert br != null;
+            br.close();
         }
         return list;
     }

@@ -6,6 +6,7 @@ import com.example.dkt_group_beta.io.CSVReader;
 
 import lombok.Getter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -59,7 +60,7 @@ public class Field {
         return owner;
     }
 
-    public static ArrayList<Field> loadFields(Context context) {
+    public static ArrayList<Field> loadFields(Context context) throws IOException {
         return CSVReader.readFields(context);
     }
 

@@ -8,6 +8,7 @@ import com.example.dkt_group_beta.model.Field;
 
 import junit.framework.TestCase;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CSVReaderTest extends TestCase {
@@ -18,7 +19,7 @@ public class CSVReaderTest extends TestCase {
         context = ApplicationProvider.getApplicationContext();
     }
 
-    public void testReadFields() {
+    public void testReadFields() throws IOException {
         fields = CSVReader.readFields(context);
         assertEquals(30, fields.size());
     }
