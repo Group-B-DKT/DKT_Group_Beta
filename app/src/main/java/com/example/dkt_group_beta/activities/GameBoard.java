@@ -71,18 +71,17 @@ public class GameBoard extends AppCompatActivity {
 
 
         getPositions(); //Positionen der Felder speichern
-        setStartPosition();
-
-
-
-
-
-
-
-
-
+        setStartPosition(1);
         animation(character, 20);
-        
+        character.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Hier kommt der Code, der nach der Verzögerung ausgeführt werden soll
+                animation(character, 5);
+            }
+        }, 2000); // Verzögerung von 2000 Millisekunden (2 Sekunden)
+
+
 
 
     }
@@ -156,18 +155,18 @@ public class GameBoard extends AppCompatActivity {
     }
 
 
-    public void setStartPosition(){
+    public void setStartPosition(int start){
 
 
-        ImageView field1 = findViewById(R.id.field1);
+       /* ImageView field1 = findViewById(R.id.field1);
         field1.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
 
-                float x = XKoordinates.get(1);
-                character.setX(XKoordinates.get(1));
-                character.setY(YKoordinates.get(1));
-                currentplace = 1;
+                float x = XKoordinates.get(start);
+                character.setX(XKoordinates.get(start));
+                character.setY(YKoordinates.get(start));
+                currentplace = start;
 
                 Log.d("STARTPOSTION", String.valueOf(x));
                 // Entfernen des Listeners, um Memory-Leaks zu vermeiden
@@ -175,9 +174,26 @@ public class GameBoard extends AppCompatActivity {
 
 
             }
+        });*/
+
+        ImageView field = findViewById(getResources().getIdentifier("field" + start, "id", getPackageName()));
+        field.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                float x = XKoordinates.get(start);
+                character.setX(XKoordinates.get(start));
+                character.setY(YKoordinates.get(start));
+                currentplace = start;
+                field.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                // Warten für 2 Sekunden, bevor die Animation startet
+                /*character.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        animation(character, 5); // Weiterführende Animation nach dem Warten
+                    }
+                }, 2000); // 2000 Millisekunden = 2 Sekunden*/
+            }
         });
-
-
 
 
 
@@ -334,8 +350,8 @@ public class GameBoard extends AppCompatActivity {
 
 
 
+            setPosition(character, currentplace);
         }
-
 
 
 
