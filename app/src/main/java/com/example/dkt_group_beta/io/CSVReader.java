@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import android.util.Log;
+
 public class CSVReader {
     public static ArrayList<Field> readFields(Context context) {
         ArrayList<Field> list = new ArrayList<>();
@@ -19,9 +21,9 @@ public class CSVReader {
         try {
             AssetManager am = context.getAssets();
             InputStream is = am.open(path);
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
+            final BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
-            br.readLine(); // Zum Überspringen der Kopfzeile, falls vorhanden
+            Log.d("LOAD FIELDS", br.readLine());
             String line;
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(";");
