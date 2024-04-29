@@ -33,7 +33,7 @@ public class GameBoard extends AppCompatActivity {
 
     ImageView character;
 
-    int currentplace = 0;
+    static int currentplace = 0;
 
 
 
@@ -77,29 +77,12 @@ public class GameBoard extends AppCompatActivity {
 
 
 
-        int repetition = 3;
-        animation(character, repetition);
-
-        animation(character, 7);
-
-        animation(character, 6);
 
 
 
 
-
-
-
-        /*int repetition2 = 3;
-        animation(character, repetition2);
-
-        animation(character, 6);*/
-
-
-
-
-
-
+        animation(character, 20);
+        
 
 
     }
@@ -207,143 +190,154 @@ public class GameBoard extends AppCompatActivity {
 
     public void setPosition(ImageView characterView, int field){
 
-        int newPosition = field +3; //fährt nicht exakt - überarbeiten
+        int newPosition = field; //fährt nicht exakt - überarbeiten
         characterView.setX(XKoordinates.get(newPosition));
         characterView.setY(YKoordinates.get(newPosition));
     }
 
     public void animation(ImageView characterImageView, int repetition){
 
-        final int[] repCount = {repetition};
 
-       if(currentplace < 11) { //movement for fields 1 to 11
-
-           Animation animation = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_horizontal_bottom);
-           animation.setRepeatCount(repetition);
-           characterImageView.startAnimation(animation);
+        Log.d("AUFRUF", "animation aufgerufen");
 
 
-           animation.setAnimationListener(new Animation.AnimationListener() {
-               int currentRepetition = 0;
-               float startX, startY;
+        float endX = characterImageView.getX();
+        float endY = characterImageView.getY();
 
-               @Override
-               public void onAnimationStart(Animation animation) {
-                   // Animation startet
-                   startX = characterImageView.getX();
-                   startY = characterImageView.getY();
+        if(currentplace < 11) { //movement for fields 1 to 11
 
 
-               }
-
-               @Override
-               public void onAnimationEnd(Animation animation) {
-                   // Aktuelle Position nach der Animation erhalten
-                   float endX = characterImageView.getX();
-                   float endY = characterImageView.getY();
-                   currentplace += repetition;
-
-                   setPosition(characterImageView, currentplace + repetition);
+            Log.d("AUFRUF1", "animation aufgerufen");
+            Animation animation = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_horizontal_bottom);
+            animation.setRepeatCount(repetition);
+            characterImageView.startAnimation(animation);
 
 
-               }
+            animation.setAnimationListener(new Animation.AnimationListener() {
 
-               @Override
-               public void onAnimationRepeat(Animation animation) {
-                   currentRepetition++;
-                   repCount[0]--;
-               }
-           });
+                float startX, startY;
 
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    // Animation startet
+                    startX = characterImageView.getX();
+                    startY = characterImageView.getY();
 
-       } else if (currentplace >= 11 && currentplace < 15) { //movement field 12 to 15
+                }
 
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    // Aktuelle Position nach der Animation erhalten
 
-           Animation animation_left = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_vertical_left);
-           animation_left.setRepeatCount(repetition);
-           characterImageView.startAnimation(animation_left);
+                    currentplace += repetition;
 
-           animation_left.setAnimationListener(new Animation.AnimationListener() {
-               @Override
-               public void onAnimationStart(Animation animation) {
+                    Log.d("PLACE", String.valueOf(currentplace));
 
-               }
-
-               @Override
-               public void onAnimationEnd(Animation animation) {
-                   currentplace += repetition;
-
-                   setPosition(characterImageView, currentplace );
-               }
-
-               @Override
-               public void onAnimationRepeat(Animation animation) {
-                   repCount[0]--;
-               }
-           });
+                    setPosition(characterImageView, currentplace);
 
 
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
 
 
+                }
+            });
 
-       } else if (currentplace >= 15  && currentplace < 27) {
 
-           Animation animation_top = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_horizontal_top);
-           animation_top.setRepeatCount(repetition);
-           characterImageView.startAnimation(animation_top);
+        } else if (currentplace >= 11 && currentplace < 15) { //movement field 12 to 15
+
+
+            Animation animation_left = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_vertical_left);
+            animation_left.setRepeatCount(repetition);
+            characterImageView.startAnimation(animation_left);
+
+            animation_left.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    currentplace += repetition;
+
+                    setPosition(characterImageView, currentplace);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
 
 
 
-           animation_top.setAnimationListener(new Animation.AnimationListener() {
-               @Override
-               public void onAnimationStart(Animation animation) {
 
-               }
 
-               @Override
-               public void onAnimationEnd(Animation animation) {
-                   currentplace += repetition;
+        } else if (currentplace >= 15  && currentplace < 27) {
 
-                   setPosition(characterImageView, currentplace );
-               }
-
-               @Override
-               public void onAnimationRepeat(Animation animation) {
-
-               }
-           });
+            Animation animation_top = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_horizontal_top);
+            animation_top.setRepeatCount(repetition);
+            characterImageView.startAnimation(animation_top);
 
 
 
-       }else{
+            animation_top.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    currentplace += repetition;
 
 
-           Animation animation_right = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_vertical_right);
-           animation_right.setRepeatCount(repetition);
-           characterImageView.startAnimation(animation_right);
+                    setPosition(characterImageView, currentplace );
+                }
 
-           animation_right.setAnimationListener(new Animation.AnimationListener() {
-               @Override
-               public void onAnimationStart(Animation animation) {
+                @Override
+                public void onAnimationRepeat(Animation animation) {
 
-               }
-
-               @Override
-               public void onAnimationEnd(Animation animation) {
-                   currentplace += repetition;
-
-                   setPosition(characterImageView, currentplace );
-               }
-
-               @Override
-               public void onAnimationRepeat(Animation animation) {
-
-               }
-           });
+                }
+            });
 
 
 
-       }
+        }else{
+
+
+            Animation animation_right = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_vertical_right);
+            animation_right.setRepeatCount(repetition);
+            characterImageView.startAnimation(animation_right);
+
+            animation_right.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    currentplace += repetition;
+
+                    setPosition(characterImageView, currentplace);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+
+
+
+        }
+
+
+
 
 
     }
