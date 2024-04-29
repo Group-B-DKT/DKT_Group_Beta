@@ -33,7 +33,6 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
-
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

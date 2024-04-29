@@ -7,8 +7,8 @@
     <string name="connection">Search Games</string>
     <string name="lobby_header">Game Lobby</string>
     <string name="Login">Login</string>
-<!--    <string name="ip_address">ws://192.168.0.171:8080/websocket-example-handler</string>-->
-    <string name="ip_address">ws://192.168.56.1:8080/websocket-example-handler</string>
+    <string name="ip_address">ws://10.0.0.191:8080/websocket-example-handler</string>
+<!--    <string name="ip_address">ws://143.205.184.114:8080/websocket-example-handler</string>-->
     <string name="search_for_games">Search for Games</string>
     <string name="games">Games</string>
     <string name="description_scrollview_gamelist">Shows all avialable Games</string>
@@ -20,5 +20,6 @@
     <string name="create_game_input_dialog">Game Name</string>
     <string name="create_game_btn_create">Create</string>
     <string name="create_game_btn_cancel">Cancel</string>
-    <string name="choose_character">Choose your character:</string>
+    <string name="btn_is_ready">Ready</string>
+    <string name="btn_is_not_ready">Not Ready</string>
 </resources>

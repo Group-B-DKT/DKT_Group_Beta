@@ -16,6 +16,9 @@ public class Player {
     @Getter
     private int gameId;
 
+    private boolean isReady;
+
+    private boolean isHost;
 
     public Player(String username, String id) {
         this.username = username;
@@ -47,5 +50,21 @@ public class Player {
 
     public void setGameId(int gameId) {
         this.gameId = gameId;
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
+    }
+
+    public boolean isHost() {
+        return isHost;
+    }
+
+    public void setHost(boolean host) {
+        isHost = host;
     }
 }
