@@ -49,21 +49,6 @@ public class GameLobbyViewModel {
         actionController.isReady(player.isReady());
 
     }
-    public boolean areAllPlayersReady() {
-        for(Player player : connectedPlayers) {
-            if(!player.isReady()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public void markAllPlayersInGame() {
-        for(Player player : connectedPlayers) {
-            player.setInGame(true);
-
-        }
-    }
 
     public void handleInfo (Info info, List < GameInfo > gameInfos){
         Log.d("DEBUG", "GameLobbyViewModel::handleInfo/ " + gameInfos.get(0).getConnectedPlayers());

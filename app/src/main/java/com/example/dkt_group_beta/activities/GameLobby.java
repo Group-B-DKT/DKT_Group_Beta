@@ -102,18 +102,10 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
                     layoutButtons,
                     ColorStateList.valueOf(Color.GREEN));
             layoutButtons.addView(btnStart);
-            btnStart.setOnClickListener(v ->  startGame());
         });
 
     }
-    public void startGame() {
-        if(isHost && gameLobbyViewModel.areAllPlayersReady()) {
-            gameLobbyViewModel.markAllPlayersInGame();
-            switchtoGameBoard();
 
-        }
-
-    }
     @Override
     public void removePlayerFromView(Player player) {
         runOnUiThread(() -> {
