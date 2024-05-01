@@ -4,6 +4,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +15,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.model.Player;
+import com.example.dkt_group_beta.viewmodel.GameModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +26,7 @@ import java.util.List;
 public class GameBoard extends AppCompatActivity {
     private static final int NUMBER_OF_FIELDS = 32;
     private List<ImageView> imageViews;
+    private GameModel gameModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +38,13 @@ public class GameBoard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        Player player = WebsocketClientController.getPlayer();
+        Field field = player.getCurrentField();
+        this.gameModel = new GameModel(player,field);
+        checkIfPlayerLandedOnField(player, field);
+
+
+
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -52,6 +66,23 @@ public class GameBoard extends AppCompatActivity {
         });
 
     }
+
+    public void checkIfPlayerLandedOnField(Player currentPlayer, Field field) {
+        if(currentPlayer.getCurrentField() == field) {
+            gameModel.playerLandedOnField(currentPlayer, field);
+        }
+    }
+
+    public void updatePlayerUI (Player player) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                EditText moneyEditText = findViewById(R.id.money);
+                moneyEditText.setText(String.valueOf(player.getMoney()));
+            }
+        });
+    }
+
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {

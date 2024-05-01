@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.communication.controller;
 
+import android.app.sdksandbox.RequestSurfacePackageException;
 import android.util.Log;
 
 import com.example.dkt_group_beta.communication.ActionJsonObject;
@@ -7,6 +8,7 @@ import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
 import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.networking.WebSocketClient;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
 import com.google.gson.Gson;
 
@@ -36,6 +38,13 @@ public class ActionController {
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.LEAVE_GAME);
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
+    }
+    public void buyField(Field field) {
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BUY_FIELD, Integer.toString(field.getId()));
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+
     }
 
 

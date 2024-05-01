@@ -27,6 +27,7 @@ import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
@@ -101,7 +102,16 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
                     layoutButtons,
                     ColorStateList.valueOf(Color.GREEN));
             layoutButtons.addView(btnStart);
+            btnStart.setOnClickListener(v ->  startGame());
         });
+
+    }
+    public void startGame() {
+        if(isHost && gameLobbyViewModel.areAllPlayersReady()) {
+            gameLobbyViewModel.markAllPlayersInGame();
+            switchtoGameBoard();
+
+        }
 
     }
     @Override
@@ -132,6 +142,12 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         intent.putExtra("username", currentUsername);
         startActivity(intent);
 
+    }
+    public void switchtoGameBoard() {
+        String currentUsername = getIntent().getStringExtra("username");
+        Intent intent = new Intent(GameLobby.this, GameBoard.class);
+        intent.putExtra("currentPlayer", currentUsername);
+        startActivity(intent);
     }
 
 

@@ -17,7 +17,7 @@ public class Field {
     private String name;
     private int price = 0;
     private Player owner;
-    private final boolean ownable;
+    private boolean ownable;
 
     public Field(int id, String name, boolean ownable) {
         this.id = id;
@@ -43,9 +43,13 @@ public class Field {
     public int getId() {
         return id;
     }
+    public void setId(int newId) { id = newId;}
 
     public int getPrice() {
         return price;
+    }
+    public void setPrice(int newPrice) {
+        price = newPrice;
     }
 
     public void setOwner(Player player) {
@@ -54,6 +58,9 @@ public class Field {
 
     public boolean getOwnable() {
         return ownable;
+    }
+    public void setOwnable(boolean newOwnable) {
+        ownable = newOwnable;
     }
 
     public Player getOwner() {
