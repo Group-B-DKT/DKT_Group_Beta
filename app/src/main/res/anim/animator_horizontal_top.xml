@@ -4,8 +4,8 @@
 
     <translate
         android:duration="2000"
-        android:fromYDelta="0dp"
-        android:toYDelta="-45dp" />
+        android:fromXDelta="0dp"
+        android:toXDelta="0dp" />
 
 
 </set>
