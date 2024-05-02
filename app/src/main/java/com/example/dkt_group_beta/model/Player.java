@@ -1,6 +1,5 @@
 package com.example.dkt_group_beta.model;
 
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,8 +18,6 @@ public class Player {
     private int gameId;
     @Getter
     private double playerMoney;
-    @Getter
-    private List<Field> ownedFields;
 
 
 
