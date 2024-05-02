@@ -12,6 +12,7 @@ public class ConnectController {
     public ConnectController(InputHandleConnect handleConnect){
         this.handleConnect = handleConnect;
         WebsocketClientController.addMessageHandler(this::onMessageReceived);
+
     }
 
     private void onMessageReceived(Object connectObject) {
