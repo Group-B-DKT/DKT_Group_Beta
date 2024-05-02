@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameLobbyViewModel {
-    private List<String> usernames;
+    private List<Player> connectedPlayers;
     private InfoController infoController;
     private ActionController actionController;
     private ConnectController connectController;
@@ -30,7 +30,7 @@ public class GameLobbyViewModel {
         this.infoController = new InfoController(this::handleInfo);
         this.actionController = new ActionController(this::handleAction);
         this.gameLobbyAction = gameLobbyAction;
-        this.usernames = new ArrayList<>();
+        this.connectedPlayers = new ArrayList<>();
         this.player = WebsocketClientController.getPlayer();
     }
 
@@ -44,60 +44,68 @@ public class GameLobbyViewModel {
     }
 
 
-        public void setReady () {
-            player.setReady(!player.isReady());
-            actionController.isReady(player.isReady());
+    public void setReady () {
+        player.setReady(!player.isReady());
+        actionController.isReady(player.isReady());
 
+    }
+
+
+    public void handleInfo (Info info, List < GameInfo > gameInfos){
+        Log.d("DEBUG", "GameLobbyViewModel::handleInfo/ " + gameInfos.get(0).getConnectedPlayers());
+        GameInfo gameInfo = gameInfos.get(0);
+
+        if (gameInfo == null) return;
+
+        gameInfo.getConnectedPlayers()
+                .forEach(g -> {
+                    if (!this.connectedPlayers.contains(g)) {
+                        this.connectedPlayers.add(g);
+                        gameLobbyAction.addPlayerToView(g);
+                    }
+                });
         }
 
 
-        public void handleInfo (Info info, List < GameInfo > gameInfos){
-            Log.d("DEBUG", "GameLobbyViewModel::handleInfo/ " + gameInfos.get(0).getConnectedPlayers());
-            GameInfo gameInfo = gameInfos.get(0);
-
-            if (gameInfo == null) return;
-
-            gameInfo.getConnectedPlayers()
-                    .forEach(g -> {
-                        if (!this.usernames.contains(g.getUsername())) {
-                            this.usernames.add(g.getUsername());
-                            gameLobbyAction.addPlayerToView(g);
-                        }
-                    });
-        }
-
-        public void handleAction (Action action, String param, Player fromPlayer){
-            Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
+    public void handleAction (Action action, String param, Player fromPlayer) {
+        Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
 
 
-            if (action == Action.LEAVE_GAME) {
-                gameLobbyAction.removePlayerFromView(fromPlayer);
-                if(player.getUsername().equals(fromPlayer.getUsername())) {
-                    gameLobbyAction.switchToGameLobby(fromPlayer);
-                    player.setHost(false);
+        if (action == Action.LEAVE_GAME) {
+            gameLobbyAction.removePlayerFromView(fromPlayer);
+            if (player.getUsername().equals(fromPlayer.getUsername())) {
+                gameLobbyAction.switchToGameLobby(fromPlayer);
+                player.setHost(false);
 
-                }else{
-                    this.usernames.remove(fromPlayer.getUsername());
-                }
+            } else {
+                this.connectedPlayers.remove(fromPlayer);
             }
-            if(action == Action.HOST_CHANGED) {
-                gameLobbyAction.removePlayerFromView(fromPlayer);
-                gameLobbyAction.addPlayerToView(fromPlayer);
+        }
+        if (action == Action.HOST_CHANGED) {
+            if (fromPlayer.getId().equals(player.getId()) && !player.isHost()) {
+                player.setHost(fromPlayer.isHost());
                 gameLobbyAction.addStartButton();
             }
+
+            this.connectedPlayers.remove(fromPlayer);
+            this.connectedPlayers.add(fromPlayer);
+
+            this.connectedPlayers.forEach(p -> {
+                gameLobbyAction.removePlayerFromView(p);
+                gameLobbyAction.addPlayerToView(p);
+            });
+        }
+
+        if (action == Action.GAME_JOINED_SUCCESSFULLY) {
             this.getConnectedPlayerNames();
+        }
+        if (action == Action.CHANGED_READY_STATUS) {
+            Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + fromPlayer.getUsername());
+            if (player.getId().equals(fromPlayer.getId())) {
+                gameLobbyAction.changeReadyBtnText(fromPlayer.isReady());
 
-            if (action == Action.GAME_JOINED_SUCCESSFULLY) {
-                this.getConnectedPlayerNames();
             }
-            if (action == Action.CHANGED_READY_STATUS) {
-                Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + fromPlayer.getUsername());
-                if (player.getId().equals(fromPlayer.getId())) {
-                    gameLobbyAction.changeReadyBtnText(fromPlayer.isReady());
-
-                }
-                gameLobbyAction.readyStateChanged(fromPlayer.getUsername(), fromPlayer.isReady());
-            }
-
+            gameLobbyAction.readyStateChanged(fromPlayer.getUsername(), fromPlayer.isReady());
         }
     }
+}
