@@ -30,6 +30,7 @@ import com.example.dkt_group_beta.communication.controller.WebsocketClientContro
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
+import com.example.dkt_group_beta.viewmodel.GameModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
 import org.w3c.dom.Text;
@@ -40,6 +41,7 @@ import java.util.Locale;
 
 public class GameLobby extends AppCompatActivity implements GameLobbyAction {
     private GameLobbyViewModel gameLobbyViewModel;
+    private GameModel gamemodel;
     private LinearLayout scrollviewLayout;
     private LinearLayout layoutButtons;
     private List<LinearLayout> playerFields;
@@ -65,7 +67,6 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
         isHost = WebsocketClientController.getPlayer().isHost();
 
-
         this.gameLobbyViewModel = new GameLobbyViewModel(this);
         this.playerFields = new ArrayList<>();
 
@@ -73,6 +74,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         this.btnLeave = findViewById(R.id.btn_leave);
         this.btnLeave.setOnClickListener(v -> {
             gameLobbyViewModel.leaveGame();
+
 
         });
 
@@ -135,13 +137,6 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         startActivity(intent);
 
     }
-    public void switchtoGameBoard() {
-        String currentUsername = getIntent().getStringExtra("username");
-        Intent intent = new Intent(GameLobby.this, GameBoard.class);
-        intent.putExtra("currentPlayer", currentUsername);
-        startActivity(intent);
-    }
-
 
     private LinearLayout getLinearLayout(int id) {
         LinearLayout linearLayout = new LinearLayout(this);

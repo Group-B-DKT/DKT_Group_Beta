@@ -29,13 +29,16 @@ public class GameModel {
 
     private Player player;
     private Field field;
+    private List<Field> fields;
 
-    public GameModel(Player player, Field field) {
-        this.infoController = new InfoController(this::handleInfo);
-        this.actionController = new ActionController(this::handleAction);
+    public GameModel(List<Field> list, Player player) {
+        //this.infoController = new InfoController(this::handleInfo);
+        //this.actionController = new ActionController(this::handleAction);
         this.connectedPlayers = new ArrayList<>();
-        this.player = WebsocketClientController.getPlayer();
-        this.field = field;
+        //this.player = WebsocketClientController.getPlayer();
+        this.fields = list;
+        this.player = player;
+
     }
 
     public void playerLandedOnField(Player currentPlayer, Field field) {
@@ -48,7 +51,7 @@ public class GameModel {
             }
 
         }
-        buyField(field, currentPlayer);
+
 
         }
 
@@ -62,19 +65,26 @@ public class GameModel {
         owner.setMoney(owner.getMoney() + paymentAmount);
     }
 
-    public void buyField(Field field, Player player) {
+    public Field buyField(int index) {
 
-        if(field.getOwnable() && player.getMoney() >= field.getPrice()) {
-            int newMoney = player.getMoney() - field.getPrice();
-            player.setMoney(newMoney);
-            field.setOwnable(false);
-            actionController.buyField(field);
-
-        }else{
-            Log.d("debug", "Nicht genügend Geld oder Feld ist bereits gekauft geworden");
+        if (index < 0 || index >= fields.size()) {
+            return null;
         }
 
+        Field field = fields.get(index);
+        if (field.getOwnable() && player.getMoney() >= field.getPrice()) {
+            field.setOwner(player);
+            field.setOwnable(false);
+            player.setMoney(player.getMoney() - field.getPrice());
+            return field;
+        } else {
+            Log.d("debug", "Du kannst das nicht kaufen weil du arm bist Heheha");
+            System.out.println("fehler");
+            return null;
+        }
     }
+
+
     private void handleInfo(Info info, List<GameInfo> gameInfos) {
         Log.d("DEBUG", "GameLobbyViewModel::handleInfo/ " + gameInfos.get(0).getConnectedPlayers());
         GameInfo gameInfo = gameInfos.get(0);
@@ -93,7 +103,7 @@ public class GameModel {
     private void handleAction(Action action, String param, Player fromPlayer) {
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
         if (action == Action.BUY_FIELD) {
-            gameBoard.updatePlayerUI(fromPlayer);
+            Log.d("debug", "success");
 
             }
         }

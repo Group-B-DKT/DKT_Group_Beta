@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.communication.controller.ActionController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Player;
@@ -27,6 +28,7 @@ public class GameBoard extends AppCompatActivity {
     private static final int NUMBER_OF_FIELDS = 32;
     private List<ImageView> imageViews;
     private GameModel gameModel;
+    private ActionController actionController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,13 +40,8 @@ public class GameBoard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Player player = WebsocketClientController.getPlayer();
-        Field field = player.getCurrentField();
-        this.gameModel = new GameModel(player,field);
-        checkIfPlayerLandedOnField(player, field);
-
-
-
+        int index = 2;
+        buyField(index);
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -67,9 +64,13 @@ public class GameBoard extends AppCompatActivity {
 
     }
 
-    public void checkIfPlayerLandedOnField(Player currentPlayer, Field field) {
-        if(currentPlayer.getCurrentField() == field) {
-            gameModel.playerLandedOnField(currentPlayer, field);
+    public void buyField(int index) {
+        Field field = gameModel.buyField(index);
+        if (field != null) {
+            actionController.buyField(field);
+            Log.d("debug", "Sie sind ein Gewinner");
+        } else {
+            Log.d("debug", "Fehlgeschlagen field ist null");
         }
     }
 
