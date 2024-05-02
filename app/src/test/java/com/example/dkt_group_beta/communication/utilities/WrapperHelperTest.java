@@ -15,10 +15,12 @@ import com.example.dkt_group_beta.communication.enums.Info;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.google.gson.Gson;
 
+import junit.framework.TestCase;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-public class WrapperHelperTest {
+public class WrapperHelperTest extends TestCase {
     private static Gson gson;
 
     @BeforeEach

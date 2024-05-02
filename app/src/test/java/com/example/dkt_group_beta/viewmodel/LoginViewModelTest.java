@@ -9,15 +9,14 @@ import com.example.dkt_group_beta.activities.interfaces.LoginAction;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.RuntimeEnvironment;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-import org.robolectric.junit.jupiter.RobolectricExtension;
-
-@ExtendWith(RobolectricExtension.class)
+@RunWith(RobolectricTestRunner.class)
 public class LoginViewModelTest {
     private Context context;
     private LoginAction loginAction;
