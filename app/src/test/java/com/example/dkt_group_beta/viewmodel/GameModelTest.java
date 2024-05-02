@@ -39,5 +39,21 @@ public class GameModelTest {
         assertEquals(player, boughtField.getOwner());
     }
 
+    @Test
+    public void testifMoneyIsReduced() {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field(0, "100", 500, true));
+        fields.add(new Field(1, "300", 200,true));
+        fields.add(new Field(2, "500", 300, true));
+        Player player = new Player("TestPlayer", "2");
+        game = new GameModel(fields,player);
+
+        Field boughtField = game.buyField(1);
+        System.out.println(boughtField);
+
+        assertNotNull(boughtField);
+        assertEquals(player.getMoney(), boughtField.getOwner().getMoney());
+    }
+
 
 }

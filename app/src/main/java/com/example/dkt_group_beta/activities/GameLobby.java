@@ -41,7 +41,6 @@ import java.util.Locale;
 
 public class GameLobby extends AppCompatActivity implements GameLobbyAction {
     private GameLobbyViewModel gameLobbyViewModel;
-    private GameModel gamemodel;
     private LinearLayout scrollviewLayout;
     private LinearLayout layoutButtons;
     private List<LinearLayout> playerFields;
