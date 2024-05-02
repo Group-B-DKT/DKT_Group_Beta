@@ -97,6 +97,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             btnStart.setText(getString(R.string.btn_startGame));
             btnStart.setLayoutParams(this.btnReady.getLayoutParams());
             btnStart.setTextColor(Color.GREEN);
+            btnStart.setOnClickListener((v) -> gameLobbyViewModel.startGame());
             ViewCompat.setBackgroundTintList(
                     layoutButtons,
                     ColorStateList.valueOf(Color.GREEN));
@@ -162,6 +163,19 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         textView.setTextAlignment(textAlignment);
 
         return textView;
+    }
+
+    @Override
+     public void assertInputDialog(String text){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Attention!");
+        builder.setMessage(text);
+
+        builder.setPositiveButton(getString(R.string.create_game_btn_create), (dialog, which) -> {
+            dialog.cancel();
+        });
+
+        builder.show();
     }
 
 

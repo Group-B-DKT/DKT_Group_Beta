@@ -15,4 +15,6 @@ public interface GameLobbyAction {
     void changeReadyBtnText(boolean isReady);
     void addStartButton();
 
+    void assertInputDialog(String text);
+
 }

@@ -3,14 +3,12 @@ package com.example.dkt_group_beta.viewmodel;
 import android.util.Log;
 
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
-import com.example.dkt_group_beta.communication.ActionJsonObject;
 import com.example.dkt_group_beta.communication.controller.ActionController;
-import com.example.dkt_group_beta.communication.controller.ConnectController;
 import com.example.dkt_group_beta.communication.controller.InfoController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Info;
-import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
+import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.GameInfo;
 import com.example.dkt_group_beta.model.Player;
 
@@ -21,7 +19,6 @@ public class GameLobbyViewModel {
     private List<Player> connectedPlayers;
     private InfoController infoController;
     private ActionController actionController;
-    private ConnectController connectController;
     private GameLobbyAction gameLobbyAction;
 
     private Player player;
@@ -48,6 +45,18 @@ public class GameLobbyViewModel {
         player.setReady(!player.isReady());
         actionController.isReady(player.isReady());
 
+    }
+
+    public void startGame(){
+        Log.d("DEBUG", "GameLobbyViewModel::startGame/ " + connectedPlayers);
+        if (connectedPlayers.size() < Game.MIN_PLAYER){
+            gameLobbyAction.assertInputDialog("Not enough Players connected to start the game!");
+            return;
+        }
+        if (connectedPlayers.stream().filter(p -> p.isReady()).count() < connectedPlayers.size() - 1){
+            gameLobbyAction.assertInputDialog("Not enough Players ready to start the game!");
+            return;
+        }
     }
 
 
@@ -100,6 +109,14 @@ public class GameLobbyViewModel {
             this.getConnectedPlayerNames();
         }
         if (action == Action.CHANGED_READY_STATUS) {
+            Player changedPlayer = connectedPlayers.stream()
+                            .filter(p -> p.getId().equals(fromPlayer.getId()))
+                            .findFirst().orElse(null);
+            if (changedPlayer == null){
+                return;
+            }
+            changedPlayer.setReady(fromPlayer.isReady());
+
             Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + fromPlayer.getUsername());
             if (player.getId().equals(fromPlayer.getId())) {
                 gameLobbyAction.changeReadyBtnText(fromPlayer.isReady());
