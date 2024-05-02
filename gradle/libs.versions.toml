@@ -37,7 +37,6 @@ navigation-fragment = { group = "androidx.navigation", name = "navigation-fragme
 navigation-ui = { group = "androidx.navigation", name = "navigation-ui", version.ref = "navigationUi" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
-robolectric-junit5 = { module = "org.robolectric:robolectric-junit5", version.ref = "robolectric" }
 security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
