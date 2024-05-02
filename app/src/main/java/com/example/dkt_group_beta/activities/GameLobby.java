@@ -185,14 +185,15 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             LinearLayout linearLayout = getLinearLayout(id++);
 
             String name = player.getUsername();
-            if (player.isHost())
-                name += " (HOST)";
-
-            TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
             String isReady = player.isReady() ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
             TextView textViewIsReady = getTextView(isReady, View.TEXT_ALIGNMENT_TEXT_END);
 
+            if (player.isHost()) {
+                name += " (HOST)";
+                textViewIsReady.setText("");
+            }
+            TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
             linearLayout.addView(textViewGameId);
             linearLayout.addView(textViewIsReady);
 
