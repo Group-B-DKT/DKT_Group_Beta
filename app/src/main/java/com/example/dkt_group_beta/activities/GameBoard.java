@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -32,9 +33,9 @@ public class GameBoard extends AppCompatActivity {
     HashMap<Integer, Float> YKoordinates = new HashMap();
 
     ImageView character;
+    ImageView character2;
 
     static int currentplace = 0;
-
 
 
     @Override
@@ -49,6 +50,7 @@ public class GameBoard extends AppCompatActivity {
         });
 
         character = findViewById(R.id.character);
+        character2 = findViewById(R.id.character2);
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -61,7 +63,7 @@ public class GameBoard extends AppCompatActivity {
                         .getIdentifier("field" + i, "drawable", this.getPackageName());
 
 
-                ImageView imageView = imageViews.get(i-1);
+                ImageView imageView = imageViews.get(i - 1);
                 if (imageView != null && resourceId != 0) {
                     imageView.setImageBitmap(
                             decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
@@ -71,17 +73,21 @@ public class GameBoard extends AppCompatActivity {
 
 
         getPositions(); //Positionen der Felder speichern
-        setStartPosition(1);
-        animation(character, 20);
-        character.postDelayed(new Runnable() {
+        setStartPosition(1, character);
+        animation(character, 18);
+      character.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Hier kommt der Code, der nach der Verzögerung ausgeführt werden soll
-                animation(character, 5);
+                animation(character, 1);
             }
         }, 2000); // Verzögerung von 2000 Millisekunden (2 Sekunden)
 
 
+
+        currentplace = 0;
+        setStartPosition(1, character2);
+        animation(character2, 17);
 
 
     }
@@ -120,8 +126,7 @@ public class GameBoard extends AppCompatActivity {
     }
 
 
-
-    public void getPositions(){
+    public void getPositions() {
 
         ConstraintLayout constraintLayout = findViewById(R.id.gameboard);
         constraintLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -131,7 +136,7 @@ public class GameBoard extends AppCompatActivity {
                 // Hier wird der Code ausgeführt, wenn das Layout vollständig erstellt wurde
 
 
-                for(int i = 1; i <= 30; i++){
+                for (int i = 1; i <= 30; i++) {
 
                     String fieldName = "field" + i; // Erstelle den dynamischen ID-Namen
                     int resourceId = getResources().getIdentifier(fieldName, "id", getPackageName());
@@ -140,8 +145,6 @@ public class GameBoard extends AppCompatActivity {
 
                     XKoordinates.put(i, imageView.getX());
                     YKoordinates.put(i, imageView.getY());
-                    Log.d("ABC", String.valueOf(imageView.getX()));
-
                 }
 
                 // Entfernen des Listeners, um Memory-Leaks zu vermeiden
@@ -150,39 +153,18 @@ public class GameBoard extends AppCompatActivity {
         });
 
 
-
-
     }
 
 
-    public void setStartPosition(int start){
-
-
-       /* ImageView field1 = findViewById(R.id.field1);
-        field1.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-
-                float x = XKoordinates.get(start);
-                character.setX(XKoordinates.get(start));
-                character.setY(YKoordinates.get(start));
-                currentplace = start;
-
-                Log.d("STARTPOSTION", String.valueOf(x));
-                // Entfernen des Listeners, um Memory-Leaks zu vermeiden
-                field1.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-
-            }
-        });*/
+    public void setStartPosition(int start, ImageView characterImageView) {
 
         ImageView field = findViewById(getResources().getIdentifier("field" + start, "id", getPackageName()));
         field.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 float x = XKoordinates.get(start);
-                character.setX(XKoordinates.get(start));
-                character.setY(YKoordinates.get(start));
+                characterImageView.setX(XKoordinates.get(start));
+                characterImageView.setY(YKoordinates.get(start));
                 currentplace = start;
                 field.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 // Warten für 2 Sekunden, bevor die Animation startet
@@ -196,25 +178,20 @@ public class GameBoard extends AppCompatActivity {
         });
 
 
-
-
-
-
     }
 
 
-
-    public void setPosition(ImageView characterView, int field){
+    public void setPosition(ImageView characterView, int field) {
 
         int newPosition = field; //fährt nicht exakt - überarbeiten
         characterView.setX(XKoordinates.get(newPosition));
         characterView.setY(YKoordinates.get(newPosition));
     }
 
-    public void animation(ImageView characterImageView, int repetition){
+    public void animation(ImageView characterImageView, int repetition) {
 
 
-        Log.d("AUFRUF", "animation aufgerufen");
+        Log.d("AUFRUF", "animation aufgerufen" + String.valueOf(currentplace));
 
 
         float endX = characterImageView.getX();
@@ -222,8 +199,9 @@ public class GameBoard extends AppCompatActivity {
 
         if(currentplace < 11) { //movement for fields 1 to 11
 
+            Log.d("NUMBER", String.valueOf(currentplace) + "smaller than 11");
 
-            Log.d("AUFRUF1", "animation aufgerufen");
+            Log.d("NUMBER", "animation aufgerufen" + String.valueOf(currentplace));
             Animation animation = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_horizontal_bottom);
             animation.setRepeatCount(repetition);
             characterImageView.startAnimation(animation);
@@ -264,7 +242,7 @@ public class GameBoard extends AppCompatActivity {
 
         } else if (currentplace >= 11 && currentplace < 15) { //movement field 12 to 15
 
-
+            Log.d("NUMBER", String.valueOf(currentplace) + "between 11 and <15");
             Animation animation_left = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_vertical_left);
             animation_left.setRepeatCount(repetition);
             characterImageView.startAnimation(animation_left);
@@ -293,6 +271,10 @@ public class GameBoard extends AppCompatActivity {
 
 
         } else if (currentplace >= 15  && currentplace < 27) {
+
+
+
+            Log.d("NUMBER", String.valueOf(currentplace) + "between 15 and <27");
 
             Animation animation_top = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_horizontal_top);
             animation_top.setRepeatCount(repetition);
@@ -324,6 +306,7 @@ public class GameBoard extends AppCompatActivity {
 
         }else{
 
+            Log.d("NUMBER", String.valueOf(currentplace) + ">= 27");
 
             Animation animation_right = AnimationUtils.loadAnimation(characterImageView.getContext(), R.anim.animator_vertical_right);
             animation_right.setRepeatCount(repetition);
@@ -332,16 +315,13 @@ public class GameBoard extends AppCompatActivity {
             animation_right.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-
                 }
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     currentplace += repetition;
-
                     setPosition(characterImageView, currentplace);
                 }
-
                 @Override
                 public void onAnimationRepeat(Animation animation) {
 
@@ -350,9 +330,8 @@ public class GameBoard extends AppCompatActivity {
 
 
 
-            setPosition(character, currentplace);
-        }
 
+        }
 
 
 
@@ -368,5 +347,9 @@ public class GameBoard extends AppCompatActivity {
 
 
 
-
 }
+
+
+
+
+
