@@ -16,6 +16,8 @@ public class Player {
 
     private boolean isHost;
 
+    private boolean isOnTurn;
+
     public Player(String username, String id) {
         this.username = username;
         this.id = id;
@@ -62,6 +64,14 @@ public class Player {
 
     public void setHost(boolean host) {
         isHost = host;
+    }
+
+    public boolean isOnTurn() {
+        return isOnTurn;
+    }
+
+    public void setOnTurn(boolean onTurn) {
+        isOnTurn = onTurn;
     }
 
     @Override
