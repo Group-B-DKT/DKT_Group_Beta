@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.activities.interfaces;
 
+import android.content.Context;
+
 import com.example.dkt_group_beta.model.Player;
 
 public interface GameLobbyAction {
@@ -16,5 +18,7 @@ public interface GameLobbyAction {
     void addStartButton();
 
     void assertInputDialog(String text);
+
+    Context getContext();
 
 }

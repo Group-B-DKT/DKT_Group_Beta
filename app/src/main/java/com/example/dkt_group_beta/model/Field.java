@@ -65,6 +65,17 @@ public class Field {
     }
 
     @Override
+    public String toString() {
+        return "Field{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", owner=" + owner +
+                ", ownable=" + ownable +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

@@ -6,6 +6,8 @@ import android.content.res.AssetManager;
 import com.example.dkt_group_beta.model.Field;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

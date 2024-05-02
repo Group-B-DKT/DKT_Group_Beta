@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -213,6 +214,11 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
                 childIsReady.setText(isReadyTxt);
             }
         });
+    }
+
+    @Override
+    public Context getContext() {
+        return this.getApplicationContext();
     }
 
     public void changeReadyBtnText(boolean isReady) {

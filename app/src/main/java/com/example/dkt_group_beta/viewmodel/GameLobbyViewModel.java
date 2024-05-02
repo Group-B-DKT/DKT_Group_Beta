@@ -2,16 +2,20 @@ package com.example.dkt_group_beta.viewmodel;
 
 import android.util.Log;
 
+import com.example.dkt_group_beta.activities.GameLobby;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
 import com.example.dkt_group_beta.communication.controller.InfoController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Info;
+import com.example.dkt_group_beta.io.CSVReader;
+import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.GameInfo;
 import com.example.dkt_group_beta.model.Player;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +61,13 @@ public class GameLobbyViewModel {
             gameLobbyAction.assertInputDialog("Not enough Players ready to start the game!");
             return;
         }
+        List<Field> fields;
+        try {
+            fields = Field.loadFields(gameLobbyAction.getContext());
+        } catch (IOException e) {
+            return;
+        }
+        actionController.gameStarted(fields);
     }
 
 
