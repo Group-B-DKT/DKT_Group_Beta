@@ -7,10 +7,11 @@ import com.example.dkt_group_beta.io.CSVReader;
 import lombok.Getter;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Field {
+public class Field implements Serializable {
 
     @Getter
     private int id;

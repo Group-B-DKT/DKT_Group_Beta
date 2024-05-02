@@ -1,9 +1,10 @@
 package com.example.dkt_group_beta.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
-public class Player {
+public class Player implements Serializable {
     private String username;
 
     private String id;

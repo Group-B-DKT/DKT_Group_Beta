@@ -1,7 +1,9 @@
 package com.example.dkt_group_beta.viewmodel;
 
+import android.content.Intent;
 import android.util.Log;
 
+import com.example.dkt_group_beta.activities.GameBoard;
 import com.example.dkt_group_beta.activities.GameLobby;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
@@ -86,8 +88,7 @@ public class GameLobbyViewModel {
                 });
         }
 
-
-    public void handleAction (Action action, String param, Player fromPlayer) {
+    public void handleAction (Action action, String param, Player fromPlayer, List<Field> fields) {
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
 
 
@@ -134,6 +135,10 @@ public class GameLobbyViewModel {
 
             }
             gameLobbyAction.readyStateChanged(fromPlayer.getUsername(), fromPlayer.isReady());
+        }
+        if (action == Action.GAME_STARTED){
+            Log.d("DEBUG", "LOOOSOOEOEOOSS");
+            gameLobbyAction.switchToGameBoard(this.connectedPlayers, fields);
         }
     }
 }

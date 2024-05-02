@@ -28,12 +28,14 @@ import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
 import org.w3c.dom.Text;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -215,6 +217,15 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             }
         });
     }
+
+    @Override
+    public void switchToGameBoard(List<Player> connectedPlayers, List<Field> fields){
+        Intent intent = new Intent(this, GameBoard.class);
+        intent.putExtra("players", (Serializable) connectedPlayers);
+        intent.putExtra("fields", (Serializable) fields);
+        startActivity(intent);
+    }
+
 
     @Override
     public Context getContext() {
