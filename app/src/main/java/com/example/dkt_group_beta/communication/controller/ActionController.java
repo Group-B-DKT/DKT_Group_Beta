@@ -6,7 +6,11 @@ import com.example.dkt_group_beta.communication.ActionJsonObject;
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
+import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
 
 public class ActionController {
     private InputHandleAction handleAction;
@@ -47,6 +51,14 @@ public class ActionController {
 
         String msg = WrapperHelper.toJsonFromObject(connectedGameId, Request.ACTION, actionJsonObject);
         Log.d("DEBUG", msg);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void initFields(ArrayList<Field> fields) {
+        Gson gson = new Gson();
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.INIT_FIELDS, gson.toJson(fields, ArrayList.class));
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
 
