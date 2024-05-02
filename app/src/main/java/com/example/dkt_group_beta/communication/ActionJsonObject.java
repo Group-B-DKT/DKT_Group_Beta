@@ -14,17 +14,17 @@ public  class ActionJsonObject {
     private String param;
     private Player fromPlayer;
 
-    private List<Field> field;
+    private List<Field> fields;
 
-    public ActionJsonObject(Action action, String param, Player fromPlayer, List<Field> field) {
+    public ActionJsonObject(Action action, String param, Player fromPlayer, List<Field> fields) {
         this.action = action;
         this.param = param;
         this.fromPlayer = fromPlayer;
-        this.field = field;
+        this.fields = fields;
     }
 
-    public ActionJsonObject(Action action, String param, List<Field> field) {
-        this(action, param, null, field);
+    public ActionJsonObject(Action action, String param, List<Field> fields) {
+        this(action, param, null, fields);
     }
 
     public ActionJsonObject(Action action, String param, Player fromPlayer) {
@@ -48,7 +48,7 @@ public  class ActionJsonObject {
 
     public Player getFromPlayer(){return fromPlayer;}
 
-    public List<Field> getField() {
-        return field;
+    public List<Field> getFields() {
+        return fields;
     }
 }

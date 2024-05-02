@@ -18,6 +18,11 @@ public class Player {
 
     private boolean isOnTurn;
 
+    private Field currentField;
+
+    private int money;
+
+
     public Player(String username, String id) {
         this.username = username;
         this.id = id;
@@ -72,6 +77,22 @@ public class Player {
 
     public void setOnTurn(boolean onTurn) {
         isOnTurn = onTurn;
+    }
+
+    public Field getCurrentField() {
+        return currentField;
+    }
+
+    public void setCurrentField(Field currentField) {
+        this.currentField = currentField;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     @Override
