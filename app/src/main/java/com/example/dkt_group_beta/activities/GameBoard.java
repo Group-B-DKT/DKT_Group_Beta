@@ -3,6 +3,9 @@ package com.example.dkt_group_beta.activities;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class GameBoard extends AppCompatActivity {
+public class GameBoard extends AppCompatActivity implements SensorEventListener {
     private static final int NUMBER_OF_FIELDS = 32;
     private List<ImageView> imageViews;
 
@@ -147,5 +150,15 @@ public class GameBoard extends AppCompatActivity {
         int diceResult = random.nextInt(6) + 1; // Random number between 1 and 6
         int drawableResource = getResources().getIdentifier("dice" + diceResult, "drawable", getPackageName());
         imageView.setImageResource(drawableResource);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
