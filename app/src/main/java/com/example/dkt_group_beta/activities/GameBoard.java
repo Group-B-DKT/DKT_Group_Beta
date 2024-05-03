@@ -98,7 +98,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         testButton = findViewById(R.id.popUpCards);
         testButton.setOnClickListener((v) -> {
-            dicePopUp(testButton);
+            dicePopUp();
 //            player.setOnTurn(false);
 //            dicePopUp(testButton);
 //            int[] a = {3,6};
@@ -139,7 +139,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         return inSampleSize;
     }
 
-    public void dicePopUp(View view){
+    public void dicePopUp(){
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.activity_popup_dice, null);
 
@@ -156,7 +156,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             // set isPopupWindowOpen to false if it is closed
         });
         isPopupWindowOpen = true;
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        popupWindow.showAtLocation(imageViews.get(0), Gravity.CENTER, 0, 0);
         // initialising listener for the acceleration sensor
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
