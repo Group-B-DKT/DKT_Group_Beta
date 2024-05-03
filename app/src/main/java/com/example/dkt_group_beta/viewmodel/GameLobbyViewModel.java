@@ -137,6 +137,13 @@ public class GameLobbyViewModel {
             gameLobbyAction.readyStateChanged(fromPlayer.getUsername(), fromPlayer.isReady());
         }
         if (action == Action.GAME_STARTED){
+            Player isOnTurnPlayer = this.connectedPlayers.stream()
+                                                         .filter(p -> p.getId().equals(fromPlayer.getId()))
+                                                         .findFirst().orElse(null);
+            if (isOnTurnPlayer == null){
+                return;
+            }
+            isOnTurnPlayer.setOnTurn(true);
             gameLobbyAction.switchToGameBoard(this.connectedPlayers, fields);
         }
     }
