@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -26,6 +27,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
     SensorManager sensorManager;
     private static final float SHAKE_THRESHOLD = 15.0f; // Sensitivity -> how much the device moves
     private Button rollButton;
+    private Button testButton;
+
+    private Player player;
+    private boolean diceRolling = true;
+
+    private ImageView diceImageView1;
+    private ImageView diceImageView2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        player = WebsocketClientController.getPlayer();
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -69,6 +82,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
             }
         });
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
+
+        testButton = findViewById(R.id.popUpCards);
+        testButton.setOnClickListener((v) -> {
+//            dicePopUp(testButton);
+            player.setOnTurn(false);
+            dicePopUp(testButton);
+            int[] a = {3,6};
+            showBothDice(a);
+        });
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
@@ -108,8 +130,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.activity_popup_dice, null);
 
-        ImageView diceImageView1 = popupView.findViewById(R.id.diceImageView1);
-        ImageView diceImageView2 = popupView.findViewById(R.id.diceImageView2);
+        diceImageView1 = popupView.findViewById(R.id.diceImageView1);
+        diceImageView2 = popupView.findViewById(R.id.diceImageView2);
 
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -130,12 +152,32 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
         rollButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Roll the dice and update the images
-                rollDiceAnimation(diceImageView1);
-                rollDiceAnimation(diceImageView2);
+                if (diceRolling){
+                    diceRolling = false;
+                    // Roll the dice and update the images
+                    rollDiceAnimation(diceImageView1);
+                    rollDiceAnimation(diceImageView2);
+                    rollButton.setText("OK");
+                }
+                else {
+                    popupWindow.dismiss();
+                }
+
             }
         });
+
+        if (!player.isOnTurn()) {
+            disableView(rollButton);
+        }
     }
+
+    private void disableView(View view){
+        ViewGroup.LayoutParams param = view.getLayoutParams();
+        param.height = 0;
+        param.width = 0;
+        view.setLayoutParams(param);
+    }
+
     private void rollDiceAnimation(ImageView imageView){
         RotateAnimation rotateAnimation = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
@@ -161,12 +203,25 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
     private void rollDice(ImageView imageView) {
         Random random = new Random();
         int diceResult = random.nextInt(6) + 1; // Random number between 1 and 6
+        showDice(diceResult, imageView);
+    }
+
+    private void showDice(int diceResult, ImageView imageView){
         int drawableResource = getResources().getIdentifier("dice" + diceResult, "drawable", getPackageName());
         imageView.setImageResource(drawableResource);
     }
 
+    private void showBothDice(int[] diceResult){
+        int drawableResource = getResources().getIdentifier("dice" + diceResult[0], "drawable", getPackageName());
+        diceImageView1.setImageResource(drawableResource);
+        drawableResource = getResources().getIdentifier("dice" + diceResult[1], "drawable", getPackageName());
+        diceImageView2.setImageResource(drawableResource);
+    }
+
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (!player.isOnTurn())
+            return;
         // only of the pop-up window is open, it is possible to shake the phone to roll the dice
         if (isPopupWindowOpen==true && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             // acceleration along x-, y- and z-axis
