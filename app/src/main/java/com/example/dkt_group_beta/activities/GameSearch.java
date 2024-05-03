@@ -84,6 +84,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         startActivity(intent);
     }
 
+
     @Override
     public void addGameToScrollView(int gameId, String gameName, int amountOfPLayer){
         Log.d("DEBUG", "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);

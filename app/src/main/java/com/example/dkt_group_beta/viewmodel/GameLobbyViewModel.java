@@ -137,7 +137,6 @@ public class GameLobbyViewModel {
             gameLobbyAction.readyStateChanged(fromPlayer.getUsername(), fromPlayer.isReady());
         }
         if (action == Action.GAME_STARTED){
-            Log.d("DEBUG", "LOOOSOOEOEOOSS");
             gameLobbyAction.switchToGameBoard(this.connectedPlayers, fields);
         }
     }

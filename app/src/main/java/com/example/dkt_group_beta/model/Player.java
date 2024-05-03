@@ -5,6 +5,8 @@ import java.util.Objects;
 
 
 public class Player implements Serializable {
+    private static final int START_MONEY = 1200;
+
     private String username;
 
     private String id;
@@ -28,7 +30,8 @@ public class Player implements Serializable {
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.setConnected(false);
+        this.isConnected = false;
+        this.money = START_MONEY;
     }
 
 
