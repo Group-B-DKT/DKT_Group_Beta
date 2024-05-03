@@ -18,9 +18,9 @@ public class CSVReaderTest extends TestCase {
         fields = new ArrayList<>();
         context = ApplicationProvider.getApplicationContext();
     }
-
     public void testReadFields() throws IOException {
         fields = CSVReader.readFields(context);
         assertEquals(30, fields.size());
     }
+
 }
