@@ -4,6 +4,8 @@ import java.util.Objects;
 
 
 public class Player {
+
+    final static public int startingMoney = 1500;
     private String username;
 
     private String id;
@@ -11,6 +13,8 @@ public class Player {
     private boolean isConnected;
 
     private int gameId;
+
+    private int playerMoney = startingMoney;
 
     private boolean isReady;
 
@@ -64,6 +68,21 @@ public class Player {
         isHost = host;
     }
 
+    public int getPlayerMoney() {
+        return playerMoney;
+    }
+    public void setPlayerMoney(int playerMoney) {
+        this.playerMoney = playerMoney;
+    }
+    public boolean pay(int amount) {
+        if (playerMoney > amount) {
+            playerMoney -= amount;
+            return true;
+        }
+        return false;
+    }
+
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
@@ -76,4 +95,5 @@ public class Player {
     public int hashCode() {
         return Objects.hash(username, id, isConnected, gameId, isReady, isHost);
     }
+
 }
