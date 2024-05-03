@@ -62,6 +62,14 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
+    public void diceRolled(int[] diceResults){
+        Gson gson =new Gson(); // convert String, int, .. into Json-Object
+        int gameId = WebsocketClientController.getConnectedGameId();
+        String arr = gson.toJson(diceResults);
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.ROLL_DICE, arr, WebsocketClientController.getPlayer()); // Action, dice results, and player send to server
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg); // sends message to server
+    }
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))
             return;
