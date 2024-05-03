@@ -15,12 +15,6 @@ public abstract class Building {
     @Getter
     private int position;
 
-    public Building (int price, Player owner, int position){
-        this.price = price;
-        this.owner = owner;
-        this.position = position;
-    }
-
     public void buyBuilding (){
         //TODO
     }
