@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,14 +28,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
+import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class GameBoard extends AppCompatActivity implements SensorEventListener {
+public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
     private static final int NUMBER_OF_FIELDS = 32;
     private List<ImageView> imageViews;
     private boolean isPopupWindowOpen = false;
@@ -48,7 +53,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
 
     private ImageView diceImageView1;
     private ImageView diceImageView2;
-
+    private int rollCounter = 0;
+    private GameBoardViewModel gameBoardViewModel;
+    private Game game;
+    private int[] diceResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
         });
 
         player = WebsocketClientController.getPlayer();
+        player.setOnTurn(true);
+        game = new Game(null,null);
+        gameBoardViewModel = new GameBoardViewModel(this,game);
+
+        diceResults = new int[2];
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -85,11 +98,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
 
         testButton = findViewById(R.id.popUpCards);
         testButton.setOnClickListener((v) -> {
-//            dicePopUp(testButton);
-            player.setOnTurn(false);
             dicePopUp(testButton);
-            int[] a = {3,6};
-            showBothDice(a);
+//            player.setOnTurn(false);
+//            dicePopUp(testButton);
+//            int[] a = {3,6};
+//            showBothDice(a);
         });
     }
 
@@ -160,6 +173,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
                     rollButton.setText("OK");
                 }
                 else {
+                    Log.d("Debug", "WERTTZ");
                     popupWindow.dismiss();
                 }
 
@@ -191,6 +205,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
             }
             @Override
             public void onAnimationEnd(Animation animation) {
+                rollCounter++;
                 rollDice(imageView);
             }
             @Override
@@ -201,9 +216,16 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
         imageView.startAnimation(rotateAnimation);
     }
     private void rollDice(ImageView imageView) {
-        Random random = new Random();
-        int diceResult = random.nextInt(6) + 1; // Random number between 1 and 6
+        int diceResult = gameBoardViewModel.getRandomNumber(1,6);
+
+        diceResults[rollCounter-1] = diceResult;
+        Log.d("Debug",rollCounter + ", " +diceResult);
         showDice(diceResult, imageView);
+
+        if(rollCounter==2){
+            gameBoardViewModel.rollDice(diceResults);
+            rollCounter = 0;
+        }
     }
 
     private void showDice(int diceResult, ImageView imageView){
@@ -211,7 +233,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener 
         imageView.setImageResource(drawableResource);
     }
 
-    private void showBothDice(int[] diceResult){
+    public void showBothDice(int[] diceResult){
         int drawableResource = getResources().getIdentifier("dice" + diceResult[0], "drawable", getPackageName());
         diceImageView1.setImageResource(drawableResource);
         drawableResource = getResources().getIdentifier("dice" + diceResult[1], "drawable", getPackageName());
