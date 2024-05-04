@@ -15,9 +15,6 @@ public abstract class Building {
     @Getter
     private int position;
 
-    public void buyBuilding (){
-        //TODO
-    }
     public void placeBuilding(){
         //TODO: places the building on the gameboard
     }

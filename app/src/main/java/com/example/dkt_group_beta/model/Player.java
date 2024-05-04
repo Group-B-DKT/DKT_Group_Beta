@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Player {
 
-    final static public int startingMoney = 1500;
+    final static public int STARTINGMONEY = 1500;
     private String username;
 
     private String id;
@@ -14,7 +14,7 @@ public class Player {
 
     private int gameId;
 
-    private int playerMoney = startingMoney;
+    private int playerMoney = STARTINGMONEY;
 
     private boolean isReady;
 
@@ -77,6 +77,13 @@ public class Player {
     public boolean pay(int amount) {
         if (playerMoney > amount) {
             playerMoney -= amount;
+            return true;
+        }
+        return false;
+    }
+    public boolean buyBuilding(Building building){
+        if(pay(building.getPrice())){
+            building.setOwner(this);
             return true;
         }
         return false;
