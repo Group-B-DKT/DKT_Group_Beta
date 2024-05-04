@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.model;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -19,6 +21,7 @@ public class Player {
     private boolean isReady;
 
     private boolean isHost;
+    private List<Field> ownedFields = new ArrayList<>();
 
     public Player(String username, String id) {
         this.username = username;
@@ -74,6 +77,9 @@ public class Player {
     public void setPlayerMoney(int playerMoney) {
         this.playerMoney = playerMoney;
     }
+    public List<Field> getOwnedFields() {
+        return ownedFields;
+    }
     public boolean pay(int amount) {
         if (playerMoney > amount) {
             playerMoney -= amount;
@@ -84,6 +90,7 @@ public class Player {
     public boolean buyField(Field field){
         if(pay(field.getPrice())){
             field.setOwner(this);
+            ownedFields.add(field);
             return true;
         }
         return false;
