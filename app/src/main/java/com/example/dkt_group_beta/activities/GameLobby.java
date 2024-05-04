@@ -88,10 +88,8 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
 
         this.layoutButtons = findViewById(R.id.layout_gameLobby_btn);
-        if (isHost) {
+        if (isHost)
             addStartButton();
-            this.layout_gameLobby_btn.removeView(this.btnReady);
-        }
 
         gameLobbyViewModel.getConnectedPlayerNames();
 
@@ -112,6 +110,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
                     layoutButtons,
                     ColorStateList.valueOf(Color.GREEN));
             layoutButtons.addView(btnStart);
+            layout_gameLobby_btn.removeView(this.btnReady);
         });
 
     }
@@ -217,7 +216,9 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         Log.d("DEBUG", "GameLobby::readyStateChanged/ " + username + " " + isReady);
         playerFields.forEach(pf -> {
             TextView childAt = (TextView) pf.getChildAt(0);
-            if (childAt.getText().toString().split(" ")[0].equals(username)){
+            String childAtUsername = childAt.getText().toString();
+            if (!childAtUsername.contains("HOST") &&
+                 childAtUsername.equals(username)){
                 TextView childIsReady = (TextView) pf.getChildAt(1);
                 String isReadyTxt = isReady ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
                 childIsReady.setText(isReadyTxt);
