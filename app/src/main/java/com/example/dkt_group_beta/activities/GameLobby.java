@@ -44,6 +44,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
     private GameLobbyViewModel gameLobbyViewModel;
     private LinearLayout scrollviewLayout;
     private LinearLayout layoutButtons;
+    private LinearLayout layout_gameLobby_btn;
     private List<LinearLayout> playerFields;
     private Button btnLeave;
     private Button btnReady;
@@ -67,6 +68,8 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
         isHost = WebsocketClientController.getPlayer().isHost();
 
+        this.layout_gameLobby_btn = findViewById(R.id.layout_gameLobby_btn);
+
 
         this.gameLobbyViewModel = new GameLobbyViewModel(this);
         this.playerFields = new ArrayList<>();
@@ -79,12 +82,16 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         });
 
 
-
         this.btnReady = findViewById(R.id.btn_setReady);
         this.btnReady.setOnClickListener((v) -> gameLobbyViewModel.setReady());
 
+
+
         this.layoutButtons = findViewById(R.id.layout_gameLobby_btn);
-        if (isHost) addStartButton();
+        if (isHost) {
+            addStartButton();
+            this.layout_gameLobby_btn.removeView(this.btnReady);
+        }
 
         gameLobbyViewModel.getConnectedPlayerNames();
 
