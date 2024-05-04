@@ -86,14 +86,23 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
 
 
     @Override
-    public void addGameToScrollView(int gameId, String gameName, int amountOfPLayer){
+    public void addGameToScrollView(int gameId, String gameName, int amountOfPLayer, boolean isStarted){
         Log.d("DEBUG", "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(gameId, amountOfPLayer);
 
             TextView textViewGameId = getTextView(gameName, View.TEXT_ALIGNMENT_TEXT_START, amountOfPLayer);
 
-            String status = String.format("%s", amountOfPLayer == MAX_PLAYER ? "Starting..." : "Waiting...");
+            String status = "Waiting...";
+            if (amountOfPLayer == MAX_PLAYER){
+                status = "Starting...";
+                linearLayout.setEnabled(false);
+            }
+            if (isStarted){
+                status = "Playing...";
+                linearLayout.setEnabled(false);
+            }
+
             TextView textViewPlayerStatus = getTextView(status, View.TEXT_ALIGNMENT_CENTER, amountOfPLayer);
 
             TextView textViewPlayerCount = getTextView(String.format(Locale.GERMAN, "%d/6", amountOfPLayer), View.TEXT_ALIGNMENT_TEXT_END, amountOfPLayer);

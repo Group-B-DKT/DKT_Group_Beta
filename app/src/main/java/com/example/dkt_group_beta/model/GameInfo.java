@@ -9,6 +9,7 @@ public class GameInfo {
     private int id;
     private String name;
     private List<Player> connectedPlayers;
+    boolean isStarted;
 
     public GameInfo(int id, String name, List<Player> connectedPlayers) {
         this.id = id;
@@ -26,5 +27,9 @@ public class GameInfo {
 
     public List<Player> getConnectedPlayers() {
         return connectedPlayers;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
     }
 }
