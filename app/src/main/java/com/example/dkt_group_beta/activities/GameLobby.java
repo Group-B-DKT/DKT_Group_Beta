@@ -171,10 +171,10 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
     @Override
      public void assertInputDialog(String text){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Attention!");
+        builder.setTitle(getString(R.string.dialog_start_game_header));
         builder.setMessage(text);
 
-        builder.setPositiveButton(getString(R.string.create_game_btn_create), (dialog, which) -> {
+        builder.setPositiveButton(getString(R.string.dialog_positive), (dialog, which) -> {
             dialog.cancel();
         });
 

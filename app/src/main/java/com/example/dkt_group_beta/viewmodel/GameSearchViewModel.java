@@ -40,6 +40,8 @@ public class GameSearchViewModel extends ViewModel {
 
     public void connectToGame(int gameId){
         Log.d("DEBUG", "GameSearchViewModel::connectToGame/ " + gameId);
+        if (gameId == -1)
+            return;
         actionController.joinGame(gameId);
     }
 

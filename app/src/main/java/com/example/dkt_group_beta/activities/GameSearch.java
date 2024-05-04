@@ -37,7 +37,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private Button btnRefresh;
     private Button btnConnect;
     private Button btnCreateNew;
-    private int selectedGameId;
+    private int selectedGameId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
