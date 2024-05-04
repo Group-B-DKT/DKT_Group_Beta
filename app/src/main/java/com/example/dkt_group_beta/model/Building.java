@@ -16,6 +16,13 @@ public abstract class Building {
     private int position;
     private Field field;
 
+    public Building(int price, Player owner, int position, Field field){
+        this.price = price;
+        this.owner = owner;
+        this.position = position;
+        this.field = field;
+    }
+
     public void placeBuilding(){
         //TODO: places the building on the gameboard
     }

@@ -114,7 +114,7 @@ public class Player {
             if (field.hasHotel()) {
                 return false;
             } else if (field.getNumberOfHouses() == house.getMaxAmount()) {
-                return buyHotel(new Hotel(Hotel.getHOTEL_PRICE(), this, house.getPosition(), field));
+                return buyHotel(new Hotel(Hotel.HOTEL_PRICE, this, house.getPosition(), field));
             } else {
                 field.addHouse(house);
                 house.setOwner(this);
