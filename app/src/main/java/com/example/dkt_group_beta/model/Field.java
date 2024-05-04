@@ -8,6 +8,7 @@ import lombok.Getter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Field {
@@ -18,6 +19,8 @@ public class Field {
     private int price = 0;
     private Player owner;
     private final boolean ownable;
+    private List<House> houses = new ArrayList<>();
+    private Hotel hotel;
 
     public Field(int id, String name, boolean ownable) {
         this.id = id;
@@ -62,6 +65,18 @@ public class Field {
 
     public static ArrayList<Field> loadFields(Context context) throws IOException {
         return CSVReader.readFields(context);
+    }
+    public boolean hasHotel(){
+        return hotel != null;
+    }
+    public void setHotel(Hotel hotel){
+        this.hotel = hotel;
+    }
+    public void addHouse(House house){
+        houses.add(house);
+    }
+    public int getNumberOfHouses(){
+        return houses.size();
     }
 
     @Override

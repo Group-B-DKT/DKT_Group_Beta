@@ -96,6 +96,38 @@ public class Player {
         return false;
     }
 
+    public boolean buyHouse(House house) {
+        Field field = house.getField();
+        if (this.ownedFields.contains(field) && this.pay(house.getHousePrice())) {
+            if (field.hasHotel()) {
+                return false;
+            } else if (field.getNumberOfHouses() == house.getMaxAmount()) {
+                return buyHotel(new Hotel(Hotel.getHOTEL_PRICE(), this, house.getPosition(), field));
+            } else {
+                field.addHouse(house);
+                house.setOwner(this);
+                house.setField(field);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean buyHotel(Hotel hotel) {
+        Field field = hotel.getField();
+        if (this.ownedFields.contains(field) && this.pay(hotel.getPrice())) {
+            if (field.hasHotel()) {
+                return false;
+            } else {
+                field.setHotel(hotel);
+                hotel.setOwner(this);
+                hotel.setField(field);
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     @Override
     public boolean equals(Object object) {
