@@ -36,18 +36,6 @@ public class Character extends AppCompatActivity {
         this.imageView = imageView;
 
     }
-
-   /* public void setStartPosition() {
-
-        ImageView field1 = findViewById(R.id.field1);
-        float field1Pos = field1.getX();
-        if(imageView != null){
-            this.startPosition = field1Pos;
-            imageView.setX(field1Pos);
-        }
-    }*/
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
