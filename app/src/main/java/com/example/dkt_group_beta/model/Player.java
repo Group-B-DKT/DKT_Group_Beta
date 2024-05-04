@@ -81,9 +81,9 @@ public class Player {
         }
         return false;
     }
-    public boolean buyBuilding(Building building){
-        if(pay(building.getPrice())){
-            building.setOwner(this);
+    public boolean buyField(Field field){
+        if(pay(field.getPrice())){
+            field.setOwner(this);
             return true;
         }
         return false;
