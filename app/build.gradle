@@ -54,7 +54,6 @@ tasks.register('jacocoTestReport', JacocoReport) {
     executionData.from = files("${project.layout.buildDirectory.get().asFile}/jacoco/testDebugUnitTest.exec")
 }
 
-
 sonar {
     properties {
         property "sonar.projectKey", "Group-B-DKT_DKT_Group_Beta"
@@ -73,10 +72,11 @@ dependencies {
     implementation libs.constraintlayout
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
-    testImplementation libs.junit
     testImplementation libs.mockito.core
     testImplementation libs.robolectric
+    testImplementation libs.junit.jupiter
     testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit
     testRuntimeOnly libs.junit.jupiter.engine
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
