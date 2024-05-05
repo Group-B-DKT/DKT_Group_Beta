@@ -15,15 +15,14 @@ import com.example.dkt_group_beta.communication.enums.Info;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.google.gson.Gson;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class WrapperHelperTest {
-    private static Gson gson;
+    private Gson gson;
 
-    @BeforeAll
-    static void setUp(){
-        System.out.println("ASD");
+    @BeforeEach
+    void setUp(){
         gson = new Gson();
     }
 
