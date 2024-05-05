@@ -100,19 +100,6 @@ public class Player implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return "Player{" +
-                "username='" + username + '\'' +
-                ", id='" + id + '\'' +
-                ", isConnected=" + isConnected +
-                ", gameId=" + gameId +
-                ", isReady=" + isReady +
-                ", isHost=" + isHost +
-                ", isOnTurn=" + isOnTurn +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object object) {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;

@@ -12,6 +12,8 @@ import com.google.gson.Gson;
 public class WrapperHelper {
     private static Gson gson = new Gson();
 
+    private WrapperHelper() {}
+
     public static Object getInstanceFromWrapper(Wrapper wrapper){
         if (wrapper.getClassname() == null || wrapper.getClassname().isEmpty())
             return null;

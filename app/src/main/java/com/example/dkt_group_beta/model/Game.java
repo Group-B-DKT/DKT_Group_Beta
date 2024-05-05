@@ -13,4 +13,12 @@ public class Game {
         this.players = players;
         this.fields = fields;
     }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public List<Field> getFields() {
+        return fields;
+    }
 }
