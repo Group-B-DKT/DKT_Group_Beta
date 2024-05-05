@@ -8,14 +8,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GameTest {
+ class GameTest {
 
     private List<Player> players;
     private List<Field> fields;
     private Game game;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         players = new ArrayList<>();
         players.add(new Player("Player1", "1"));
         players.add(new Player("Player2", "2"));
@@ -28,7 +28,7 @@ public class GameTest {
     }
 
     @Test
-    public void testGameInitialization() {
+    void testGameInitialization() {
         assertEquals(2, game.getPlayers().size());
         assertEquals(2, game.getFields().size());
     }

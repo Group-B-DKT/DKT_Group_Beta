@@ -8,13 +8,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GameInfoTest {
+class GameInfoTest {
 
     private List<Player> players;
     private GameInfo gameInfo;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         players = new ArrayList<>();
         players.add(new Player("Player1", "1"));
         players.add(new Player("Player2", "2"));
@@ -23,22 +23,22 @@ public class GameInfoTest {
     }
 
     @Test
-    public void testGetId() {
+    void testGetId() {
         assertEquals(1, gameInfo.getId());
     }
 
     @Test
-    public void testGetName() {
+    void testGetName() {
         assertEquals("Test Game", gameInfo.getName());
     }
 
     @Test
-    public void testGetConnectedPlayers() {
+    void testGetConnectedPlayers() {
         assertEquals(2, gameInfo.getConnectedPlayers().size());
     }
 
     @Test
-    public void testIsStarted() {
+    void testIsStarted() {
         assertEquals(false, gameInfo.isStarted());
     }
 }

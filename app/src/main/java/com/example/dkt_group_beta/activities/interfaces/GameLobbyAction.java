@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface GameLobbyAction {

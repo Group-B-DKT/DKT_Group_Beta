@@ -18,43 +18,43 @@ import com.google.gson.Gson;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-public class WrapperHelperTest {
+class WrapperHelperTest {
     private static Gson gson;
 
     @BeforeAll
-    public static void setUp(){
+    static void setUp(){
         System.out.println("ASD");
         gson = new Gson();
     }
 
     @Test
-    public void getInstanceFromWrapperReturnNull(){
+    void getInstanceFromWrapperReturnNull(){
         assertNull(WrapperHelper.getInstanceFromWrapper(new Wrapper(null, -1, Request.INFO, null)));
     }
 
     @Test
-    public void getInstanceFromWrapperConnectJsonObject(){
+    void getInstanceFromWrapperConnectJsonObject(){
         ConnectJsonObject connectJsonObject = new ConnectJsonObject(ConnectType.NEW_CONNECT);
         Wrapper wrapper = new Wrapper(connectJsonObject.getClass().getSimpleName(), -1, Request.CONNECT, connectJsonObject);
         assertTrue(WrapperHelper.getInstanceFromWrapper(wrapper) instanceof ConnectJsonObject);
     }
 
     @Test
-    public void getInstanceFromWrapperReturnActionJsonObject(){
+    void getInstanceFromWrapperReturnActionJsonObject(){
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.ROLL_DICE);
         Wrapper wrapper = new Wrapper(actionJsonObject.getClass().getSimpleName(), -1, Request.CONNECT, actionJsonObject);
         assertTrue(WrapperHelper.getInstanceFromWrapper(wrapper) instanceof ActionJsonObject);
     }
 
     @Test
-    public void getInstanceFromWrapperReturnInfoJsonObject(){
+    void getInstanceFromWrapperReturnInfoJsonObject(){
         InfoJsonObject infoJsonObject = new InfoJsonObject(Info.GAME_LIST);
         Wrapper wrapper = new Wrapper(infoJsonObject.getClass().getSimpleName(), -1, Request.CONNECT, infoJsonObject);
         assertTrue(WrapperHelper.getInstanceFromWrapper(wrapper) instanceof InfoJsonObject);
     }
 
     @Test
-    public void getInstanceFromJsonReturnTrue(){
+    void getInstanceFromJsonReturnTrue(){
         InfoJsonObject infoJsonObject = new InfoJsonObject(Info.GAME_LIST);
         Wrapper wrapper = new Wrapper(infoJsonObject.getClass().getSimpleName(), -1, Request.CONNECT, infoJsonObject);
         String json = gson.toJson(wrapper);
@@ -62,13 +62,13 @@ public class WrapperHelperTest {
     }
 
     @Test
-    public void getInstanceFromJsonReturnNull(){
+    void getInstanceFromJsonReturnNull(){
         String json = "";
         assertNull(WrapperHelper.getInstanceFromJson(json));
     }
 
     @Test
-    public void toJsonFromObjectCorrect(){
+    void toJsonFromObjectCorrect(){
         ConnectJsonObject connectJsonObject = new ConnectJsonObject(ConnectType.NEW_CONNECT);
         Wrapper wrapper = new Wrapper(connectJsonObject.getClass().getSimpleName(), -1, Request.CONNECT, connectJsonObject);
         String expected = gson.toJson(wrapper);
