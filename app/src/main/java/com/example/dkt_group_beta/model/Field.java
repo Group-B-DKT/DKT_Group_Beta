@@ -71,10 +71,6 @@ public class Field implements Serializable {
         return owner;
     }
 
-    public boolean isOwnable() {
-        return ownable;
-    }
-
     public FieldType getFieldType() {
         return fieldType;
     }

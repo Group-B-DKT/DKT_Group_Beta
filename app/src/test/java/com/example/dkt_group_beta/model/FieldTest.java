@@ -56,7 +56,7 @@ public class FieldTest {
 
     @Test
     public void testIsOwnable() {
-        assertTrue(field.isOwnable());
+        assertTrue(field.getOwnable());
     }
 
     @Test
