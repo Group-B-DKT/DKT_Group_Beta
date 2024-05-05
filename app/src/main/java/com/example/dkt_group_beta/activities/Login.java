@@ -41,17 +41,13 @@ public class Login extends AppCompatActivity {
         loginViewModel.checkSavedUsername();
         etUsername = findViewById(R.id.BenutzerEingabe);
         buttonLogin = findViewById(R.id.LoginButton2);
-        buttonLogin.setOnClickListener(v -> {loginViewModel.onLogin(etUsername.getText().toString());
-        });
+        buttonLogin.setOnClickListener(v -> loginViewModel.onLogin(etUsername.getText().toString()));
         Log.d("debug", "Gespeicherte Namen" + loginViewModel.getSavedUsername());
 
         buttonBoard = findViewById(R.id.buttonBoard);
-        buttonBoard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonBoard.setOnClickListener(v -> {
                 Intent intent = new Intent(Login.this, GameBoard.class);
                 startActivity(intent);
-            }
         });
     }
 

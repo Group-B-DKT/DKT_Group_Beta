@@ -28,6 +28,7 @@ import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import static android.view.ViewGroup.LayoutParams;
 
 public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private static final int MAX_PLAYER = 6;
@@ -49,8 +50,8 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        String device_unique_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        this.gameSearchViewModel = new GameSearchViewModel(getString(R.string.ip_address), getIntent().getStringExtra("username"), device_unique_id, this);
+        String deviceUniqueId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        this.gameSearchViewModel = new GameSearchViewModel(getString(R.string.ip_address), getIntent().getStringExtra("username"), deviceUniqueId, this);
 
         this.scrollviewLayout = (LinearLayout) findViewById(R.id.scrollview_layout);
         this.btnRefresh = findViewById(R.id.btn_refresh);
@@ -61,7 +62,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         this.btnCreateNew.setOnClickListener(this::assertInputDialog);
 
         this.btnConnect = findViewById(R.id.btn_connect);
-        this.btnConnect.setOnClickListener((v) -> gameSearchViewModel.connectToGame(this.selectedGameId));
+        this.btnConnect.setOnClickListener(v -> gameSearchViewModel.connectToGame(this.selectedGameId));
 
         this.selectedGameId = -1;
     }
@@ -139,8 +140,8 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setPadding(30,0,30,0);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
         ));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setId(gameId);

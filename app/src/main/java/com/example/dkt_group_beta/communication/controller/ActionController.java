@@ -7,7 +7,6 @@ import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
 import com.example.dkt_group_beta.model.Field;
-import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
 import com.google.gson.Gson;
 
@@ -56,7 +55,7 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
-    public void initFields(ArrayList<Field> fields) {
+    public void initFields(List<Field> fields) {
         Gson gson = new Gson();
         int gameId = WebsocketClientController.getConnectedGameId();
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.INIT_FIELDS, gson.toJson(fields, ArrayList.class));

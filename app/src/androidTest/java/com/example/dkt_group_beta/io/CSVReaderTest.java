@@ -10,10 +10,11 @@ import junit.framework.TestCase;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CSVReaderTest extends TestCase {
     Context context;
-    ArrayList<Field> fields = new ArrayList<>();
+    List<Field> fields = new ArrayList<>();
     public void setUp() {
         fields = new ArrayList<>();
         context = ApplicationProvider.getApplicationContext();

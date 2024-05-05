@@ -5,11 +5,9 @@ import android.content.Context;
 import com.example.dkt_group_beta.io.CSVReader;
 import com.example.dkt_group_beta.model.enums.FieldType;
 
-import lombok.Getter;
-
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Field implements Serializable {
@@ -75,7 +73,7 @@ public class Field implements Serializable {
         return fieldType;
     }
 
-    public static ArrayList<Field> loadFields(Context context) throws IOException {
+    public static List<Field> loadFields(Context context) throws IOException {
         return CSVReader.readFields(context);
     }
 

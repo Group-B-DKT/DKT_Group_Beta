@@ -6,9 +6,6 @@ import com.example.dkt_group_beta.model.Player;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.ToString;
-
 public  class ActionJsonObject {
     private Action action;
     private String param;

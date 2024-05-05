@@ -2,9 +2,6 @@ package com.example.dkt_group_beta.model;
 
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 public class GameInfo {
     private int id;
     private String name;

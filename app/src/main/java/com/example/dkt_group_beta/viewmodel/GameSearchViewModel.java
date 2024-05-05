@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
-import com.example.dkt_group_beta.communication.controller.ConnectController;
 import com.example.dkt_group_beta.communication.controller.InfoController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.communication.enums.Action;
@@ -20,7 +19,6 @@ import java.util.List;
 public class GameSearchViewModel extends ViewModel {
     private String username;
     private final InfoController infoController;
-    private final ConnectController connectController;
     private final ActionController actionController;
     private final GameSearchAction gameSearchAction;
 
@@ -28,7 +26,6 @@ public class GameSearchViewModel extends ViewModel {
     public GameSearchViewModel(String uri, String username, String id, GameSearchAction gameSearchAction){
         WebsocketClientController.connectToServer(uri, id, username);
         infoController = new InfoController(this::handleInfo);
-        connectController = new ConnectController(this::onConnectionEstablished);
         actionController = new ActionController(this::handleAction);
         this.gameSearchAction = gameSearchAction;
         this.username = username;
@@ -55,7 +52,7 @@ public class GameSearchViewModel extends ViewModel {
         if (gameInfos == null) return;
 
         gameSearchAction.refreshGameListItems();
-        gameInfos.forEach((gameInfo) -> gameSearchAction.addGameToScrollView(gameInfo.getId(),
+        gameInfos.forEach(gameInfo -> gameSearchAction.addGameToScrollView(gameInfo.getId(),
                                                                              gameInfo.getName(),
                                                                              gameInfo.getConnectedPlayers() == null ? 0 : gameInfo.getConnectedPlayers().size(),
                                                                              gameInfo.isStarted()));

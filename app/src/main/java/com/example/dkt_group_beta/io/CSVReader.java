@@ -7,18 +7,19 @@ import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.enums.FieldType;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import android.util.Log;
 
 public class CSVReader {
-    public static ArrayList<Field> readFields(Context context) throws IOException {
+
+    private CSVReader(){}
+    public static List<Field> readFields(Context context) throws IOException {
         ArrayList<Field> list = new ArrayList<>();
 
         String path = "fields.csv";
@@ -41,7 +42,7 @@ public class CSVReader {
             }
             br.close();
         } catch (IOException e) {
-            //e.printStackTrace();
+            return list;
         }
         finally {
             assert br != null;

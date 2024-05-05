@@ -1,13 +1,13 @@
 package com.example.dkt_group_beta.communication.controller;
 
-import android.util.Log;
-
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.networking.WebSocketClient;
 import com.example.dkt_group_beta.networking.WebSocketMessageHandler;
 
 public class WebsocketClientController {
     private static WebSocketClient networkHandler;
+
+    private WebsocketClientController() {}
     public static void connectToServer(String uri, String id, String username){
         networkHandler = new WebSocketClient(uri, id, username);
         networkHandler.connectToServer();

@@ -2,9 +2,6 @@ package com.example.dkt_group_beta.communication;
 
 import com.example.dkt_group_beta.communication.enums.Request;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
 
 public class Wrapper {
     private String classname;
