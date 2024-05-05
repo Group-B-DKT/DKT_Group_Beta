@@ -30,7 +30,11 @@ import java.util.List;
 
 public class GameBoard extends AppCompatActivity {
     private static final int NUMBER_OF_FIELDS = 32;
+
+    private static final int NUMBER_OF_FIGURES = 6;
     private List<ImageView> imageViews;
+
+    private List<ImageView> figures;
 
     HashMap<Integer, Float> XKoordinates = new HashMap();
     HashMap<Integer, Float> YKoordinates = new HashMap();
@@ -74,24 +78,59 @@ public class GameBoard extends AppCompatActivity {
             }
         });
 
+        this.figures = new ArrayList<>();
+        runOnUiThread(() ->{
+
+            for (int i = 1; i <= NUMBER_OF_FIGURES; i++) {
+                int resourceId = this.getResources()
+                        .getIdentifier("character" + i, "id", this.getPackageName());
+                figures.add(findViewById(resourceId));
+
+                resourceId = this.getResources()
+                        .getIdentifier("character" + i, "drawable", this.getPackageName());
+
+
+                ImageView imageView = figures.get(i - 1);
+                if (imageView != null && resourceId != 0) {
+                    imageView.setImageBitmap(
+                            decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+                }
+            }
+
+
+
+        });
+
+
+
+
+
+
+
+
 
         getPositions(); //Positionen der Felder speichern
         setStartPosition(1, character);
 
 
+
+        // Erster Aufruf von animation
         animation(character, 3);
 
-
-
-
-     character.postDelayed(new Runnable() {
+        // Verzögerte Ausführung des zweiten Aufrufs von animation
+        new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                // Hier kommt der Code, der nach der Verzögerung ausgeführt werden soll
-               
-                animation(character, 3);
+                // Zweiter Aufruf von animation
+                animation(character, 20);
             }
-        }, 2000); // Verzögerung von 2000 Millisekunden (2 Sekunden)
+        }, 2000);
+
+        setPosition(character2, 1);
+
+
+
+
 
 
 
@@ -216,7 +255,7 @@ public class GameBoard extends AppCompatActivity {
             start1Y = characterImageView.getY();
 
             // Berechnen der Endposition der benutzerdefinierten Translation
-            float end1X = start1X - 15 * repetition; // 100 Pixel pro Schritt
+            float end1X = start1X - 15 * repetition; // 15 Pixel pro Schritt
             float end1Y = start1Y;
 
             // Erstellen und Starten der Animation
@@ -235,9 +274,15 @@ public class GameBoard extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     // Animation beendet
-                    currentplace += repetition; // Bewegen Sie den Charakter um ein Feld weiter
+                    currentplace += repetition;
 
                     setPosition(characterImageView, currentplace);
+                    characterImageView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    }, 2000);
 
                 }
 
@@ -246,6 +291,8 @@ public class GameBoard extends AppCompatActivity {
 
                     // Animation wiederholt
                     Log.d("PLACE", String.valueOf(currentplace));
+                    characterImageView.setX(XKoordinates.get(currentplace));
+
 
                 }
             });
@@ -273,7 +320,7 @@ public class GameBoard extends AppCompatActivity {
                         setPosition(characterImageView, currentplace);
 
 
-                        new Handler().postDelayed(new Runnable() {
+                        characterImageView.postDelayed(new Runnable() {
                             @Override
                             public void run() {
 
@@ -368,6 +415,9 @@ public class GameBoard extends AppCompatActivity {
 
                 }
             }, 2000);
+
+
+
 
         }
 
