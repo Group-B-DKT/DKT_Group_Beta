@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -41,17 +40,13 @@ public class Login extends AppCompatActivity {
         loginViewModel.checkSavedUsername();
         etUsername = findViewById(R.id.BenutzerEingabe);
         buttonLogin = findViewById(R.id.LoginButton2);
-        buttonLogin.setOnClickListener(v -> {loginViewModel.onLogin(etUsername.getText().toString());
-        });
+        buttonLogin.setOnClickListener(v -> loginViewModel.onLogin(etUsername.getText().toString()));
         Log.d("debug", "Gespeicherte Namen" + loginViewModel.getSavedUsername());
 
         buttonBoard = findViewById(R.id.buttonBoard);
-        buttonBoard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        buttonBoard.setOnClickListener(v -> {
                 Intent intent = new Intent(Login.this, GameBoard.class);
                 startActivity(intent);
-            }
         });
     }
 

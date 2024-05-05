@@ -28,6 +28,7 @@ import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import static android.view.ViewGroup.LayoutParams;
 
 public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private static final int MAX_PLAYER = 6;
@@ -37,7 +38,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private Button btnRefresh;
     private Button btnConnect;
     private Button btnCreateNew;
-    private int selectedGameId;
+    private int selectedGameId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +50,8 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        String device_unique_id = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        this.gameSearchViewModel = new GameSearchViewModel(getString(R.string.ip_address), getIntent().getStringExtra("username"), device_unique_id, this);
+        String deviceUniqueId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        this.gameSearchViewModel = new GameSearchViewModel(getString(R.string.ip_address), getIntent().getStringExtra("username"), deviceUniqueId, this);
 
         this.scrollviewLayout = (LinearLayout) findViewById(R.id.scrollview_layout);
         this.btnRefresh = findViewById(R.id.btn_refresh);
@@ -61,7 +62,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         this.btnCreateNew.setOnClickListener(this::assertInputDialog);
 
         this.btnConnect = findViewById(R.id.btn_connect);
-        this.btnConnect.setOnClickListener((v) -> gameSearchViewModel.connectToGame(this.selectedGameId));
+        this.btnConnect.setOnClickListener(v -> gameSearchViewModel.connectToGame(this.selectedGameId));
 
         this.selectedGameId = -1;
     }
@@ -84,15 +85,25 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         startActivity(intent);
     }
 
+
     @Override
-    public void addGameToScrollView(int gameId, String gameName, int amountOfPLayer){
+    public void addGameToScrollView(int gameId, String gameName, int amountOfPLayer, boolean isStarted){
         Log.d("DEBUG", "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(gameId, amountOfPLayer);
 
             TextView textViewGameId = getTextView(gameName, View.TEXT_ALIGNMENT_TEXT_START, amountOfPLayer);
 
-            String status = String.format("%s", amountOfPLayer == MAX_PLAYER ? "Starting..." : "Waiting...");
+            String status = "Waiting...";
+            if (amountOfPLayer == MAX_PLAYER){
+                status = "Starting...";
+                linearLayout.setEnabled(false);
+            }
+            if (isStarted){
+                status = "Playing...";
+                linearLayout.setEnabled(false);
+            }
+
             TextView textViewPlayerStatus = getTextView(status, View.TEXT_ALIGNMENT_CENTER, amountOfPLayer);
 
             TextView textViewPlayerCount = getTextView(String.format(Locale.GERMAN, "%d/6", amountOfPLayer), View.TEXT_ALIGNMENT_TEXT_END, amountOfPLayer);
@@ -129,8 +140,8 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setPadding(30,0,30,0);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
         ));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setId(gameId);

@@ -1,18 +1,15 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -25,29 +22,27 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameLobbyAction;
-import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
-import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
-import org.w3c.dom.Text;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import static android.view.ViewGroup.LayoutParams;
 
 public class GameLobby extends AppCompatActivity implements GameLobbyAction {
     private GameLobbyViewModel gameLobbyViewModel;
     private LinearLayout scrollviewLayout;
     private LinearLayout layoutButtons;
+    private LinearLayout layoutGameLobbyBtn;
     private List<LinearLayout> playerFields;
     private Button btnLeave;
     private Button btnReady;
     private Button btnStart;
     private boolean isHost;
-    private static int id = 1;
-    private boolean firstInList = true;
+    private int id = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +55,9 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             return insets;
         });
 
-        String username = getIntent().getStringExtra("username");
-
         isHost = WebsocketClientController.getPlayer().isHost();
+
+        this.layoutGameLobbyBtn = findViewById(R.id.layout_gameLobby_btn);
 
 
         this.gameLobbyViewModel = new GameLobbyViewModel(this);
@@ -70,18 +65,17 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
-        this.btnLeave.setOnClickListener(v -> {
-            gameLobbyViewModel.leaveGame();
-
-        });
-
+        this.btnLeave.setOnClickListener(v -> gameLobbyViewModel.leaveGame());
 
 
         this.btnReady = findViewById(R.id.btn_setReady);
-        this.btnReady.setOnClickListener((v) -> gameLobbyViewModel.setReady());
+        this.btnReady.setOnClickListener(v -> gameLobbyViewModel.setReady());
+
+
 
         this.layoutButtons = findViewById(R.id.layout_gameLobby_btn);
-        if (isHost) addStartButton();
+        if (isHost)
+            addStartButton();
 
         gameLobbyViewModel.getConnectedPlayerNames();
 
@@ -90,17 +84,18 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
 
     public void addStartButton(){
-//        int layout = androidx.constraintlayout.widget.R.attr.buttonBarButtonStyle;
         runOnUiThread(()->{
             btnStart = new Button(this);
             btnStart.setBackgroundTintList(this.btnReady.getBackgroundTintList());
             btnStart.setText(getString(R.string.btn_startGame));
             btnStart.setLayoutParams(this.btnReady.getLayoutParams());
             btnStart.setTextColor(Color.GREEN);
+            btnStart.setOnClickListener(v -> gameLobbyViewModel.startGame());
             ViewCompat.setBackgroundTintList(
                     layoutButtons,
                     ColorStateList.valueOf(Color.GREEN));
             layoutButtons.addView(btnStart);
+            layoutGameLobbyBtn.removeView(this.btnReady);
         });
 
     }
@@ -139,8 +134,8 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         LinearLayout linearLayout = new LinearLayout(this);
         linearLayout.setPadding(30,0,30,0);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT
         ));
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setId(id);
@@ -164,6 +159,17 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         return textView;
     }
 
+    @Override
+     public void assertInputDialog(String text){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.dialog_start_game_header));
+        builder.setMessage(text);
+
+        builder.setPositiveButton(getString(R.string.dialog_positive), (dialog, which) -> dialog.cancel());
+
+        builder.show();
+    }
+
 
     @Override
     public void addPlayerToView(Player player) {
@@ -171,14 +177,15 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             LinearLayout linearLayout = getLinearLayout(id++);
 
             String name = player.getUsername();
-            if (player.isHost())
-                name += " (HOST)";
-
-            TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
 
             String isReady = player.isReady() ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
             TextView textViewIsReady = getTextView(isReady, View.TEXT_ALIGNMENT_TEXT_END);
 
+            if (player.isHost()) {
+                name += " (HOST)";
+                textViewIsReady.setText("");
+            }
+            TextView textViewGameId = getTextView(name, View.TEXT_ALIGNMENT_TEXT_START);
             linearLayout.addView(textViewGameId);
             linearLayout.addView(textViewIsReady);
 
@@ -192,12 +199,28 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         Log.d("DEBUG", "GameLobby::readyStateChanged/ " + username + " " + isReady);
         playerFields.forEach(pf -> {
             TextView childAt = (TextView) pf.getChildAt(0);
-            if (childAt.getText().toString().split(" ")[0].equals(username)){
+            String childAtUsername = childAt.getText().toString();
+            if (!childAtUsername.contains("HOST") &&
+                 childAtUsername.equals(username)){
                 TextView childIsReady = (TextView) pf.getChildAt(1);
                 String isReadyTxt = isReady ? getString(R.string.btn_is_ready) : getString(R.string.btn_is_not_ready);
                 childIsReady.setText(isReadyTxt);
             }
         });
+    }
+
+    @Override
+    public void switchToGameBoard(List<Player> connectedPlayers, List<Field> fields){
+        Intent intent = new Intent(this, GameBoard.class);
+        intent.putExtra("players", (Serializable) connectedPlayers);
+        intent.putExtra("fields", (Serializable) fields);
+        startActivity(intent);
+    }
+
+
+    @Override
+    public Context getContext() {
+        return this.getApplicationContext();
     }
 
     public void changeReadyBtnText(boolean isReady) {

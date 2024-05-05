@@ -13,6 +13,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,8 @@ import java.util.List;
 public class GameBoard extends AppCompatActivity {
     private static final int NUMBER_OF_FIELDS = 32;
     private List<ImageView> imageViews;
+
+    private Game game;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +36,11 @@ public class GameBoard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        List<Player> players = (List<Player>) getIntent().getSerializableExtra("players");
+        List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
+
+        game = new Game(players, fields);
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
