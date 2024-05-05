@@ -18,13 +18,6 @@ public class Wrapper {
     @Getter
     private Object object;
 
-    public Wrapper(String classname, int gameId, Request request, Object object) {
-        this.classname = classname;
-        this.gameId = gameId;
-        this.request = request;
-        this.object = object;
-    }
-
     public String getClassname() {
         return classname;
     }
