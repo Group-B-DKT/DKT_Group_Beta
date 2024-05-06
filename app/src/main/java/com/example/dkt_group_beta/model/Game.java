@@ -18,6 +18,9 @@ public class Game {
     }
 
     public int getRandomNumber(int min, int max) {
+        if(min > max){
+            return -1;
+        }
         return random.nextInt(max - min + 1) + min;
     }
 
