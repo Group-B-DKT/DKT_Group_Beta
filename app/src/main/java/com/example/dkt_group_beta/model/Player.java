@@ -96,6 +96,13 @@ public class Player {
         }
         return false;
     }
+    public boolean buyBuilding(Building building){
+        if(pay(building.getPrice())){
+            building.setOwner(this);
+            return true;
+        }
+        return false;
+    }
 
 
     public boolean isOnTurn() {
@@ -126,4 +133,5 @@ public class Player {
     public int hashCode() {
         return Objects.hash(username, id, isConnected, gameId, isReady, isHost);
     }
+
 }
