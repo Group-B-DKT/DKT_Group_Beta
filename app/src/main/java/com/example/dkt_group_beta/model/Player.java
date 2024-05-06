@@ -100,7 +100,7 @@ public class Player {
         return false;
     }
     public boolean buyField(Field field){
-        if(pay(field.getPrice())){
+        if(pay(field.getPrice()) && field.getOwner() == null){
             field.setOwner(this);
             ownedFields.add(field);
             return true;
@@ -110,7 +110,7 @@ public class Player {
 
     public boolean buyHouse(House house) {
         Field field = house.getField();
-        if (this.ownedFields.contains(field) && this.pay(house.getHousePrice())) {
+        if (field.getOwner() == this && this.pay(house.getHousePrice())) {
             if (field.hasHotel()) {
                 return false;
             } else if (field.getNumberOfHouses() == house.getMaxAmount()) {
@@ -127,7 +127,7 @@ public class Player {
 
     public boolean buyHotel(Hotel hotel) {
         Field field = hotel.getField();
-        if (this.ownedFields.contains(field) && this.pay(hotel.getPrice())) {
+        if (field.getOwner() == this && this.pay(hotel.getPrice())) {
             if (field.hasHotel()) {
                 return false;
             } else {
