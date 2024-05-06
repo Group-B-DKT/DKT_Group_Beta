@@ -26,7 +26,7 @@ public class CSVReaderTest extends TestCase {
         assertEquals(30, fields.size());
     }
     public void testReadNoContext() {
-        assertThrows(AssertionError.class, ()-> CSVReader.readFields(null));
+        assertThrows(NullPointerException.class, ()-> CSVReader.readFields(null));
     }
 
 }
