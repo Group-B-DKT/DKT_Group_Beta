@@ -32,6 +32,4 @@ public class CSVReaderTest {
         List<Field> fields = CSVReader.readFields(contextMock);
         assertEquals(0, fields.size());
     }
-
-
 }
