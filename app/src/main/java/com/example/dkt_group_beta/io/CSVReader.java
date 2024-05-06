@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CSVReader {
+    private CSVReader() {}
     public static List<Field> readFields(Context context) {
         ArrayList<Field> list = new ArrayList<>();
 
