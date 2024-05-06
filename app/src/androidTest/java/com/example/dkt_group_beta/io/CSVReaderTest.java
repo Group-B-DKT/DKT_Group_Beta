@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.io;
 
+import static org.junit.Assert.assertThrows;
+
 import android.content.Context;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -22,6 +24,9 @@ public class CSVReaderTest extends TestCase {
     public void testReadFields() throws IOException {
         fields = CSVReader.readFields(context);
         assertEquals(30, fields.size());
+    }
+    public void testReadNoContext() {
+        assertThrows(AssertionError.class, ()-> CSVReader.readFields(null));
     }
 
 }
