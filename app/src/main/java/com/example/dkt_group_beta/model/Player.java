@@ -1,9 +1,12 @@
 package com.example.dkt_group_beta.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 
-public class Player {
+public class Player implements Serializable {
+    private static final int START_MONEY = 1200;
+
     private String username;
 
     private String id;
@@ -19,6 +22,8 @@ public class Player {
     private int money;
     private Field currentField;
     private boolean isInGame;
+    private boolean isOnTurn;
+
 
 
     public Player(String username, String id) {
@@ -28,6 +33,8 @@ public class Player {
         this.gameId = -1;
         this.setConnected(false);
         this.isInGame = false;
+        this.isConnected = false;
+        this.money = START_MONEY;
     }
 
 
@@ -71,6 +78,14 @@ public class Player {
         isHost = host;
     }
 
+    public boolean isOnTurn() {
+        return isOnTurn;
+    }
+
+    public void setOnTurn(boolean onTurn) {
+        isOnTurn = onTurn;
+    }
+
     public int getMoney() {
         return money;
     }
@@ -88,7 +103,6 @@ public class Player {
     public void setInGame(boolean inGame) {
         isInGame = inGame;
     }
-
 
     @Override
     public boolean equals(Object object) {

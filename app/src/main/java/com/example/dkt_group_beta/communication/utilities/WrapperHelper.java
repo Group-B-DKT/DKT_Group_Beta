@@ -1,7 +1,5 @@
 package com.example.dkt_group_beta.communication.utilities;
 
-import android.util.Log;
-
 import com.example.dkt_group_beta.communication.ActionJsonObject;
 import com.example.dkt_group_beta.communication.ConnectJsonObject;
 import com.example.dkt_group_beta.communication.InfoJsonObject;
@@ -11,6 +9,8 @@ import com.google.gson.Gson;
 
 public class WrapperHelper {
     private static Gson gson = new Gson();
+
+    private WrapperHelper() {}
 
     public static Object getInstanceFromWrapper(Wrapper wrapper){
         if (wrapper.getClassname() == null || wrapper.getClassname().isEmpty())
@@ -28,9 +28,9 @@ public class WrapperHelper {
             case "InfoJsonObject": {
                 return gson.fromJson(object, InfoJsonObject.class);
             }
-
+            default:
+                return null;
         }
-        return null;
     }
 
     public static Object getInstanceFromJson(String json){

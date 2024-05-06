@@ -16,10 +16,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.communication.controller.ActionController;
-import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Player;
-import com.example.dkt_group_beta.viewmodel.GameModel;
+import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
+import com.example.dkt_group_beta.model.Game;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,10 @@ import java.util.List;
 public class GameBoard extends AppCompatActivity {
     private static final int NUMBER_OF_FIELDS = 32;
     private List<ImageView> imageViews;
-    private GameModel gameModel;
+    private GameBoardViewModel gameBoardViewModel;
     private ActionController actionController;
+    private Game game;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +42,11 @@ public class GameBoard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        int index = 2;
-        buyField(index);
+        List<Player> players = (List<Player>) getIntent().getSerializableExtra("players");
+        List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
+
+        game = new Game(players, fields);
+        gameBoardViewModel = new GameBoardViewModel();
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -65,14 +70,18 @@ public class GameBoard extends AppCompatActivity {
     }
 
     public void buyField(int index) {
-        Field field = gameModel.buyField(index);
-        if (field != null) {
-            actionController.buyField(field);
-            Log.d("debug", "Sie sind ein Gewinner");
-        } else {
-            Log.d("debug", "Fehlgeschlagen field ist null");
-        }
+            gameBoardViewModel.buyField(2);
     }
+    public void markBoughtField(int index){
+        runOnUiThread(() -> {
+            ImageView imageView = imageViews.get(1);
+            if (imageView != null) {
+                imageView.setBackgroundResource(R.drawable.highlight_border);
+            }
+        });
+
+    }
+
 
     public void updatePlayerUI (Player player) {
         runOnUiThread(new Runnable() {

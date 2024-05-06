@@ -21,7 +21,7 @@ import okhttp3.WebSocketListener;
 
 public class WebSocketClient {
     private Gson gson;
-    private String WEBSOCKET_URI;
+    private String websocketUri;
     private InputParser inputParser;
     private WebSocket webSocket;
 
@@ -32,7 +32,7 @@ public class WebSocketClient {
 
 
     public WebSocketClient(String websocketUri, String id, String username){
-        WEBSOCKET_URI = websocketUri;
+        this.websocketUri = websocketUri;
         this.inputParser = new JsonInputParser();
         this.messageHandler = new ArrayList<>();
         this.gson = new Gson();
@@ -43,7 +43,7 @@ public class WebSocketClient {
     public void connectToServer() {
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
-                .url(WEBSOCKET_URI)
+                .url(websocketUri)
                 .build();
 
         webSocket = client.newWebSocket(request, new WebSocketListener() {
