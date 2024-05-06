@@ -21,6 +21,13 @@ public abstract class Building {
         this.position = position;
     }
 
+    public void buyBuilding (){
+        //TODO
+    }
+    public void placeBuilding(){
+        //TODO: places the building on the gameboard
+    }
+
     public int getPrice(){
         return price;
     }
