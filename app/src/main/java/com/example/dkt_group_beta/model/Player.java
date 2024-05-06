@@ -31,7 +31,7 @@ public class Player implements Serializable {
         this.id = id;
         this.gameId = -1;
         this.setConnected(false);
-        isOnTurn = true;
+        isOnTurn = false;
         this.isConnected = false;
         this.money = START_MONEY;
     }
