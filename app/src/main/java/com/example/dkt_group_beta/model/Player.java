@@ -38,6 +38,7 @@ public class Player {
         this.username = username;
         this.id = id;
         this.gameId = -1;
+        this.setConnected(false);
     }
 
 
