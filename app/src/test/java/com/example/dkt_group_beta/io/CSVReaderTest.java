@@ -45,6 +45,7 @@ public class CSVReaderTest {
     }
     @Test
     public void testReadFieldsSuccess() {
-        assertEquals(30, CSVReader.readFields(context));
+        List<Field> fields = CSVReader.readFields(context);
+        assertEquals(30, fields.size());
     }
 }
