@@ -93,13 +93,13 @@ class PlayerTest {
 
     @Test
     void testGetMoney() {
-        assertEquals(1200, player.getMoney());
+        assertEquals(1200, player.getPlayerMoney());
     }
 
     @Test
     void testSetMoney() {
-        player.setMoney(1500);
-        assertEquals(1500, player.getMoney());
+        player.setPlayerMoney(1500);
+        assertEquals(1500, player.getPlayerMoney());
     }
 
     @Test

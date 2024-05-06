@@ -9,7 +9,8 @@ import lombok.Setter;
 
 @AllArgsConstructor
 public class Player {
-    @Getter
+
+    public static final int STARTINGMONEY = 1500;
     private String username;
     @Getter
     private String id;
@@ -19,10 +20,9 @@ public class Player {
     @Getter
     private int gameId;
     @Getter
-    private double playerMoney;
-    @Getter
     private List<Field> ownedFields;
 
+    private int playerMoney;
 
     private boolean isReady;
 
@@ -39,6 +39,7 @@ public class Player {
         this.id = id;
         this.gameId = -1;
         this.setConnected(false);
+        this.playerMoney = STARTINGMONEY;
     }
 
 
@@ -81,6 +82,21 @@ public class Player {
     public void setHost(boolean host) {
         isHost = host;
     }
+
+    public int getPlayerMoney() {
+        return playerMoney;
+    }
+    public void setPlayerMoney(int playerMoney) {
+        this.playerMoney = playerMoney;
+    }
+    public boolean pay(int amount) {
+        if (playerMoney > amount) {
+            playerMoney -= amount;
+            return true;
+        }
+        return false;
+    }
+
 
     public boolean isOnTurn() {
         return isOnTurn;
