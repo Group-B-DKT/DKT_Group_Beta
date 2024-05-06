@@ -1,17 +1,19 @@
 package com.example.dkt_group_beta.io;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.example.dkt_group_beta.model.Field;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CSVReaderTest {
     @Mock
@@ -27,8 +29,7 @@ public class CSVReaderTest {
         assetManagerMock = Mockito.mock(AssetManager.class);
         Mockito.when(contextMock.getAssets()).thenReturn(assetManagerMock);
         Mockito.when(assetManagerMock.open(path)).thenThrow(IOException.class);
-        assertThrows(AssertionError.class,()->CSVReader.readFields(contextMock));
+        List<Field> fields = CSVReader.readFields(contextMock);
+        assertEquals(0, fields.size());
     }
-
-
 }

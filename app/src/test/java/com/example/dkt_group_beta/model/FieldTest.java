@@ -1,15 +1,17 @@
 package com.example.dkt_group_beta.model;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import android.content.Context;
 
-
 import com.example.dkt_group_beta.model.enums.FieldType;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class FieldTest {
 
@@ -66,7 +68,7 @@ class FieldTest {
 
     @Test
     void testLoadFields() {
-        assertThrows(AssertionError.class, () -> Field.loadFields(null));
+        assertThrows(NullPointerException.class, () -> Field.loadFields(null));
     }
 
     @Test
