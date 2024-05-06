@@ -148,49 +148,51 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     public void dicePopUp(){
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.activity_popup_dice, null);
+        runOnUiThread(()->{
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.activity_popup_dice, null);
 
-        diceImageView1 = popupView.findViewById(R.id.diceImageView1);
-        diceImageView2 = popupView.findViewById(R.id.diceImageView2);
+            diceImageView1 = popupView.findViewById(R.id.diceImageView1);
+            diceImageView2 = popupView.findViewById(R.id.diceImageView2);
 
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            boolean focusable = true;PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
 
-        popupWindow.setOnDismissListener(() -> {
-            isPopupWindowOpen = false;
-            // set isPopupWindowOpen to false if it is closed
-        });
-        isPopupWindowOpen = true;
-        popupWindow.showAtLocation(imageViews.get(0), Gravity.CENTER, 0, 0);
-        // initialising listener for the acceleration sensor
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
+            popupWindow.setOnDismissListener(() -> {
+                isPopupWindowOpen = false;
+                // set isPopupWindowOpen to false if it is closed
+            });
+            isPopupWindowOpen = true;
+            popupWindow.showAtLocation(imageViews.get(0), Gravity.CENTER, 0, 0);
+            // initialising listener for the acceleration sensor
+            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL);
 
-        rollButton = popupView.findViewById(R.id.rollButton);
-        rollButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (diceRolling){
-                    diceRolling = false;
-                    // Roll the dice and update the images
-                    rollDiceAnimation(diceImageView1);
-                    rollDiceAnimation(diceImageView2);
-                    rollButton.setText("OK");
+            rollButton = popupView.findViewById(R.id.rollButton);
+            rollButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (diceRolling){
+                        diceRolling = false;
+                        // Roll the dice and update the images
+                        rollDiceAnimation(diceImageView1);
+                        rollDiceAnimation(diceImageView2);
+                        rollButton.setText("OK");
+                    }
+                    else {
+                        Log.d("Debug", "WERTTZ");
+                        popupWindow.dismiss();
+                    }
+
                 }
-                else {
-                    Log.d("Debug", "WERTTZ");
-                    popupWindow.dismiss();
-                }
+            });
 
+            if (!player.isOnTurn()) {
+                disableView(rollButton);
             }
         });
-
-        if (!player.isOnTurn()) {
-            disableView(rollButton);
-        }
     }
 
     private void disableView(View view){
@@ -242,10 +244,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     public void showBothDice(int[] diceResult){
-        int drawableResource = getResources().getIdentifier("dice" + diceResult[0], "drawable", getPackageName());
-        diceImageView1.setImageResource(drawableResource);
-        drawableResource = getResources().getIdentifier("dice" + diceResult[1], "drawable", getPackageName());
-        diceImageView2.setImageResource(drawableResource);
+        runOnUiThread(()->{
+            int drawableResource = getResources().getIdentifier("dice" + diceResult[0], "drawable", getPackageName());
+            diceImageView1.setImageResource(drawableResource);
+            drawableResource = getResources().getIdentifier("dice" + diceResult[1], "drawable", getPackageName());
+            diceImageView2.setImageResource(drawableResource);
+        });
     }
 
     @Override
