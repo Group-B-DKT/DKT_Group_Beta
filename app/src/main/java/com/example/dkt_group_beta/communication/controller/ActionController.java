@@ -11,6 +11,7 @@ import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ActionController {
     private InputHandleAction handleAction;
@@ -54,7 +55,7 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
-    public void initFields(ArrayList<Field> fields) {
+    public void initFields(List<Field> fields) {
         Gson gson = new Gson();
         int gameId = WebsocketClientController.getConnectedGameId();
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.INIT_FIELDS, gson.toJson(fields, ArrayList.class));
@@ -70,6 +71,12 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg); // sends message to server
     }
+    public void gameStarted(List<Field> fields) {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.GAME_STARTED, null, fields);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))
             return;
@@ -77,7 +84,7 @@ public class ActionController {
         Log.d("DEBUG", "ActionController::onMessageReceived/ " + ((ActionJsonObject) actionObject).getAction());
 
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
-        handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer());
+        handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer(), actionJsonObject.getFields());
     }
 
 }

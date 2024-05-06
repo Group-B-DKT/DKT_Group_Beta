@@ -3,21 +3,30 @@ package com.example.dkt_group_beta.model;
 import android.content.Context;
 
 import com.example.dkt_group_beta.io.CSVReader;
-
-import lombok.Getter;
+import com.example.dkt_group_beta.model.enums.FieldType;
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
-public class Field {
+public class Field implements Serializable {
 
-    @Getter
     private int id;
     private String name;
     private int price = 0;
     private Player owner;
     private final boolean ownable;
+
+    private FieldType fieldType;
+
+    public Field(int id, String name, int price, boolean ownable, FieldType fieldType) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.ownable = ownable;
+        this.fieldType = fieldType;
+    }
 
     public Field(int id, String name, boolean ownable) {
         this.id = id;
@@ -60,7 +69,11 @@ public class Field {
         return owner;
     }
 
-    public static ArrayList<Field> loadFields(Context context) throws IOException {
+    public FieldType getFieldType() {
+        return fieldType;
+    }
+
+    public static List<Field> loadFields(Context context) throws IOException {
         return CSVReader.readFields(context);
     }
 

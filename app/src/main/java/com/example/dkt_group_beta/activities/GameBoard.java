@@ -33,6 +33,9 @@ import com.example.dkt_group_beta.communication.controller.WebsocketClientContro
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
+import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,6 +78,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         gameBoardViewModel = new GameBoardViewModel(this,game);
 
         diceResults = new int[2];
+
+        List<Player> players = (List<Player>) getIntent().getSerializableExtra("players");
+        List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
+
+        game = new Game(players, fields);
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
