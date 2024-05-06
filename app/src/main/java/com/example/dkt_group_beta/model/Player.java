@@ -22,7 +22,7 @@ public class Player {
     @Getter
     private List<Field> ownedFields;
 
-    private int playerMoney;
+    private int playerMoney = STARTINGMONEY;
 
     private boolean isReady;
 
@@ -89,6 +89,9 @@ public class Player {
     public void setPlayerMoney(int playerMoney) {
         this.playerMoney = playerMoney;
     }
+    public List<Field> getOwnedFields() {
+        return ownedFields;
+    }
     public boolean pay(int amount) {
         if (playerMoney > amount) {
             playerMoney -= amount;
@@ -99,6 +102,7 @@ public class Player {
     public boolean buyField(Field field){
         if(pay(field.getPrice())){
             field.setOwner(this);
+            ownedFields.add(field);
             return true;
         }
         return false;
