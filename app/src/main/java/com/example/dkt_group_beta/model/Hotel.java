@@ -6,8 +6,8 @@ public class Hotel extends Building{
     @Getter
     private static int HOTEL_PRICE;
     @Getter
-    private int MAX_AMOUNT;
-    public Hotel(int price, Player owner, int position) {
-        super(price, owner, position);
+    private int MAXAMOUNT;
+    public Hotel(int price, Player owner, int position, Field field) {
+        super(price, owner, position, field);
     }
 }

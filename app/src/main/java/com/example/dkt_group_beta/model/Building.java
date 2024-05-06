@@ -14,6 +14,7 @@ public abstract class Building {
     private Player owner;
     @Getter
     private int position;
+    private Field field;
 
     public void placeBuilding(){
         //TODO: places the building on the gameboard
@@ -25,6 +26,12 @@ public abstract class Building {
 
     public int getPosition(){
         return  position;
+    }
+    public Field getField() {
+        return field;
+    }
+    public void setField(Field field){
+        this.field = field;
     }
 
     public void setOwner(Player owner) {

@@ -7,16 +7,22 @@ import com.example.dkt_group_beta.model.enums.FieldType;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import lombok.Getter;
+
 public class Field implements Serializable {
 
+    @Getter
     private int id;
     private String name;
     private int price = 0;
-    private Player owner;
+    private transient Player owner;
     private final boolean ownable;
+    private List<House> houses = new ArrayList<>();
+    private Hotel hotel;
 
     private FieldType fieldType;
 
@@ -75,6 +81,18 @@ public class Field implements Serializable {
 
     public static List<Field> loadFields(Context context) throws IOException {
         return CSVReader.readFields(context);
+    }
+    public boolean hasHotel(){
+        return hotel != null;
+    }
+    public void setHotel(Hotel hotel){
+        this.hotel = hotel;
+    }
+    public void addHouse(House house){
+        houses.add(house);
+    }
+    public int getNumberOfHouses(){
+        return houses.size();
     }
 
     @Override
