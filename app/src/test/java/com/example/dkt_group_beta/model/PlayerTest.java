@@ -12,6 +12,7 @@ class PlayerTest {
 
     @BeforeEach
     void setUp() {
+
         player = new Player("TestPlayer", "123");
         field = new Field(200, "TestField", 200, true);
         field.setOwner(player);

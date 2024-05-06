@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,7 +21,7 @@ public class Player {
     @Getter
     private int gameId;
     @Getter
-    private List<Field> ownedFields;
+    private List<Field> ownedFields = new ArrayList<>();
 
     private int playerMoney = STARTINGMONEY;
 

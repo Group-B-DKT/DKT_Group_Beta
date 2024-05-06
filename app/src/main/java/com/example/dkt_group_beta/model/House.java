@@ -1,6 +1,5 @@
 package com.example.dkt_group_beta.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 public class House extends Building{
