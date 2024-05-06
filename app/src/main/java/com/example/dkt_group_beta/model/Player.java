@@ -1,19 +1,28 @@
 package com.example.dkt_group_beta.model;
 
-import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-public class Player implements Serializable {
-    private static final int START_MONEY = 1200;
-
+@AllArgsConstructor
+public class Player {
+    @Getter
     private String username;
-
+    @Getter
     private String id;
-
+    @Getter
+    @Setter
     private boolean isConnected;
-
+    @Getter
     private int gameId;
+    @Getter
+    private double playerMoney;
+    @Getter
+    private List<Field> ownedFields;
+
 
     private boolean isReady;
 
@@ -23,15 +32,12 @@ public class Player implements Serializable {
 
     private Field currentField;
 
-    private int money;
 
 
     public Player(String username, String id) {
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.isConnected = false;
-        this.money = START_MONEY;
     }
 
 
@@ -89,14 +95,6 @@ public class Player implements Serializable {
 
     public void setCurrentField(Field currentField) {
         this.currentField = currentField;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
     }
 
     @Override
