@@ -44,14 +44,10 @@ public class GameBoard extends AppCompatActivity {
     private List<ImageView> imageViews;
 
     private List<ImageView> figures;
-
-    HashMap<Integer, Float> XKoordinates = new HashMap();
-    HashMap<Integer, Float> YKoordinates = new HashMap();
-
     ImageView character;
     ImageView character2;
 
-    static int currentplace = 0;
+    int currentplace = 0;
 
 
     @Override
@@ -106,19 +102,6 @@ public class GameBoard extends AppCompatActivity {
                 }
             }
         });
-
-//        new Thread(() -> {
-//            for (int i = 0; i < 11; i++) {
-//                ImageView img = imageViews.get(i);
-//                int[] loc = getPositionFromView(img);
-//                character.setX(loc[0]);
-//                character.setY(0);
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                }
-//            }
-//        }).start();
     }
 
     @Override
@@ -127,42 +110,19 @@ public class GameBoard extends AppCompatActivity {
         new Thread(() -> {
             try {
                 Thread.sleep(50);
+                setPosition(0, character);
+                animation(character, 29);
             } catch (InterruptedException e) {
-
+                Thread.currentThread().interrupt();
             }
-            character.setX(getPositionFromView(imageViews.get(0))[0]);
-            character.setY(getPositionFromView(imageViews.get(0))[1]);
-            animation(character, 29);
         }).start();
 
-    }
-
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
     }
 
     public int[] getPositionFromView(View view){
         int[] res = new int[2];
         view.getLocationOnScreen(res);
         res[0] -= character.getLayoutParams().width;
-        return res;
-    }
-    public int[] getPositionFromView2(View view){
-        int[] res = new int[2];
-        res[0] = ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).leftMargin +
-                ((ViewGroup.MarginLayoutParams)findViewById(R.id.fragment_container).getLayoutParams()).leftMargin;
-
-        res[1] =  Resources.getSystem().getDisplayMetrics().heightPixels -
-                  ((ViewGroup.MarginLayoutParams) view.getLayoutParams()).bottomMargin -
-                  view.getLayoutParams().height +
-                  getStatusBarHeight();
-
-        Log.d("DEBUG", "LOC " + Arrays.toString(res));
         return res;
     }
 
@@ -239,8 +199,7 @@ public class GameBoard extends AppCompatActivity {
                 animation(characterImageView, repetition -1 );
             }
             @Override
-            public void onAnimationRepeat(Animation animation) {
-
+            public void onAnimationRepeat(Animation animation) { // method not used
             }
         });
         characterImageView.startAnimation(animation);
