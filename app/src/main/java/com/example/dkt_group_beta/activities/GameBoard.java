@@ -22,6 +22,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
@@ -169,21 +170,8 @@ public class GameBoard extends AppCompatActivity {
             return;
         }
 
-        Animation animation = null;
-        if (currentplace < 10) {
-            animation = new TranslateAnimation(0, -110, 0, 0);
-
-        }
-        else if (currentplace < 15) {
-            animation = new TranslateAnimation(0, 0, 0, -50);
-        }
-        else if (currentplace < 25){
-            animation = new TranslateAnimation(0, 110, 0, 0);
-        }
-        else {
-            animation = new TranslateAnimation(0, 0, 0, 50);
-        }
-        animation.setDuration(800); // Dauer basierend auf Anzahl der Schritte
+        Animation animation = getAnimation();
+        animation.setDuration(500); // Dauer basierend auf Anzahl der Schritte
         animation.setRepeatCount(0); // Keine Wiederholung, da die Position manuell aktualisiert wird
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -203,6 +191,27 @@ public class GameBoard extends AppCompatActivity {
             }
         });
         characterImageView.startAnimation(animation);
+    }
+
+    private Animation getAnimation() {
+        float xDelta = 110;
+        float yDelta = 70;
+
+        Animation animation = null;
+        if (currentplace < 10) {
+            animation = new TranslateAnimation(0, xDelta * -1, 0, 0);
+
+        }
+        else if (currentplace < 15) {
+            animation = new TranslateAnimation(0, 0, 0, yDelta * -1);
+        }
+        else if (currentplace < 25){
+            animation = new TranslateAnimation(0, xDelta, 0, 0);
+        }
+        else {
+            animation = new TranslateAnimation(0, 0, 0, yDelta);
+        }
+        return animation;
     }
 
 }
