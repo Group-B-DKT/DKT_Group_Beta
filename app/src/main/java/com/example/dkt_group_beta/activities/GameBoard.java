@@ -112,7 +112,7 @@ public class GameBoard extends AppCompatActivity {
             try {
                 Thread.sleep(50);
                 setPosition(0, character);
-                animation(character, 29);
+                animation(character, 100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -123,7 +123,7 @@ public class GameBoard extends AppCompatActivity {
     public int[] getPositionFromView(View view){
         int[] res = new int[2];
         view.getLocationOnScreen(res);
-        res[0] -= character.getLayoutParams().width;
+//        res[0] -= character.getLayoutParams().width;
         return res;
     }
 
@@ -182,6 +182,8 @@ public class GameBoard extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 animation.cancel();
                 currentplace++;
+                if (currentplace >= NUMBER_OF_FIELDS - 2)
+                    currentplace = 0;
                 characterImageView.setX(getPositionFromView(imageViews.get(currentplace))[0]);
                 characterImageView.setY(getPositionFromView(imageViews.get(currentplace))[1]);
                 animation(characterImageView, repetition -1 );
