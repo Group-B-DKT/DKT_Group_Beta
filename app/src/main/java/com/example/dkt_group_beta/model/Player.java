@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @AllArgsConstructor
-public class Player {
+public class Player implements Serializable {
 
     public static final int STARTINGMONEY = 1500;
     private String username;
