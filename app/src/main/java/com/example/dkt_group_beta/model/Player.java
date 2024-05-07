@@ -94,55 +94,6 @@ public class Player implements Serializable {
     public List<Field> getOwnedFields() {
         return ownedFields;
     }
-    public boolean pay(int amount) {
-        if (playerMoney > amount) {
-            playerMoney -= amount;
-            return true;
-        }
-        return false;
-    }
-    public boolean buyField(Field field){
-        if(pay(field.getPrice()) && field.getOwner() == null){
-            field.setOwner(this);
-            ownedFields.add(field);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean buyHouse(House house) {
-        Field field = house.getField();
-        if (field.getOwner() == this && this.pay(house.getHousePrice())) {
-            if (field.hasHotel()) {
-                return false;
-            } else if (field.getNumberOfHouses() == house.getMaxAmount()) {
-                return buyHotel(new Hotel(Hotel.HOTEL_PRICE, this, house.getPosition(), field));
-            } else {
-                field.addHouse(house);
-                house.setOwner(this);
-                house.setField(field);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean buyHotel(Hotel hotel) {
-        Field field = hotel.getField();
-        if (field.getOwner() == this && this.pay(hotel.getPrice())) {
-            if (field.hasHotel()) {
-                return false;
-            } else {
-                field.setHotel(hotel);
-                hotel.setOwner(this);
-                hotel.setField(field);
-                return true;
-            }
-        }
-        return false;
-    }
-
-
     public boolean isOnTurn() {
         return isOnTurn;
     }
