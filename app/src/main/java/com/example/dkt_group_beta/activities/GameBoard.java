@@ -60,7 +60,11 @@ public class GameBoard extends AppCompatActivity {
                 }
             }
         });
+        createPlayerItems(players);
 
+    }
+
+    private void createPlayerItems(List<Player> players) {
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,

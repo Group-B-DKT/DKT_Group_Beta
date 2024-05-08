@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/txt_playerName"
+        android:id="@+id/layout_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.5">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/txt_playerName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PlayerXX"
@@ -40,6 +40,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/layout_bottom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
