@@ -40,7 +40,6 @@ public class Game {
             player.setMoney(player.getMoney() - field.getPrice());
             return field;
         } else {
-            Log.d("DEBUG", "Du kannst das nicht kaufen weil du arm bist Heheha");
             return null;
         }
     }

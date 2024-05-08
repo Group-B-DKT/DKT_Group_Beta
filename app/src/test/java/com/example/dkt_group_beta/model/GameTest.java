@@ -10,7 +10,9 @@ import org.mockito.Mockito;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
@@ -84,6 +86,37 @@ class GameTest {
         assertNotNull(boughtField);
         assertEquals(Player.START_MONEY-500, player.getMoney());
     }
+    @Test
+    public void testifMoneyIsToLess() {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field(0, "100", 3000, true));
+        List<Player> players = new ArrayList<>();
+        Player player = new Player("TestPlayer", "2");
+        players.add(player);
+        websocketClientController.when(WebsocketClientController::getPlayer).thenReturn(player);
+        game = new Game(players,fields);
+
+        Field boughtField = game.buyField(0);
+
+        assertNull(game.buyField(0));
+
+    }
+    @Test
+    public void testBuyFieldSecond() {
+        fields.get(0).setOwnable(false);
+        assertNull(game.buyField(0));
+    }
+    @Test
+    public void testBuyFieldIndexLessThanZero() {
+        assertNull(game.buyField(-1));
+    }
+    @Test
+    public void testBuyFieldIndexGreaterThanSize() {
+        assertNull(game.buyField(fields.size()));
+        assertNull(game.buyField(fields.size()+1));
+    }
+
+
     @Test
     public void testUpdateField() {
         Field updateField = new Field(1, "Updated Field", false);
