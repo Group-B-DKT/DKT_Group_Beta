@@ -30,7 +30,7 @@ public class GameBoardViewModel {
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
             // array zurücksetzten, popup öffnen, showbothdice
-            if (fromPlayer.getId().equals(player.getId()) && !player.isHost()) {
+            if (fromPlayer.getId().equals(player.getId())) {
                 return;
             }
             Log.d("game",""+action);

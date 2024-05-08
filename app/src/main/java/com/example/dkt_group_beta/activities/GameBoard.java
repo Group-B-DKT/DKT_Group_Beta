@@ -73,9 +73,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
 
         player = WebsocketClientController.getPlayer();
-        player.setOnTurn(true);
-        game = new Game(null,null);
-        gameBoardViewModel = new GameBoardViewModel(this,game);
 
         diceResults = new int[2];
 
@@ -83,6 +80,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
 
         game = new Game(players, fields);
+        gameBoardViewModel = new GameBoardViewModel(this,game);
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -105,13 +103,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
 
         testButton = findViewById(R.id.popUpCards);
-        testButton.setOnClickListener((v) -> {
-            dicePopUp();
-//            player.setOnTurn(false);
-//            dicePopUp(testButton);
-//            int[] a = {3,6};
-//            showBothDice(a);
-        });
+        Log.d("DEBUG", "IST: " + player.getUsername());
+        if (!player.isOnTurn())
+            disableView(testButton);
+
+        testButton.setOnClickListener(v -> dicePopUp());
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
@@ -171,23 +167,20 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                     SensorManager.SENSOR_DELAY_NORMAL);
 
             rollButton = popupView.findViewById(R.id.rollButton);
-            rollButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (diceRolling){
-                        diceRolling = false;
-                        // Roll the dice and update the images
-                        rollDiceAnimation(diceImageView1);
-                        rollDiceAnimation(diceImageView2);
-                        rollButton.setText("OK");
-                    }
-                    else {
-                        Log.d("Debug", "WERTTZ");
-                        popupWindow.dismiss();
-                    }
-
+            rollButton.setOnClickListener(v -> {
+                if (diceRolling){
+                    diceRolling = false;
+                    // Roll the dice and update the images
+                    rollDiceAnimation(diceImageView1);
+                    rollDiceAnimation(diceImageView2);
+                    rollButton.setText("OK");
                 }
+                else {
+                    popupWindow.dismiss();
+                }
+
             });
+            Log.d("DEBUG", "IsOnTurn: "+player.isOnTurn());
 
             if (!player.isOnTurn()) {
                 disableView(rollButton);
@@ -197,8 +190,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     private void disableView(View view){
         ViewGroup.LayoutParams param = view.getLayoutParams();
-        param.height = 0;
-        param.width = 0;
+        param.height = 1;
+        param.width = 1;
         view.setLayoutParams(param);
     }
 
