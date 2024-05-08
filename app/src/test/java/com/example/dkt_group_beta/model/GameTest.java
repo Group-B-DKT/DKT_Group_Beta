@@ -1,6 +1,7 @@
 package com.example.dkt_group_beta.model;
 
 import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -22,9 +23,16 @@ class GameTest {
 
     private static MockedStatic<WebsocketClientController> websocketClientController;
 
+
+    @BeforeAll
+    static void setUpStatic() {
+
+        websocketClientController = Mockito.mockStatic(WebsocketClientController.class);
+
+    }
+
     @BeforeEach
     void setUp() {
-        websocketClientController = Mockito.mockStatic(WebsocketClientController.class);
         players = new ArrayList<>();
         players.add(new Player("Player1", "1"));
         players.add(new Player("Player2", "2"));
