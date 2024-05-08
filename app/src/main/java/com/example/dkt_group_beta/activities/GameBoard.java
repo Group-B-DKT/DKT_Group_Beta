@@ -11,8 +11,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
@@ -23,6 +26,8 @@ import java.util.List;
 public class GameBoard extends AppCompatActivity {
     private static final int NUMBER_OF_FIELDS = 32;
     private List<ImageView> imageViews;
+
+    private RecyclerView rv_playerStats;
 
     private Game game;
 
@@ -36,6 +41,8 @@ public class GameBoard extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        rv_playerStats = findViewById(R.id.rv_playerStats);
 
         List<Player> players = (List<Player>) getIntent().getSerializableExtra("players");
         List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
@@ -65,6 +72,9 @@ public class GameBoard extends AppCompatActivity {
     }
 
     private void createPlayerItems(List<Player> players) {
+        PlayerItemAdapter adapter = new PlayerItemAdapter(this, players);
+        rv_playerStats.setLayoutManager(new LinearLayoutManager(this));
+        rv_playerStats.setAdapter(adapter);
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
