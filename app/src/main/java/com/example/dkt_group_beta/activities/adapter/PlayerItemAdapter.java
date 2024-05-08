@@ -1,9 +1,12 @@
 package com.example.dkt_group_beta.activities.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,11 +30,13 @@ public class PlayerItemAdapter extends RecyclerView.Adapter<PlayerItemAdapter.Vi
         TextView playerName;
         TextView isOnTurn;
         TextView money;
+        LinearLayout layoutItemMain;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             playerName = itemView.findViewById(R.id.txt_playerName);
             isOnTurn = itemView.findViewById(R.id.txt_isOnTurn);
             money = itemView.findViewById(R.id.txt_money);
+            layoutItemMain = itemView.findViewById(R.id.layout_itemMain);
         }
     }
 
@@ -47,6 +52,8 @@ public class PlayerItemAdapter extends RecyclerView.Adapter<PlayerItemAdapter.Vi
         holder.playerName.setText(data.get(position).getUsername());
         holder.isOnTurn.setText(data.get(position).isOnTurn() ? "current playing" : "");
         holder.money.setText(""+data.get(position).getMoney());
+        Log.d("Color", ""+data.get(position));
+        holder.layoutItemMain.getBackground().setTint(data.get(position).getColor());
     }
 
     @Override
