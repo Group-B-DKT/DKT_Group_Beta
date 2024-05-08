@@ -55,8 +55,6 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        Intent intent = new Intent(GameLobby.this, GameBoard.class);
-        startActivity(intent);
         isHost = WebsocketClientController.getPlayer().isHost();
 
         this.layoutGameLobbyBtn = findViewById(R.id.layout_gameLobby_btn);
@@ -67,11 +65,6 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
-        this.btnLeave.setOnClickListener(v -> {
-            gameLobbyViewModel.leaveGame();
-
-
-        });
 
         this.btnLeave.setOnClickListener(v -> gameLobbyViewModel.leaveGame());
 

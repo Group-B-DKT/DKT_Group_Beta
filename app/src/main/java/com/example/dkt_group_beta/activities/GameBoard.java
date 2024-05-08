@@ -3,8 +3,10 @@ package com.example.dkt_group_beta.activities;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -44,7 +46,6 @@ public class GameBoard extends AppCompatActivity {
         });
         List<Player> players = (List<Player>) getIntent().getSerializableExtra("players");
         List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
-
         game = new Game(players, fields);
         gameBoardViewModel = new GameBoardViewModel();
 
@@ -67,32 +68,26 @@ public class GameBoard extends AppCompatActivity {
             }
         });
 
+
+
+
     }
+
 
     public void buyField(int index) {
-            gameBoardViewModel.buyField(2);
+            gameBoardViewModel.buyField(index);
     }
     public void markBoughtField(int index){
+        Log.d("DEBUG", "variable:" + index);
         runOnUiThread(() -> {
-            ImageView imageView = imageViews.get(1);
+            ImageView imageView = imageViews.get(index);
             if (imageView != null) {
-                imageView.setBackgroundResource(R.drawable.highlight_border);
+                imageView.setPadding(10,10 ,10,10);
+                imageView.setBackgroundColor(Color.rgb(255,70,0));
             }
         });
 
     }
-
-
-    public void updatePlayerUI (Player player) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                EditText moneyEditText = findViewById(R.id.money);
-                moneyEditText.setText(String.valueOf(player.getMoney()));
-            }
-        });
-    }
-
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {

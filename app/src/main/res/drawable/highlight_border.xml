@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
 
-    <shape xmlns:android="http://schemas.android.com/apk/res/android"
-        android:shape="rectangle" tools:ignore="ExtraText">
-        <solid android:color="@android:color/transparent" />
-            android:width="2dp"
-        android:color="@color/highlight_color" /> <!-- Farbe des Rahmens -->
-    </shape>
+    <gradient
+        android:angle="270"
+        android:endColor="#ffffff"
+        android:startColor="#ffffff" />
 
+    <corners android:radius="0dp" />
 
-</selector>
+    <stroke
+        android:width="0.7dp"
+        android:color="#b4b4b4" />
+</shape>

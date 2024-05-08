@@ -65,7 +65,8 @@ public class GameBoardViewModel {
     private void handleAction(Action action, String param, Player fromPlayer, List<Field> fields) {
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
         if (action == Action.BUY_FIELD) {
-            Log.d("debug", "success");
+            game.updateField(fields.get(0));
+            gameBoard.markBoughtField(fields.get(0).getId()-1);
 
             }
         }

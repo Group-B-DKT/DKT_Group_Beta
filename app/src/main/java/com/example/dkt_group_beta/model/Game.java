@@ -14,8 +14,6 @@ public class Game {
     private List<Field> fields;
     private Player player = WebsocketClientController.getPlayer();
 
-    GameBoard gameBoard = new GameBoard();
-
     public Game(List<Player> players, List<Field> fields) {
         this.players = players;
         this.fields = fields;

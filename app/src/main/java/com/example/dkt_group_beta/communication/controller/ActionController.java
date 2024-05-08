@@ -13,6 +13,8 @@ import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ActionController {
@@ -42,7 +44,7 @@ public class ActionController {
     }
     public void buyField(Field field) {
         int gameId = WebsocketClientController.getConnectedGameId();
-        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BUY_FIELD, Integer.toString(field.getId()));
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BUY_FIELD, null, null, Collections.singletonList(field));
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
 
