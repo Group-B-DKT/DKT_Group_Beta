@@ -96,13 +96,6 @@ public class Player implements Serializable {
     public Field getCurrentField() { return currentField; }
 
     public void setCurrentField(Field field) { this.currentField = field; }
-    public boolean isInGame() {
-        return isInGame;
-    }
-
-    public void setInGame(boolean inGame) {
-        isInGame = inGame;
-    }
 
     @Override
     public boolean equals(Object object) {

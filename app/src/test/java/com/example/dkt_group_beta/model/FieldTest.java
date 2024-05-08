@@ -88,4 +88,14 @@ class FieldTest {
         Field sameField = new Field(1, "Test Field", 100, true, FieldType.NORMAL);
         assertEquals(field.hashCode(), sameField.hashCode());
     }
+    @Test
+    void testSetId() {
+        field.setId(2);
+        assertEquals(2, field.getId());
+    }
+    @Test
+    void testSetPrice() {
+        field.setPrice(200);
+        assertEquals(200, field.getPrice());
+    }
 }

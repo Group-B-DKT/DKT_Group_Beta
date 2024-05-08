@@ -57,7 +57,7 @@ public class Game {
     }
     public void updatePlayer(Player player) {
         Player savedPlayer = this.players.stream()
-                .filter(f -> f.getId() == player.getId())
+                .filter(f -> f.getId().equals(player.getId()))
                 .findAny().orElse(null);
         if (player == null){
             this.players.add(player);

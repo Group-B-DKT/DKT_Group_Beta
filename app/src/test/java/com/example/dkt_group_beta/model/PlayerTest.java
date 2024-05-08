@@ -119,4 +119,5 @@ class PlayerTest {
         Player samePlayer = new Player("testUser", "123");
         assertEquals(player.hashCode(), samePlayer.hashCode());
     }
+
 }

@@ -84,5 +84,34 @@ class GameTest {
         assertNotNull(boughtField);
         assertEquals(Player.START_MONEY-500, player.getMoney());
     }
+    @Test
+    public void testUpdateField() {
+        Field updateField = new Field(1, "Updated Field", false);
+
+        game.updateField(updateField);
+        assertEquals("Updated Field", game.getFields().get(0).getName());
+    }
+
+    @Test
+    public void testUpdatePlayer() {
+        Player updatedPlayer = new Player("New Player","1");
+        game.updatePlayer(updatedPlayer);
+        assertEquals("New Player", game.getPlayers().get(0).getUsername());
+
+    }
+    @Test
+    public void testUpdateFieldSecond() {
+        Field updateField = fields.get(1);
+        game.updateField(updateField);
+        assertEquals("Field1", game.getFields().get(0).getName());
+    }
+    @Test
+    public void testUpdatePlayerSecond() {
+        Player updatedPlayer = players.get(1);
+        game.updatePlayer(updatedPlayer);
+        assertEquals("Player1", game.getPlayers().get(0).getUsername());
+
+    }
+
 
 }
