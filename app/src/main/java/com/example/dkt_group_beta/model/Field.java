@@ -87,14 +87,11 @@ public class Field implements Serializable {
     public void setHotel(Hotel hotel){
         this.hotel = hotel;
     }
-    public int getNumberOfHouses(){
-        int count = 0;
-        for (Building building : buildings) {
-            if (building instanceof House) {
-                count++;
-            }
-        }
-        return count;
+    public Hotel getHotel(){
+        return hotel;
+    }
+    public List<Building> getBuildings(){
+        return buildings;
     }
     public void addBuilding(Building building){
         buildings.add(building);

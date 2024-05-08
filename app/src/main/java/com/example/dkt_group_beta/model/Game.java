@@ -6,7 +6,6 @@ public class Game {
     public static final int MIN_PLAYER = 2;
     private List<Player> players;
     private List<Field> fields;
-    private int playerMoney;
 
     public Game(List<Player> players, List<Field> fields) {
         this.players = players;
@@ -21,15 +20,15 @@ public class Game {
         return fields;
     }
 
-    public boolean pay(int amount) {
-        if (playerMoney > amount) {
-            playerMoney -= amount;
+    public boolean pay(Player player, int amount) {
+        if (player.getPlayerMoney() > amount) {
+            player.setPlayerMoney(player.getPlayerMoney() - amount);
             return true;
         }
         return false;
     }
     public boolean buyField(Player player, Field field){
-        if(pay(field.getPrice()) && field.getOwner() == null){
+        if(pay(player, field.getPrice()) && field.getOwner() == null){
             field.setOwner(player);
             return true;
         }
@@ -37,10 +36,10 @@ public class Game {
     }
     public boolean buyHouse(Player player, House house) {
         Field field = house.getField();
-        if (field.getOwner() == player && pay(house.getHousePrice())) {
+        if (field.getOwner() == player && pay(player, house.getHousePrice())) {
             if (field.hasHotel()) {
                 return false;
-            } else if (field.getNumberOfHouses() == house.getMaxAmount()) {
+            } else if (getNumberOfHouses() == house.getMaxAmount()) {
                 return buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, player, house.getPosition(), field));
             } else {
                 field.addBuilding(house);
@@ -54,7 +53,7 @@ public class Game {
 
     public boolean buyHotel(Player player, Hotel hotel) {
         Field field = hotel.getField();
-        if (field.getOwner() == player && pay(hotel.getPrice())) {
+        if (field.getOwner() == player && pay(player, hotel.getPrice())) {
             if (field.hasHotel()) {
                 return false;
             } else {
@@ -65,5 +64,16 @@ public class Game {
             }
         }
         return false;
+    }
+    public int getNumberOfHouses(){
+        int count = 0;
+        for (Field field : fields) {
+            for (Building building : field.getBuildings()) {
+                if (building instanceof House) {
+                    count++;
+                }
+            }
+        }
+        return count;
     }
 }
