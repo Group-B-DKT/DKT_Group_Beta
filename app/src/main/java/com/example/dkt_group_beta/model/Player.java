@@ -136,20 +136,4 @@ public class Player implements Serializable {
     public int hashCode() {
         return Objects.hash(username, id, isConnected, gameId, isReady, isHost);
     }
-
-    @Override
-    public String toString() {
-        return "Player{" +
-                "username='" + username + '\'' +
-                ", id='" + id + '\'' +
-                ", isConnected=" + isConnected +
-                ", gameId=" + gameId +
-                ", isReady=" + isReady +
-                ", isHost=" + isHost +
-                ", isOnTurn=" + isOnTurn +
-                ", currentField=" + currentField +
-                ", money=" + money +
-                ", color=" + color +
-                '}';
-    }
 }

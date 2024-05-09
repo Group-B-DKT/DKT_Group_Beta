@@ -5,9 +5,7 @@ import java.util.List;
 
 public class Game {
     public static final int MIN_PLAYER = 2;
-    public static String PATH_TO_FIELDLIST = "./assets/fields.csv";
     private SecureRandom random;
-
     private List<Player> players;
     private List<Field> fields;
 
