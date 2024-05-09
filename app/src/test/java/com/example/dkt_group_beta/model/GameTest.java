@@ -14,6 +14,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 
@@ -148,3 +150,26 @@ class GameTest {
 
 
 }
+
+    @Test
+    void testGetRandomNumber(){
+        int min = 2;
+        int max = 15;
+        int result = game.getRandomNumber(min,max);
+        assertTrue(min <= result && result <= max);
+    }
+    @Test
+    void testGetRandomNumberMinBiggerMax(){
+        int min = 20;
+        int max = 15;
+        int result = game.getRandomNumber(min,max);
+        assertFalse(min <= result && result <= max);
+    }
+    @Test
+    void testGetRandomNumberEqual(){
+        int min = 2;
+        int max = 2;
+        int result = game.getRandomNumber(min,max);
+        assertTrue(min <= result && result <= max);
+    }
+ }

@@ -33,6 +33,7 @@ public class Player implements Serializable {
         this.gameId = -1;
         this.setConnected(false);
         this.isInGame = false;
+        this.isOnTurn = false;
         this.isConnected = false;
         this.money = START_MONEY;
     }
@@ -83,7 +84,7 @@ public class Player implements Serializable {
     }
 
     public void setOnTurn(boolean onTurn) {
-        isOnTurn = onTurn;
+        this.isOnTurn = onTurn;
     }
 
     public int getMoney() {
