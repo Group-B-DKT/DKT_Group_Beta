@@ -55,14 +55,4 @@ class GameTest {
         int result = game.getRandomNumber(min,max);
         assertTrue(min <= result && result <= max);
     }
-
-    @Test
-    void testGetOwnedFields() {
-        Player player = new Player("Player1", "1");
-        player.setMoney(4000);
-        game.buyField(player, new Field(1, "Field1", true));
-        List<Field> ownedFields = game.getOwnedFields(player);
-        assertEquals(1, ownedFields.size());
-        assertEquals("Field1", ownedFields.get(0).getName());
-    }
-}
+ }

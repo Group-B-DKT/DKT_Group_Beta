@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 public class Game {
     public static final int MIN_PLAYER = 2;
-    public static String PATH_TO_FIELDLIST = "./assets/fields.csv";
+
     private SecureRandom random;
 
     private List<Player> players;
@@ -36,18 +36,6 @@ public class Game {
     public boolean pay(Player player, int amount) {
         if (player.getMoney() > amount) {
             player.setMoney(player.getMoney() - amount);
-            return true;
-        }
-        return false;
-    }
-    public boolean buyField(Player player, Field field){
-        Field existingField = this.fields.stream()
-                                       .filter(f -> f.getId() == field.getId())
-                                       .findFirst()
-                                       .orElse(null);
-
-        if(pay(player, field.getPrice()) && existingField != null && existingField.getOwner() == null){
-            existingField.setOwner(player);
             return true;
         }
         return false;
