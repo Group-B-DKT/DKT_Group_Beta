@@ -7,7 +7,7 @@ import java.util.Objects;
 
 
 public class Player implements Serializable {
-    private static final int START_MONEY = 1200;
+    private static final int START_MONEY = 1500;
 
     private String username;
 
