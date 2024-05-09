@@ -66,22 +66,6 @@ class PlayerTest {
         field.setHotel(hotel);
         assertFalse(game.buyHotel(player, new Hotel(200, null, 1, new Field(200, "AnotherField", 500, true))));
     }
-    @Test
-    void buyField() {
-        field.setOwner(null);
-        assertTrue(game.buyField(player, field));
-        assertEquals(1300, player.getPlayerMoney());
-        assertEquals(player, field.getOwner());
-    }
-    @Test
-    void buyFieldNotEnoughMoney() {
-        player.setPlayerMoney(50);
-        assertFalse(game.buyField(player, field));
-    }
-    @Test
-    void buyFieldAlreadyOwned() {
-        assertFalse(game.buyField(player, field));
-    }
 
     @Test
     void testGetUsername() {

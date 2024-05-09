@@ -27,13 +27,6 @@ public class Game {
         }
         return false;
     }
-    public boolean buyField(Player player, Field field){
-        if(pay(player, field.getPrice()) && field.getOwner() == null){
-            field.setOwner(player);
-            return true;
-        }
-        return false;
-    }
     public boolean buyHouse(Player player, House house) {
         Field field = house.getField();
         if (field.getOwner() == player && pay(player, house.getHousePrice())) {
