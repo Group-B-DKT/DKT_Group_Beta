@@ -5,14 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 public abstract class Building {
-    @Getter
     private int price;
-    @Setter
-    @Getter
     private Player owner;
-    @Getter
     private int position;
     private Field field;
 
