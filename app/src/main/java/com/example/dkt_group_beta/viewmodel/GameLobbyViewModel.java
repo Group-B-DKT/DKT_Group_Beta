@@ -79,7 +79,9 @@ public class GameLobbyViewModel {
         gameInfo.getConnectedPlayers()
                 .forEach(g -> {
                     if (!this.connectedPlayers.contains(g)) {
-                        this.connectedPlayers.add(g);
+                        if (g.getId().equals(player.getId()))
+                            this.connectedPlayers.add(player);
+                        else this.connectedPlayers.add(g);
                         gameLobbyAction.addPlayerToView(g);
                     }
                 });

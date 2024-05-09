@@ -410,7 +410,7 @@
         android:layout_marginStart="173dp"
         android:layout_marginEnd="189dp"
         android:backgroundTint="#FF0000"
-        android:text="See All Cards"
+        android:text="Roll Dice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
         app:layout_constraintStart_toStartOf="@+id/constraintLayout"
