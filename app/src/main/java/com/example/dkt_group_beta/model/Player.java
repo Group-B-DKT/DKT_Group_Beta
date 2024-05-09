@@ -5,26 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
-@AllArgsConstructor
 public class Player implements Serializable {
+    private static final int START_MONEY = 1200;
 
-    public static final int STARTINGMONEY = 1500;
     private String username;
-    @Getter
+
     private String id;
-    @Getter
-    @Setter
+
     private boolean isConnected;
-    @Getter
+
     private int gameId;
-    @Getter
+
     private List<Field> ownedFields = new ArrayList<>();
 
-    private int playerMoney = STARTINGMONEY;
+    private int playerMoney = START_MONEY;
 
     private boolean isReady;
 
@@ -40,8 +35,9 @@ public class Player implements Serializable {
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.setConnected(false);
-        this.playerMoney = STARTINGMONEY;
+        this.isOnTurn = false;
+        this.isConnected = false;
+        this.playerMoney = START_MONEY;
     }
 
 
@@ -99,7 +95,7 @@ public class Player implements Serializable {
     }
 
     public void setOnTurn(boolean onTurn) {
-        isOnTurn = onTurn;
+        this.isOnTurn = onTurn;
     }
 
     public Field getCurrentField() {
@@ -122,5 +118,4 @@ public class Player implements Serializable {
     public int hashCode() {
         return Objects.hash(username, id, isConnected, gameId, isReady, isHost);
     }
-
 }
