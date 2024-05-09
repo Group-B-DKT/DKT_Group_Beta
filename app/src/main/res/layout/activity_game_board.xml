@@ -523,7 +523,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="90dp"
         android:backgroundTint="#FF0000"
-        android:text="See All Cards"
+        android:text="Roll Dice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"
         app:layout_constraintHorizontal_bias="0.327"

@@ -16,6 +16,7 @@ import com.example.dkt_group_beta.model.Player;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameLobbyViewModel {
     private List<Player> connectedPlayers;
@@ -78,7 +79,9 @@ public class GameLobbyViewModel {
         gameInfo.getConnectedPlayers()
                 .forEach(g -> {
                     if (!this.connectedPlayers.contains(g)) {
-                        this.connectedPlayers.add(g);
+                        if (g.getId().equals(player.getId()))
+                            this.connectedPlayers.add(player);
+                        else this.connectedPlayers.add(g);
                         gameLobbyAction.addPlayerToView(g);
                     }
                 });
