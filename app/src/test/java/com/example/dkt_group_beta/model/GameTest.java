@@ -32,4 +32,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
         assertEquals(2, game.getPlayers().size());
         assertEquals(2, game.getFields().size());
     }
+
+    @Test
+    void testGetOwnedFields() {
+        Player player = new Player("Player1", "1");
+        player.setMoney(4000);
+        game.buyField(player, new Field(1, "Field1", true));
+        List<Field> ownedFields = game.getOwnedFields(player);
+        assertEquals(1, ownedFields.size());
+        assertEquals("Field1", ownedFields.get(0).getName());
+    }
 }

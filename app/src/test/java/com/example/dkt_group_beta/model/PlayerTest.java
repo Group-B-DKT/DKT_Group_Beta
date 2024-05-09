@@ -16,7 +16,6 @@ class PlayerTest {
 
     @BeforeEach
     void setUp() {
-
         player = new Player("TestPlayer", "123");
         field = new Field(200, "TestField", 200, true);
         field.setOwner(player);
@@ -32,13 +31,13 @@ class PlayerTest {
     @Test
     void buyHouse() {
         assertTrue(game.buyHouse(player, house));
-        assertEquals(1300, player.getPlayerMoney());
+        assertEquals(1300, player.getMoney());
         assertEquals(player, house.getOwner());
         assertEquals(field, house.getField());
     }
     @Test
     void buyHouseNotEnoughMoney() {
-        player.setPlayerMoney(50);
+        player.setMoney(50);
         assertFalse(game.buyHouse(player, house));
     }
     @Test
@@ -50,13 +49,13 @@ class PlayerTest {
     @Test
     void testBuyHotel() {
         assertTrue(game.buyHotel(player, hotel));
-        assertEquals(1300, player.getPlayerMoney());
+        assertEquals(1300, player.getMoney());
         assertEquals(player, hotel.getOwner());
     }
 
     @Test
     void testBuyHotelNotEnoughMoney() {
-        player.setPlayerMoney(50);
+        player.setMoney(50);
         assertFalse(game.buyHotel(player, hotel));
 
     }
@@ -70,12 +69,12 @@ class PlayerTest {
     void buyField() {
         field.setOwner(null);
         assertTrue(game.buyField(player, field));
-        assertEquals(1300, player.getPlayerMoney());
+        assertEquals(1300, player.getMoney());
         assertEquals(player, field.getOwner());
     }
     @Test
     void buyFieldNotEnoughMoney() {
-        player.setPlayerMoney(50);
+        player.setMoney(50);
         assertFalse(game.buyField(player, field));
     }
     @Test
@@ -162,13 +161,13 @@ class PlayerTest {
 
     @Test
     void testGetMoney() {
-        assertEquals(1500, player.getPlayerMoney());
+        assertEquals(1500, player.getMoney());
     }
 
     @Test
     void testSetMoney() {
-        player.setPlayerMoney(1200);
-        assertEquals(1200, player.getPlayerMoney());
+        player.setMoney(1200);
+        assertEquals(1200, player.getMoney());
     }
 
     @Test

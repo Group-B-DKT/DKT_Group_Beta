@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 public class Build extends AppCompatActivity {
     private Player currentPlayer;
+    private Game game;
     private List<ImageView> imageViews;
     private TextView buildTextView;
     private Button buildButton;
@@ -43,7 +45,7 @@ public class Build extends AppCompatActivity {
     }
 
     private void highlightOwnedFields() {
-        List<Field> ownedFields = currentPlayer.getOwnedFields();
+        List<Field> ownedFields = game.getOwnedFields(currentPlayer);
         for (ImageView imageView : imageViews) {
             Field field = ownedFields.get(imageViews.indexOf(imageView));
             if (ownedFields.contains(field)) {

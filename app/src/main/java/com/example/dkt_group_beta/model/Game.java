@@ -1,6 +1,7 @@
 package com.example.dkt_group_beta.model;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Game {
     public static final int MIN_PLAYER = 2;
@@ -21,15 +22,20 @@ public class Game {
     }
 
     public boolean pay(Player player, int amount) {
-        if (player.getPlayerMoney() > amount) {
-            player.setPlayerMoney(player.getPlayerMoney() - amount);
+        if (player.getMoney() > amount) {
+            player.setMoney(player.getMoney() - amount);
             return true;
         }
         return false;
     }
     public boolean buyField(Player player, Field field){
-        if(pay(player, field.getPrice()) && field.getOwner() == null){
-            field.setOwner(player);
+        Field existingField = this.fields.stream()
+                                       .filter(f -> f.getId() == field.getId())
+                                       .findFirst()
+                                       .orElse(null);
+
+        if(pay(player, field.getPrice()) && existingField != null && existingField.getOwner() == null){
+            existingField.setOwner(player);
             return true;
         }
         return false;
@@ -75,5 +81,11 @@ public class Game {
             }
         }
         return count;
+    }
+
+    public List<Field> getOwnedFields(Player player) {
+        return this.fields.stream()
+                          .filter(f -> f.getOwner() != null && f.getOwner().getId().equals(player.getId()))
+                          .collect(Collectors.toList());
     }
 }

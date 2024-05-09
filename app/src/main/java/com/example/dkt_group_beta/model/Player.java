@@ -1,30 +1,19 @@
 package com.example.dkt_group_beta.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
-@AllArgsConstructor
 public class Player implements Serializable {
+    private static final int START_MONEY = 1500;
 
-    public static final int STARTINGMONEY = 1500;
     private String username;
-    @Getter
-    private String id;
-    @Getter
-    @Setter
-    private boolean isConnected;
-    @Getter
-    private int gameId;
-    @Getter
-    private List<Field> ownedFields = new ArrayList<>();
 
-    private int playerMoney = STARTINGMONEY;
+    private String id;
+
+    private boolean isConnected;
+
+    private int gameId;
 
     private boolean isReady;
 
@@ -34,14 +23,16 @@ public class Player implements Serializable {
 
     private Field currentField;
 
+    private int money;
 
 
     public Player(String username, String id) {
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.setConnected(false);
-        this.playerMoney = STARTINGMONEY;
+        this.isOnTurn = false;
+        this.isConnected = false;
+        this.money = START_MONEY;
     }
 
 
@@ -85,21 +76,12 @@ public class Player implements Serializable {
         isHost = host;
     }
 
-    public int getPlayerMoney() {
-        return playerMoney;
-    }
-    public void setPlayerMoney(int playerMoney) {
-        this.playerMoney = playerMoney;
-    }
-    public List<Field> getOwnedFields() {
-        return ownedFields;
-    }
     public boolean isOnTurn() {
         return isOnTurn;
     }
 
     public void setOnTurn(boolean onTurn) {
-        isOnTurn = onTurn;
+        this.isOnTurn = onTurn;
     }
 
     public Field getCurrentField() {
@@ -108,6 +90,14 @@ public class Player implements Serializable {
 
     public void setCurrentField(Field currentField) {
         this.currentField = currentField;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     @Override
@@ -122,5 +112,4 @@ public class Player implements Serializable {
     public int hashCode() {
         return Objects.hash(username, id, isConnected, gameId, isReady, isHost);
     }
-
 }
