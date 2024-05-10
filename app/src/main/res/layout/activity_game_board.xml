@@ -24,7 +24,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <TextView
+            android:id="@+id/build_text_view"
+            android:layout_width="265dp"
+            android:layout_height="78dp"
+            android:layout_below="@id/build_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="136dp"
+            android:layout_marginTop="136dp"
+            android:layout_marginEnd="136dp"
+            android:layout_marginRight="136dp"
+            android:layout_marginBottom="392dp"
+            android:text="Um zu BAUEN klicken Sie auf die hervorgehobenen Felder"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/field16"
@@ -531,6 +550,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
+    <!-- Grüne Hintergrundfarbe für den Button -->
+
+    <Button
+        android:id="@+id/build_button"
+        android:layout_width="119dp"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="167dp"
+        android:backgroundTint="@android:color/holo_green_dark"
+        android:text="BAUEN"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@+id/jokeramount"
+        app:layout_constraintVertical_bias="0.0" /> <!-- Die TextView wird zunächst unsichtbar gemacht -->
 
 
 
