@@ -31,6 +31,7 @@ import android.widget.PopupWindow;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -73,9 +74,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     private List<ImageView> figures;
     ImageView character;
-    ImageView character2;
 
     int currentplace = 0;
+
+    List<Player> players;
 
 
     @Override
@@ -83,45 +85,20 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game_board);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.gameBoard), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
         character = findViewById(R.id.character);
-        character2 = findViewById(R.id.character2);
 
         player = WebsocketClientController.getPlayer();
 
         diceResults = new int[2];
 
-        List<Player> players = (List<Player>) getIntent().getSerializableExtra("players");
+        players = (List<Player>) getIntent().getSerializableExtra("players");
         List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
-
-        for (int i = 0; i < players.size(); i++) {
-            ImageView x = new ImageView(this);
-            ViewGroup.LayoutParams params = x.getLayoutParams();
-            params.width = 22;
-            params.height = 22;
-            x.setLayoutParams(params);
-
-            int resourceId = this.getResources()
-                    .getIdentifier("character" + i, "drawable", this.getPackageName());
-
-
-            ImageView imageView = figures.get(i - 1);
-            if (imageView != null && resourceId != 0) {
-                imageView.setImageBitmap(
-                        decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
-            }
-
-            x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
-            players.get(i).setCharacterView(x);
-        }
-
-        game = new Game(players, fields);
-        gameBoardViewModel = new GameBoardViewModel(this, game);
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -141,6 +118,50 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 }
             }
         });
+
+
+
+
+        for (int i = 0; i < players.size(); i++) {
+            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+            final ImageView x;
+            if(i == 0){
+               x = character;
+            }else{
+                x = new ImageView(this);
+
+                constraintLayout.addView(x);
+
+                x.setLayoutParams(character.getLayoutParams());
+            }
+
+
+
+
+            int resourceId = this.getResources()
+                    .getIdentifier("character" + (i+1), "drawable", this.getPackageName());
+
+
+            if (resourceId != 0) {
+                x.setImageBitmap(
+                        decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+            }
+
+            x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+            players.get(i).setCharacterView(x);
+
+            constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
+                                                        int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
+                setPosition(0, x);
+            });
+
+
+        }
+
+        game = new Game(players, fields);
+        gameBoardViewModel = new GameBoardViewModel(this, game);
+
+
 
         this.figures = new ArrayList<>();
         runOnUiThread(() -> {
@@ -166,15 +187,19 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     @Override
     protected void onStart() {
+
         super.onStart();
         new Thread(() -> {
-            try {
-                Thread.sleep(50);
-                setPosition(0, character);
-                animation(character, 100);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+//            try {
+//                Thread.sleep(5000);
+//
+//                for (Player p: players) {
+//                    setPosition(0, p.getCharacterView());
+//                }
+//               animation(players.get(0).getCharacterView(), 100);
+//            } catch (InterruptedException e) {
+//                Thread.currentThread().interrupt();
+//            }
         }).start();
 
         testButton = findViewById(R.id.popUpCards);
