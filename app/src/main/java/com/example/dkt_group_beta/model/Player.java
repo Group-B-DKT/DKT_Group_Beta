@@ -36,27 +36,6 @@ public class Player implements Serializable {
         this.isConnected = false;
         this.money = START_MONEY;
         this.isOnTurn = false;
-
-        // Todo Temporary
-        this.color = getRandomColor();
-    }
-
-    // Todo Temporary delete
-    public int getRandomColor() {
-        Random random = new Random();
-        int[] colors = {
-                0xFFC0C0C0, // Silber
-                0xFF800000, // Dunkelrot
-                0xFF008000, // Dunkelgrün
-                0xFF808000, // Oliv
-                0xFF000080, // Dunkelblau
-                0xFF800080, // Lila
-                0xFF008080, // Cyan
-                0xFF000000, // Schwarz
-                0xFF808080, // Grau
-                0xFFFFFFFF  // Weiß
-        };
-        return colors[random.nextInt(colors.length)];
     }
 
 
