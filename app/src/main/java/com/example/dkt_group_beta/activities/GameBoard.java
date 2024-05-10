@@ -99,6 +99,27 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         List<Player> players = (List<Player>) getIntent().getSerializableExtra("players");
         List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
 
+        for (int i = 0; i < players.size(); i++) {
+            ImageView x = new ImageView(this);
+            ViewGroup.LayoutParams params = x.getLayoutParams();
+            params.width = 22;
+            params.height = 22;
+            x.setLayoutParams(params);
+
+            int resourceId = this.getResources()
+                    .getIdentifier("character" + i, "drawable", this.getPackageName());
+
+
+            ImageView imageView = figures.get(i - 1);
+            if (imageView != null && resourceId != 0) {
+                imageView.setImageBitmap(
+                        decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+            }
+
+            x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+            players.get(i).setCharacterView(x);
+        }
+
         game = new Game(players, fields);
         gameBoardViewModel = new GameBoardViewModel(this, game);
 
