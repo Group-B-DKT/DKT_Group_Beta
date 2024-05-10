@@ -28,6 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PlayerXX"
+            android:textColor="@color/player_item"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -38,6 +39,7 @@
             android:layout_weight="1"
             android:text="current playing"
             android:textAlignment="textEnd"
+            android:textColor="@color/player_item"
             android:textSize="14sp" />
     </LinearLayout>
 
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Money:"
+            android:textColor="@color/player_item"
             android:textSize="14sp" />
 
         <TextView
@@ -66,6 +69,7 @@
             android:layout_weight="1"
             android:text="TextView"
             android:textAlignment="textEnd"
+            android:textColor="@color/player_item"
             android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>
