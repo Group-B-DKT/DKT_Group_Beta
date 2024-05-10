@@ -10,7 +10,7 @@ import java.util.Random;
 
 
 public class Player implements Serializable {
-    private static final int START_MONEY = 12000005;
+    public static final int START_MONEY = 1500;
 
     private String username;
 
@@ -38,17 +38,30 @@ public class Player implements Serializable {
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.isOnTurn = false;
         this.isConnected = false;
-        this.money = START_MONEY + 1000000;
+        this.money = START_MONEY;
         this.isOnTurn = false;
 
-        // Temporary delete
+        // Todo Temporary
+        this.color = getRandomColor();
+    }
+
+    // Todo Temporary delete
+    public int getRandomColor() {
         Random random = new Random();
-        int r = random.nextInt(255);
-        int g = random.nextInt(255);
-        int b = random.nextInt(255);
-        this.color = Color.rgb(r,g,b);
+        int[] colors = {
+                0xFFC0C0C0, // Silber
+                0xFF800000, // Dunkelrot
+                0xFF008000, // Dunkelgrün
+                0xFF808000, // Oliv
+                0xFF000080, // Dunkelblau
+                0xFF800080, // Lila
+                0xFF008080, // Cyan
+                0xFF000000, // Schwarz
+                0xFF808080, // Grau
+                0xFFFFFFFF  // Weiß
+        };
+        return colors[random.nextInt(colors.length)];
     }
 
 

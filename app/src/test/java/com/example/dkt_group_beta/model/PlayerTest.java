@@ -1,7 +1,6 @@
 package com.example.dkt_group_beta.model;
 
 import static org.junit.Assert.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -93,13 +92,13 @@ class PlayerTest {
 
     @Test
     void testGetMoney() {
-        assertEquals(1200, player.getMoney());
+        assertEquals(Player.START_MONEY, player.getMoney());
     }
 
     @Test
     void testSetMoney() {
-        player.setMoney(1500);
-        assertEquals(1500, player.getMoney());
+        player.setMoney(20000);
+        assertEquals(20000, player.getMoney());
     }
 
     @Test
