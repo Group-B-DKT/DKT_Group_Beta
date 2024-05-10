@@ -188,6 +188,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 }
                 else {
                     popupWindow.dismiss();
+                    disableView(testButton);
                 }
 
             });
