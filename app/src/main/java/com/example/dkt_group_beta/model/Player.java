@@ -1,9 +1,5 @@
 package com.example.dkt_group_beta.model;
 
-import android.graphics.Color;
-
-import com.example.dkt_group_beta.R;
-
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
@@ -34,7 +30,6 @@ public class Player implements Serializable {
 
 
     public Player(String username, String id) {
-        this.setColor(15);
         this.username = username;
         this.id = id;
         this.gameId = -1;
