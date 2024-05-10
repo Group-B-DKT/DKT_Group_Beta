@@ -39,6 +39,7 @@ import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.model.Field;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
@@ -115,6 +116,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     private void createPlayerItems(List<Player> players) {
+        players.sort(Comparator.comparing(Player::getId));
         PlayerItemAdapter adapter = new PlayerItemAdapter(this, players);
         rvPlayerStats.setLayoutManager(new LinearLayoutManager(this));
         rvPlayerStats.setAdapter(adapter);

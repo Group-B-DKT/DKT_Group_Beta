@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.model.Player;
 
 import java.util.List;
@@ -49,7 +50,11 @@ public class PlayerItemAdapter extends RecyclerView.Adapter<PlayerItemAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull PlayerItemAdapter.ViewHolder holder, int position) {
-        holder.playerName.setText(data.get(position).getUsername());
+        String username = data.get(position).getUsername();
+        if (data.get(position).getId().equals(WebsocketClientController.getPlayer().getId())){
+            username += " (you)";
+        }
+        holder.playerName.setText(username);
         holder.isOnTurn.setText(data.get(position).isOnTurn() ? "current playing" : "");
         holder.money.setText(""+data.get(position).getMoney());
         Log.d("Color", ""+data.get(position));
