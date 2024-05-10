@@ -4,7 +4,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/gameboard"
+    android:id="@+id/main"
 
 
     android:layout_width="match_parent"
@@ -19,13 +19,30 @@
         android:id="@+id/fragment_container"
         android:layout_width="495dp"
         android:layout_height="match_parent"
-        android:layout_marginStart="25dp"
+        android:layout_marginStart="10dp"
         android:background="#c7b8b1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" >
 
+        <TextView
+            android:id="@+id/build_text_view"
+            android:layout_width="265dp"
+            android:layout_height="78dp"
+            android:layout_below="@id/build_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="136dp"
+            android:layout_marginTop="136dp"
+            android:layout_marginEnd="136dp"
+            android:layout_marginRight="136dp"
+            android:layout_marginBottom="392dp"
+            android:text="Um zu BAUEN klicken Sie auf die hervorgehobenen Felder"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </FrameLayout>
 
     <ImageView
@@ -44,20 +61,22 @@
         android:id="@+id/field17"
         android:layout_width="45dp"
         android:layout_height="90dp"
+        android:layout_marginStart="45dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/field16"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/field18"
         android:layout_width="45dp"
         android:layout_height="90dp"
+        android:layout_marginStart="90dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/field17"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
 
@@ -65,70 +84,77 @@
         android:id="@+id/field19"
         android:layout_width="45dp"
         android:layout_height="90dp"
+        android:layout_marginStart="135dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/field18"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/field20"
         android:layout_width="45dp"
         android:layout_height="90dp"
+        android:layout_marginStart="180dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/field19"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/field21"
         android:layout_width="45dp"
         android:layout_height="90dp"
+        android:layout_marginStart="225dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/field20"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/field22"
         android:layout_width="45dp"
         android:layout_height="90dp"
+        android:layout_marginStart="270dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/field21"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/field23"
         android:layout_width="45dp"
         android:layout_height="90dp"
+        android:layout_marginStart="315dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/field22"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/field24"
         android:layout_width="45dp"
         android:layout_height="90dp"
+        android:layout_marginStart="360dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/field23"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/field25"
         android:layout_width="45dp"
         android:layout_height="90dp"
+        android:layout_marginStart="405dp"
         android:layout_marginTop="5dp"
         android:rotationX="-360"
         android:scaleType="fitXY"
-        app:layout_constraintStart_toEndOf="@+id/field24"
+        app:layout_constraintStart_toStartOf="@id/field16"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -158,7 +184,9 @@
         android:scaleType="fitXY"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/fragment_container" />
+        app:layout_constraintStart_toStartOf="@+id/fragment_container"
+
+        />
 
 
     <ImageView
@@ -272,9 +300,9 @@
         android:layout_marginStart="450dp"
         android:layout_marginBottom="5dp"
 
-        android:rotationX="-360"
         android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/fragment_container"
         app:layout_constraintStart_toStartOf="@id/field11" />
 
     <!-- endOfBottom-->
@@ -516,7 +544,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="90dp"
         android:backgroundTint="#FF0000"
-        android:text="See All Cards"
+        android:text="Roll Dice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/fragment_container"
         app:layout_constraintHorizontal_bias="0.327"
@@ -524,6 +552,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 
+    <!-- Grüne Hintergrundfarbe für den Button -->
+
+    <Button
+        android:id="@+id/build_button"
+        android:layout_width="119dp"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="65dp"
+        android:layout_marginEnd="70dp"
+        android:layout_marginBottom="167dp"
+        android:backgroundTint="@android:color/holo_green_dark"
+        android:text="BAUEN"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/fragment_container"
+        app:layout_constraintTop_toBottomOf="@+id/jokeramount"
+        app:layout_constraintVertical_bias="0.0" /> <!-- Die TextView wird zunächst unsichtbar gemacht -->
 
     <ImageView
         android:id="@+id/character2"

@@ -1,30 +1,42 @@
 package com.example.dkt_group_beta.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import android.widget.ImageView;
 
-@AllArgsConstructor
-public class Player {
-    @Getter
+import java.io.Serializable;
+import java.util.Objects;
+
+
+public class Player implements Serializable {
+    private static final int START_MONEY = 1500;
+
     private String username;
-    @Getter
+
     private String id;
-    @Getter
-    @Setter
+
     private boolean isConnected;
-    @Getter
+
     private int gameId;
 
     private boolean isReady;
 
     private boolean isHost;
 
+    private boolean isOnTurn;
+
+    private Field currentField;
+
+    private int money;
+
+    private transient ImageView characterView;
+
+
     public Player(String username, String id) {
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.setConnected(false);
+        this.isOnTurn = false;
+        this.isConnected = false;
+        this.money = START_MONEY;
     }
 
 
@@ -66,5 +78,50 @@ public class Player {
 
     public void setHost(boolean host) {
         isHost = host;
+    }
+
+    public boolean isOnTurn() {
+        return isOnTurn;
+    }
+
+    public void setOnTurn(boolean onTurn) {
+        this.isOnTurn = onTurn;
+    }
+
+    public Field getCurrentField() {
+        return currentField;
+    }
+
+    public void setCurrentField(Field currentField) {
+        this.currentField = currentField;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public ImageView getCharacterView() {
+        return characterView;
+    }
+
+    public void setCharacterView(ImageView characterView) {
+        this.characterView = characterView;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Player player = (Player) object;
+        return Objects.equals(username, player.username) && Objects.equals(id, player.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, id, isConnected, gameId, isReady, isHost);
     }
 }
