@@ -1,8 +1,8 @@
 package com.example.dkt_group_beta.model;
 
+import static org.junit.Assert.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -145,13 +145,19 @@ class PlayerTest {
 
     @Test
     void testGetMoney() {
-        assertEquals(1500, player.getMoney());
+        assertEquals(Player.START_MONEY, player.getMoney());
     }
 
     @Test
     void testSetMoney() {
         player.setMoney(1200);
         assertEquals(1200, player.getMoney());
+    }
+
+    @Test
+    void testGetColor() {
+        player.setColor(0xFF808080);
+        assertEquals(0xFF808080, player.getColor());
     }
 
     @Test
