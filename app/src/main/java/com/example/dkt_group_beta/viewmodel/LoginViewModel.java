@@ -59,10 +59,9 @@ public class LoginViewModel {
     public SharedPreferences getSharedPreference() throws GeneralSecurityException, IOException {
         MasterKey masterKey = new MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
                 .setKeyScheme(MasterKey.KeyScheme.AES256_GCM).build();
-        SharedPreferences sharedPreferences = EncryptedSharedPreferences.create(context, "encrypted_preferences",
+        return EncryptedSharedPreferences.create(context, "encrypted_preferences",
                 masterKey, EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
-        return sharedPreferences;
     }
 
 
