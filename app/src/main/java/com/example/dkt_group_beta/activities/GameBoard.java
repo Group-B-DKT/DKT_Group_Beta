@@ -185,10 +185,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         testButton.setOnClickListener(v -> dicePopUp());
         btn_endTurn.setOnClickListener(v -> {
-            if (player.isOnTurn())
+            if (player.isOnTurn()){
                 gameBoardViewModel.endTurn();
                 disableView(testButton);
                 diceRolling = false;
+            }
         });
     }
 
