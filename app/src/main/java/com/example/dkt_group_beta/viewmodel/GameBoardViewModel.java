@@ -43,9 +43,10 @@ public class GameBoardViewModel {
 
         if(action == Action.MOVE_PLAYER){
 
+            Log.d("MOVE", param);
             Player movePlayer = game.getPlayerById(fromPlayer.getId());
-            int repetion = Integer.parseInt(param);
-            gameBoardAction.animation(movePlayer.getCharacterView(), repetion);
+            int repetition = Integer.parseInt(param);
+            gameBoardAction.animation(movePlayer.getCharacterView(), repetition);
 
         }
     }

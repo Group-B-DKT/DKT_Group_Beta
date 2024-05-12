@@ -319,6 +319,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                     rollButton.setText("OK");
                 } else {
                     popupWindow.dismiss();
+                    gameBoardViewModel.movePlayer(diceResults[0] + diceResults[1]);
                 }
 
             });

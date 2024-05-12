@@ -30,6 +30,9 @@ public class Player implements Serializable {
     private transient ImageView characterView;
 
 
+    private int currentPosition;
+
+
     public Player(String username, String id) {
         this.username = username;
         this.id = id;
@@ -37,6 +40,7 @@ public class Player implements Serializable {
         this.isOnTurn = false;
         this.isConnected = false;
         this.money = START_MONEY;
+        this.currentPosition = 0;
     }
 
 
@@ -106,6 +110,14 @@ public class Player implements Serializable {
 
     public ImageView getCharacterView() {
         return characterView;
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
     }
 
     public void setCharacterView(ImageView characterView) {
