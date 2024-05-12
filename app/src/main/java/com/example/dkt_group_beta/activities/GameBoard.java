@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -29,6 +30,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -136,8 +138,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
                 x.setLayoutParams(character.getLayoutParams());
             }
-
-
+            ImageViewCompat.setImageTintList(x, ColorStateList.valueOf(players.get(i).getColor()));
 
 
             int resourceId = this.getResources()
@@ -161,7 +162,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                                                     int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
             for (Player p: players) {
                 setPosition(0, p);
-                animation(p, 30);
             }
 
 
@@ -449,16 +449,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
     private Animation getAnimation(Player player) {
-
         float xDelta = 110;
         float yDelta = 70;
 
-        Animation animation = new TranslateAnimation(0, xDelta, 0, yDelta);
+        Animation animation;
         if (player.getCurrentPosition() <= 10) {
-            animation = new TranslateAnimation(0, xDelta , 0, 0);
+            animation = new TranslateAnimation(0, xDelta * -1, 0, 0);
         }
         else if (player.getCurrentPosition() < 15) {
-            animation = new TranslateAnimation(0, 0, 0, yDelta);
+            animation = new TranslateAnimation(0, 0, 0, yDelta * -1);
         }
         else if (player.getCurrentPosition() < 25){
             animation = new TranslateAnimation(0, xDelta, 0, 0);
