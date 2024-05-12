@@ -47,7 +47,7 @@ public class GameBoardViewModel {
             Log.d("MOVE", param);
             Player movePlayer = game.getPlayerById(fromPlayer.getId());
             int repetition = Integer.parseInt(param);
-            gameBoardAction.animation(movePlayer.getCharacterView(), repetition);
+            gameBoardAction.animation(movePlayer, repetition);
 
         }
     }
@@ -62,6 +62,7 @@ public class GameBoardViewModel {
 
     public void movePlayer(int dice){
 
+        actionController.movePlayer(dice);
 
     }
 

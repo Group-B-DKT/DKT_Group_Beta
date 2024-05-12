@@ -94,6 +94,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         diceResults = new int[2];
 
         players = (List<Player>) getIntent().getSerializableExtra("players");
+        players.sort(Comparator.comparing(Player::getId));
         rvPlayerStats = findViewById(R.id.rv_playerStats);
 
         List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
@@ -122,9 +123,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
 
-
+        ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
         for (int i = 0; i < players.size(); i++) {
-            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+
             final ImageView x;
             if(i == 0){
                x = character;
@@ -151,13 +152,20 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
             players.get(i).setCharacterView(x);
 
-            constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
-                                                        int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
-                setPosition(0, x);
-            });
+
 
 
         }
+
+        constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
+                                                    int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
+            for (Player p: players) {
+                setPosition(0, p);
+                animation(p, 30);
+            }
+
+
+        });
 
         game = new Game(players, fields);
         gameBoardViewModel = new GameBoardViewModel(this, game);
@@ -195,7 +203,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     private void createPlayerItems(List<Player> players) {
-        players.sort(Comparator.comparing(Player::getId));
+
         PlayerItemAdapter adapter = new PlayerItemAdapter(this, players);
         rvPlayerStats.setLayoutManager(new LinearLayoutManager(this));
         rvPlayerStats.setAdapter(adapter);
@@ -243,12 +251,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
     @Override
-    public void animation(ImageView characterImageView, int repetition) {
+    public void animation(Player player, int repetition) {
+
+        ImageView characterImageView = player.getCharacterView();
+
         if (repetition == 0) {
             return;
         }
 
-        Animation animation = getAnimation();
+        Animation animation = getAnimation(player);
         animation.setDuration(500); // Dauer basierend auf Anzahl der Schritte
         animation.setRepeatCount(0); // Keine Wiederholung, da die Position manuell aktualisiert wird
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -260,19 +271,18 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             @Override
             public void onAnimationEnd(Animation animation) {
                 animation.cancel();
-                currentplace++;
-                if (currentplace >= NUMBER_OF_FIELDS - 2)
-                    currentplace = 0;
-                characterImageView.setX(getPositionFromView(imageViews.get(currentplace))[0]);
-                characterImageView.setY(getPositionFromView(imageViews.get(currentplace))[1]);
-                animation(characterImageView, repetition - 1);
+                player.setCurrentPosition(player.getCurrentPosition()+1);
+                if (player.getCurrentPosition() >= NUMBER_OF_FIELDS - 2)
+                    player.setCurrentPosition(0);
+                setPosition(player.getCurrentPosition(), player);
+                animation(player, repetition - 1);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) { // method not used
             }
         });
-        characterImageView.startAnimation(animation);
+        player.getCharacterView().startAnimation(animation);
     }
 
 
@@ -416,26 +426,41 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
 
-    public void setPosition(int start, ImageView characterImageView) {
-        characterImageView.setX(getPositionFromView(imageViews.get(start))[0]);
-        characterImageView.setY(getPositionFromView(imageViews.get(start))[1]);
+    public void setPosition(int start, Player player) {
+
+        int index = players.indexOf(player);
+        int x = getPositionFromView(imageViews.get(start))[0];
+        int y = getPositionFromView(imageViews.get(start))[1];
+        ImageView character = player.getCharacterView();
+
+        if(player.getCurrentPosition() <= 10 || (player.getCurrentPosition() >= 15 && player.getCurrentPosition() <= 25)){
+            x += (index%2 == 0) ? 0 : character.getWidth();
+            y += (index/2) * character.getHeight();
+        } else{
+            x += (index/2) * character.getWidth();
+            y += (index%2 == 0) ? 0 : character.getHeight();
+        }
+
+        character.setX(x);
+        character.setY(y);
+
     }
 
 
 
-    private Animation getAnimation() {
+    private Animation getAnimation(Player player) {
+
         float xDelta = 110;
         float yDelta = 70;
 
-        Animation animation = null;
-        if (currentplace < 10) {
-            animation = new TranslateAnimation(0, xDelta * -1, 0, 0);
-
+        Animation animation = new TranslateAnimation(0, xDelta, 0, yDelta);
+        if (player.getCurrentPosition() <= 10) {
+            animation = new TranslateAnimation(0, xDelta , 0, 0);
         }
-        else if (currentplace < 15) {
-            animation = new TranslateAnimation(0, 0, 0, yDelta * -1);
+        else if (player.getCurrentPosition() < 15) {
+            animation = new TranslateAnimation(0, 0, 0, yDelta);
         }
-        else if (currentplace < 25){
+        else if (player.getCurrentPosition() < 25){
             animation = new TranslateAnimation(0, xDelta, 0, 0);
         }
         else {
