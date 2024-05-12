@@ -57,6 +57,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private static final float SHAKE_THRESHOLD = 15.0f; // Sensitivity -> how much the device moves
     private Button rollButton;
     private Button testButton;
+    private Button btn_endTurn;
 
     private Player player;
     private boolean diceRolling = true;
@@ -94,6 +95,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         player = WebsocketClientController.getPlayer();
 
         diceResults = new int[2];
+
+        btn_endTurn = findViewById(R.id.btn_endTurn);
 
         players = (List<Player>) getIntent().getSerializableExtra("players");
         players.sort(Comparator.comparing(Player::getId));
@@ -196,10 +199,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         testButton = findViewById(R.id.popUpCards);
         Log.d("DEBUG", "IST: " + player.getUsername());
-        if (!player.isOnTurn())
+        if (!player.isOnTurn()) {
             disableView(testButton);
+            disableView(btn_endTurn);
+        }
 
         testButton.setOnClickListener(v -> dicePopUp());
+        btn_endTurn.setOnClickListener(v -> gameBoardViewModel.endTurn());
     }
 
     private void createPlayerItems(List<Player> players) {

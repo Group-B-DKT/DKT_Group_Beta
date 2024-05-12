@@ -65,5 +65,7 @@ public class GameBoardViewModel {
         actionController.movePlayer(dice);
 
     }
-
+    public void endTurn() {
+        actionController.endTurn();
+    }
 }
