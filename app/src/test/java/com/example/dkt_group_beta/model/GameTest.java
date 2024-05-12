@@ -68,4 +68,21 @@ class GameTest {
         Game game1 = new Game(Collections.singletonList(player), fields1);
         assertEquals(1, game1.getOwnedFields(player).size());
     }
+
+    @Test
+    void testGetPlayerById(){
+
+        Player player = new Player("User1", "101");
+        players.add(player);
+        assertEquals(player, game.getPlayerById("101"));
+    }
+
+    @Test
+    void testGetPlayerByIdNull(){
+        assertEquals(null, game.getPlayerById("10000"));
+    }
+
+
+
+
  }

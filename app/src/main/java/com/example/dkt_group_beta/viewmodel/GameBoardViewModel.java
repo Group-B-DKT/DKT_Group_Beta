@@ -41,6 +41,15 @@ public class GameBoardViewModel {
             gameBoardAction.dicePopUp();
             gameBoardAction.showBothDice(diceResult);
         }
+
+        if(action == Action.MOVE_PLAYER){
+
+            Log.d("MOVE", param);
+            Player movePlayer = game.getPlayerById(fromPlayer.getId());
+            int repetition = Integer.parseInt(param);
+            gameBoardAction.animation(movePlayer, repetition);
+
+        }
     }
 
     public int getRandomNumber(int min, int max){
@@ -49,6 +58,12 @@ public class GameBoardViewModel {
 
     public void rollDice(int[] diceResults){
         actionController.diceRolled(diceResults);
+    }
+
+    public void movePlayer(int dice){
+
+        actionController.movePlayer(dice);
+
     }
 
 }
