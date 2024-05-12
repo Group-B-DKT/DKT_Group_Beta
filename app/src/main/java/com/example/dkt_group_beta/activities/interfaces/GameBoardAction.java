@@ -13,4 +13,6 @@ public interface GameBoardAction {
     void disableEndTurnButton();
 
     void enableEndTurnButton();
+
+    void updatePlayerStats(String playerId);
 }
