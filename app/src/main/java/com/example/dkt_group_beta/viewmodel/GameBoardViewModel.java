@@ -15,11 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GameBoardViewModel {
-
-    private GameBoardAction gameBoardAction;
     private ActionController actionController;
-    private Player player;
+    private GameBoardAction gameBoardAction;
     private Game game;
+    private Player player;
 
 
     public GameBoardViewModel(GameBoardAction gameBoardAction, Game game) {
@@ -51,6 +50,15 @@ public class GameBoardViewModel {
             gameBoardAction.showBothDice(diceResult);
         }
 
+        if(action == Action.MOVE_PLAYER){
+
+            Log.d("MOVE", param);
+            Player movePlayer = game.getPlayerById(fromPlayer.getId());
+            int repetition = Integer.parseInt(param);
+            gameBoardAction.animation(movePlayer, repetition);
+
+        }
+
         if (action == Action.BUY_FIELD) {
             game.updateField(fields.get(0));
             gameBoardAction.markBoughtField(fields.get(0).getId()-1);
@@ -64,6 +72,12 @@ public class GameBoardViewModel {
 
     public void rollDice(int[] diceResults){
         actionController.diceRolled(diceResults);
+    }
+
+    public void movePlayer(int dice){
+
+        actionController.movePlayer(dice);
+
     }
 
 }

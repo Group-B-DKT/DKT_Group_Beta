@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.model;
 
+import android.widget.ImageView;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -25,6 +27,11 @@ public class Player implements Serializable {
 
     private int money;
 
+    private transient ImageView characterView;
+
+
+    private int currentPosition;
+
     private int color;
 
 
@@ -32,9 +39,10 @@ public class Player implements Serializable {
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.isOnTurn = false;
         this.isConnected = false;
         this.money = START_MONEY;
+        this.currentPosition = 0;
+        this.isOnTurn = false;
     }
 
 
@@ -100,6 +108,22 @@ public class Player implements Serializable {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public ImageView getCharacterView() {
+        return characterView;
+    }
+
+    public int getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(int currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public void setCharacterView(ImageView characterView) {
+        this.characterView = characterView;
     }
 
     public int getColor() {

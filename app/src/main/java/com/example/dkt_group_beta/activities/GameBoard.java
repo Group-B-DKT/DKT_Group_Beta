@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,20 +19,23 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
+
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dkt_group_beta.R;
-import com.example.dkt_group_beta.communication.controller.ActionController;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.model.Game;
@@ -43,10 +47,10 @@ import com.example.dkt_group_beta.model.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
     private static final int NUMBER_OF_FIELDS = 30;
+    private static final int NUMBER_OF_FIGURES = 6;
     private List<ImageView> imageViews;
 
     private GameBoardViewModel gameBoardViewModel;
@@ -77,24 +81,35 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     private int[] diceResults;
 
+    private List<ImageView> figures;
+    ImageView character;
+
+    int currentplace = 0;
+
+    List<Player> players;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game_board);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.gameBoard), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        character = findViewById(R.id.character);
+
         player = WebsocketClientController.getPlayer();
 
         diceResults = new int[2];
 
+        players = (List<Player>) getIntent().getSerializableExtra("players");
+        players.sort(Comparator.comparing(Player::getId));
         rvPlayerStats = findViewById(R.id.rv_playerStats);
 
-        List<Player> players = (List<Player>) getIntent().getSerializableExtra("players");
         List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
 
         game = new Game(players, fields);
@@ -111,7 +126,76 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                         .getIdentifier("field" + i, "drawable", this.getPackageName());
 
 
-                ImageView imageView = imageViews.get(i-1);
+                ImageView imageView = imageViews.get(i - 1);
+                if (imageView != null && resourceId != 0) {
+                    imageView.setImageBitmap(
+                            decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+                }
+            }
+        });
+
+
+
+        ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+        for (int i = 0; i < players.size(); i++) {
+
+            final ImageView x;
+            if(i == 0){
+               x = character;
+            }else{
+                x = new ImageView(this);
+
+                constraintLayout.addView(x);
+
+                x.setLayoutParams(character.getLayoutParams());
+            }
+            ImageViewCompat.setImageTintList(x, ColorStateList.valueOf(players.get(i).getColor()));
+
+
+            int resourceId = this.getResources()
+                    .getIdentifier("character" + (i+1), "drawable", this.getPackageName());
+
+
+            if (resourceId != 0) {
+                x.setImageBitmap(
+                        decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+            }
+
+            x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+            players.get(i).setCharacterView(x);
+
+
+
+
+        }
+
+        constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
+                                                    int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
+            for (Player p: players) {
+                setPosition(0, p);
+            }
+
+
+        });
+
+        game = new Game(players, fields);
+        gameBoardViewModel = new GameBoardViewModel(this, game);
+
+
+
+        this.figures = new ArrayList<>();
+        runOnUiThread(() -> {
+
+            for (int i = 1; i <= NUMBER_OF_FIGURES; i++) {
+                int resourceId = this.getResources()
+                        .getIdentifier("character" + i, "id", this.getPackageName());
+                figures.add(findViewById(resourceId));
+
+                resourceId = this.getResources()
+                        .getIdentifier("character" + i, "drawable", this.getPackageName());
+
+
+                ImageView imageView = figures.get(i - 1);
                 if (imageView != null && resourceId != 0) {
                         imageView.setImageBitmap(
                                 decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
@@ -119,7 +203,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             }
         });
 
-        for (int i = 0; i < imageViews.size(); i++) {
+        for (int i = 0; i < imageViews.size() - 2; i++) {
             int finalI = i;
             imageViews.get(i).setOnClickListener(v -> markBoughtField(finalI, player.getColor()));
         }
@@ -156,10 +240,17 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     private void createPlayerItems(List<Player> players) {
-        players.sort(Comparator.comparing(Player::getId));
+
         PlayerItemAdapter adapter = new PlayerItemAdapter(this, players);
         rvPlayerStats.setLayoutManager(new LinearLayoutManager(this));
         rvPlayerStats.setAdapter(adapter);
+    }
+
+    public int[] getPositionFromView(View view) {
+        int[] res = new int[2];
+        view.getLocationOnScreen(res);
+//        res[0] -= character.getLayoutParams().width;
+        return res;
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
@@ -195,8 +286,45 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         return inSampleSize;
     }
 
-    public void dicePopUp(){
-        runOnUiThread(()->{
+
+    @Override
+    public void animation(Player movePlayer, int repetition) {
+
+        ImageView characterImageView = movePlayer.getCharacterView();
+
+        if (repetition == 0) {
+            return;
+        }
+
+        Animation animation = getAnimation(movePlayer);
+        animation.setDuration(500); // Dauer basierend auf Anzahl der Schritte
+        animation.setRepeatCount(0); // Keine Wiederholung, da die Position manuell aktualisiert wird
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                Log.d("DEBUG", "Y3: " + characterImageView.getY());
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                animation.cancel();
+                movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
+                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS)
+                    movePlayer.setCurrentPosition(0);
+                setPosition(movePlayer.getCurrentPosition(), movePlayer);
+                animation(movePlayer, repetition - 1);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) { // method not used
+            }
+        });
+        movePlayer.getCharacterView().startAnimation(animation);
+    }
+
+
+    public void dicePopUp() {
+        runOnUiThread(() -> {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.activity_popup_dice, null);
 
@@ -224,9 +352,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                     rollDiceAnimation(diceImageView1);
                     rollDiceAnimation(diceImageView2);
                     rollButton.setText("OK");
-                }
-                else {
+                } else {
                     popupWindow.dismiss();
+                    gameBoardViewModel.movePlayer(diceResults[0] + diceResults[1]);
                     disableView(testButton);
                 }
 
@@ -330,5 +458,56 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
+    }
+
+
+
+    public void setPosition(int start, Player player) {
+
+        int index = players.indexOf(player);
+        int x = getPositionFromView(imageViews.get(start))[0];
+        int y = getPositionFromView(imageViews.get(start))[1];
+        ImageView character = player.getCharacterView();
+
+        if(player.getCurrentPosition() <= 10 || (player.getCurrentPosition() >= 15 && player.getCurrentPosition() <= 25)){
+            x += (index%2 == 0) ? 0 : character.getWidth();
+            y += (index/2) * character.getHeight();
+        } else{
+            x += (index/2) * character.getWidth();
+            y += (index%2 == 0) ? 0 : character.getHeight();
+        }
+
+        character.setX(x);
+        character.setY(y);
+
+    }
+
+
+
+    private Animation getAnimation(Player movePlayer) {
+        ImageView character = movePlayer.getCharacterView();
+        int index = players.indexOf(movePlayer);
+        int nextPosition = movePlayer.getCurrentPosition() + 1;
+        if (nextPosition >= NUMBER_OF_FIELDS){
+            nextPosition = 0;
+        }
+
+        float xDelta;
+        float yDelta;
+        int[] pos = getPositionFromView(imageViews.get(nextPosition));
+        Animation animation = null;
+        if(movePlayer.getCurrentPosition() <= 10 || (movePlayer.getCurrentPosition() >= 15 && movePlayer.getCurrentPosition() <= 25)){
+            pos[0] += (index%2 == 0) ? 0 : character.getWidth();
+            pos[1] += (index/2) * character.getHeight();
+        } else{
+            pos[0] += (index/2) * character.getWidth();
+            pos[1] += (index%2 == 0) ? 0 : character.getHeight();
+        }
+        xDelta = pos[0] - character.getX();
+        yDelta = pos[1] - character.getY();
+
+        animation = new TranslateAnimation(0, xDelta, 0, yDelta);
+
+        return animation;
     }
 }

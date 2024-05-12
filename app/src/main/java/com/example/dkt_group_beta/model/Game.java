@@ -136,4 +136,17 @@ public class Game {
             this.players.set(index, player);
         }
     }
+
+
+    public Player getPlayerById(String id){
+
+        for (Player p: players) {
+
+            if(p.getId().equals(id)){
+                return p;
+            }
+
+        }
+        return null;
+    }
 }
