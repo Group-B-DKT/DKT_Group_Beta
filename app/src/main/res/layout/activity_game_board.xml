@@ -353,8 +353,9 @@
         android:layout_width="22.5dp"
         android:layout_height="22.5dp"
 
-        app:srcCompat="@drawable/character1"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/character1" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
