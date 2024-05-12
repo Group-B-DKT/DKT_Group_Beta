@@ -5,7 +5,7 @@ import java.util.Objects;
 
 
 public class Player implements Serializable {
-    public static final int START_MONEY = 1200;
+    public static final int START_MONEY = 1500;
 
     private String username;
 
@@ -19,20 +19,19 @@ public class Player implements Serializable {
 
     private boolean isHost;
 
-    private int money;
-    private Field currentField;
-    private boolean isInGame;
     private boolean isOnTurn;
 
+    private Field currentField;
+
+    private int money;
+
+    private int color;
 
 
     public Player(String username, String id) {
-        this.money = START_MONEY;
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.setConnected(false);
-        this.isInGame = false;
         this.isOnTurn = false;
         this.isConnected = false;
         this.money = START_MONEY;
@@ -87,16 +86,29 @@ public class Player implements Serializable {
         this.isOnTurn = onTurn;
     }
 
+    public Field getCurrentField() {
+        return currentField;
+    }
+
+    public void setCurrentField(Field currentField) {
+        this.currentField = currentField;
+    }
+
     public int getMoney() {
         return money;
     }
 
-    public void setMoney(int newMoney) {
-        money = newMoney;
+    public void setMoney(int money) {
+        this.money = money;
     }
-    public Field getCurrentField() { return currentField; }
 
-    public void setCurrentField(Field field) { this.currentField = field; }
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
 
     @Override
     public boolean equals(Object object) {

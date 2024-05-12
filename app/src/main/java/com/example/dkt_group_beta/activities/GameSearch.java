@@ -65,8 +65,6 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         this.btnConnect.setOnClickListener(v -> gameSearchViewModel.connectToGame(this.selectedGameId));
 
         this.selectedGameId = -1;
-        //TODO : Delete
-        startActivity(new Intent(this, GameBoard.class));
     }
 
     @Override

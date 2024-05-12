@@ -109,6 +109,7 @@ public class GameLobbyViewModel {
     }
 
     private void handleGameStarted(Player fromPlayer, List<Field> fields) {
+        Log.d("PL1", fromPlayer.getId() + "|  " +connectedPlayers.stream().map(p -> p.getId() + ": " + p.isOnTurn()).collect(Collectors.toList()));
         Player isOnTurnPlayer = this.connectedPlayers.stream()
                                                      .filter(p -> p.getId().equals(fromPlayer.getId()))
                                                      .findFirst().orElse(null);
@@ -116,6 +117,8 @@ public class GameLobbyViewModel {
             return;
         }
         isOnTurnPlayer.setOnTurn(true);
+        Log.d("PL2", isOnTurnPlayer.getId() + ": " + isOnTurnPlayer.isOnTurn());
+        Log.d("PL3", fromPlayer.getId() + "|  " +connectedPlayers.stream().map(p -> p.getId() + ": " + p.isOnTurn()).collect(Collectors.toList()));
         gameLobbyAction.switchToGameBoard(this.connectedPlayers, fields);
     }
 

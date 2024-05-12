@@ -1,22 +1,74 @@
 package com.example.dkt_group_beta.model;
 
 import static org.junit.Assert.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class PlayerTest {
+import java.util.ArrayList;
+import java.util.List;
 
-    private Player player;
+class PlayerTest {
+    Game game;
+    Player player;
+    House house;
+    Hotel hotel;
+    Field field;
 
     @BeforeEach
     void setUp() {
-        player = new Player("testUser", "123");
+        player = new Player("TestPlayer", "123");
+        field = new Field(200, "TestField", 200, true);
+        field.setOwner(player);
+        house = new House(0, null, 1, field);
+        hotel = new Hotel(200, null, 1, field);
+        List<Player> players = new ArrayList<>();
+        players.add(player);
+        List<Field> fields = new ArrayList<>();
+        fields.add(field);
+        game = new Game(players, fields);
+    }
+
+    @Test
+    void buyHouse() {
+        assertTrue(game.buyHouse(player, house));
+        assertEquals(1300, player.getMoney());
+        assertEquals(player, house.getOwner());
+        assertEquals(field, house.getField());
+    }
+    @Test
+    void buyHouseNotEnoughMoney() {
+        player.setMoney(50);
+        assertFalse(game.buyHouse(player, house));
+    }
+    @Test
+    void buyHouseFieldAlreadyHasHotel() {
+        field.setHotel(hotel);
+        assertFalse(game.buyHouse(player, house));
+    }
+
+    @Test
+    void testBuyHotel() {
+        assertTrue(game.buyHotel(player, hotel));
+        assertEquals(1300, player.getMoney());
+        assertEquals(player, hotel.getOwner());
+    }
+
+    @Test
+    void testBuyHotelNotEnoughMoney() {
+        player.setMoney(50);
+        assertFalse(game.buyHotel(player, hotel));
+
+    }
+
+    @Test
+    void testBuyHotelFieldAlreadyHasHotel() {
+        field.setHotel(hotel);
+        assertFalse(game.buyHotel(player, new Hotel(200, null, 1, new Field(200, "AnotherField", 500, true))));
     }
 
     @Test
     void testGetUsername() {
-        assertEquals("testUser", player.getUsername());
+        assertEquals("TestPlayer", player.getUsername());
     }
 
     @Test
@@ -93,18 +145,24 @@ class PlayerTest {
 
     @Test
     void testGetMoney() {
-        assertEquals(1200, player.getMoney());
+        assertEquals(Player.START_MONEY, player.getMoney());
     }
 
     @Test
     void testSetMoney() {
-        player.setMoney(1500);
-        assertEquals(1500, player.getMoney());
+        player.setMoney(1200);
+        assertEquals(1200, player.getMoney());
+    }
+
+    @Test
+    void testGetColor() {
+        player.setColor(0xFF808080);
+        assertEquals(0xFF808080, player.getColor());
     }
 
     @Test
     void testEquals() {
-        Player samePlayer = new Player("testUser", "123");
+        Player samePlayer = new Player("TestPlayer", "123");
         assertEquals(player, samePlayer);
     }
 
@@ -116,7 +174,7 @@ class PlayerTest {
 
     @Test
     void testHashCode() {
-        Player samePlayer = new Player("testUser", "123");
+        Player samePlayer = new Player("TestPlayer", "123");
         assertEquals(player.hashCode(), samePlayer.hashCode());
     }
 

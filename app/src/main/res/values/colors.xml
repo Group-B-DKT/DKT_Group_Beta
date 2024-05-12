@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#C8AEAE</color>
     <color name="highlight_color">#000000</color>
+    <color name="player_item">#252525</color>
 </resources>
