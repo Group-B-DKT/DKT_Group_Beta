@@ -1,6 +1,9 @@
 package com.example.dkt_group_beta.model;
 
 import static org.junit.Assert.*;
+
+import android.widget.ImageView;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -177,4 +180,23 @@ class PlayerTest {
         Player samePlayer = new Player("TestPlayer", "123");
         assertEquals(player.hashCode(), samePlayer.hashCode());
     }
+
+
+
+    @Test
+    public void testGetCharacterView() {
+        ImageView character = new ImageView(null);
+        Player player = new Player("username", "id");
+        player.setCharacterView(character);
+        assertEquals(character, player.getCharacterView());
+    }
+
+    @Test
+    public void testGetCurrentPosition() {
+        Player player = new Player("username", "id");
+        player.setCurrentPosition(5);
+        assertEquals(5, player.getCurrentPosition());
+    }
+
+
 }
