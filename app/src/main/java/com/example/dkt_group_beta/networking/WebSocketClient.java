@@ -49,7 +49,7 @@ public class WebSocketClient {
         webSocket = client.newWebSocket(request, new WebSocketListener() {
             @Override
             public void onOpen(WebSocket webSocket, Response response) {
-                ConnectJsonObject connectJsonObject = new ConnectJsonObject(ConnectType.NEW_CONNECT, player.getId(), player.getUsername());
+                ConnectJsonObject connectJsonObject = new ConnectJsonObject(ConnectType.NEW_CONNECT, player);
                 Wrapper wrapper = new Wrapper(ConnectJsonObject.class.getSimpleName(), -1, com.example.dkt_group_beta.communication.enums.Request.CONNECT, connectJsonObject);
                 String msg = gson.toJson(wrapper);
                 webSocket.send(msg);
