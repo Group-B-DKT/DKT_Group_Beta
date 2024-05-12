@@ -5,7 +5,7 @@ import java.util.Objects;
 
 
 public class Player implements Serializable {
-    public static final int START_MONEY = 1200;
+    public static final int START_MONEY = 1500;
 
     private String username;
 
@@ -22,6 +22,7 @@ public class Player implements Serializable {
     private int money;
     private Field currentField;
     private boolean isOnTurn;
+    private int color;
 
 
 
@@ -87,12 +88,20 @@ public class Player implements Serializable {
         return money;
     }
 
-    public void setMoney(int newMoney) {
-        money = newMoney;
+    public void setMoney(int money) {
+        this.money = money;
     }
     public Field getCurrentField() { return currentField; }
 
     public void setCurrentField(Field field) { this.currentField = field; }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
 
     @Override
     public boolean equals(Object object) {
