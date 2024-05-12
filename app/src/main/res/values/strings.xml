@@ -25,4 +25,5 @@
     <string name="dialog_positive">Ok</string>
     <string name="dialog_start_game_header">Attention!</string>
     <string name="choose_character">Wähle deine Spielfigur!</string>
+    <string name="end_turn">End Turn</string>
 </resources>
