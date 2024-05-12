@@ -15,4 +15,6 @@ public interface GameBoardAction {
     void enableEndTurnButton();
 
     void updatePlayerStats(String playerId);
+
+    void enableDiceButton();
 }

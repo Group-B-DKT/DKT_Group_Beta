@@ -187,6 +187,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         btn_endTurn.setOnClickListener(v -> {
             if (player.isOnTurn())
                 gameBoardViewModel.endTurn();
+                disableView(testButton);
+                diceRolling = false;
         });
     }
 
@@ -317,10 +319,19 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void updatePlayerStats(String playerId) {
         runOnUiThread(() -> {
-            Log.d("DEBUG5", ""+ game.getPlayers().stream().map(p -> p.getUsername() + ": " + p.isOnTurn()).collect(Collectors.toList()));
             rvPlayerStats.getAdapter().notifyDataSetChanged();
         });
-        // Todo: Update the player stats in the RecyclerView
+    }
+
+    @Override
+    public void enableDiceButton() {
+        diceRolling = true;
+        runOnUiThread(() -> {
+            ViewGroup.LayoutParams params = testButton.getLayoutParams();
+            params.height = endTurn_layout.height;
+            params.width = endTurn_layout.width;
+            testButton.setLayoutParams(params);
+        });
     }
 
 

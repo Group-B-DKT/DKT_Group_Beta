@@ -54,6 +54,7 @@ public class GameBoardViewModel {
                 gameBoardAction.disableEndTurnButton();
                 player.setOnTurn(false);
             }else if (player.getId().equals(fromPlayer.getId())){
+                gameBoardAction.enableDiceButton();
                 gameBoardAction.enableEndTurnButton();
             }
             game.setPlayerTurn(fromPlayer.getId());
