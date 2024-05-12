@@ -21,20 +21,17 @@ public class Player implements Serializable {
 
     private int money;
     private Field currentField;
-    private boolean isInGame;
     private boolean isOnTurn;
 
 
 
     public Player(String username, String id) {
-        this.money = START_MONEY;
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.setConnected(false);
-        this.isInGame = false;
         this.isConnected = false;
         this.money = START_MONEY;
+        this.isOnTurn = false;
     }
 
 
