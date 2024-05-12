@@ -1,6 +1,5 @@
 package com.example.dkt_group_beta.model;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,12 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.*;
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 
@@ -148,9 +142,6 @@ class GameTest {
         assertEquals("Player1", game.getPlayers().get(0).getUsername());
 
     }
-
-
-}
 
     @Test
     void testGetRandomNumber(){
