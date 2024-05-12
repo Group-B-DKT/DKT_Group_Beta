@@ -4,10 +4,11 @@ import android.widget.ImageView;
 
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Random;
 
 
 public class Player implements Serializable {
-    private static final int START_MONEY = 1500;
+    public static final int START_MONEY = 1500;
 
     private String username;
 
@@ -32,15 +33,17 @@ public class Player implements Serializable {
 
     private int currentPosition;
 
+    private int color;
+
 
     public Player(String username, String id) {
         this.username = username;
         this.id = id;
         this.gameId = -1;
-        this.isOnTurn = false;
         this.isConnected = false;
         this.money = START_MONEY;
         this.currentPosition = 0;
+        this.isOnTurn = false;
     }
 
 
@@ -122,6 +125,14 @@ public class Player implements Serializable {
 
     public void setCharacterView(ImageView characterView) {
         this.characterView = characterView;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
     }
 
     @Override

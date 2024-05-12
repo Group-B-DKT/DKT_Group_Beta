@@ -72,9 +72,11 @@ public class GameSearchViewModel extends ViewModel {
 
         if (action == Action.GAME_CREATED_SUCCESSFULLY) {
             WebsocketClientController.getPlayer().setHost(true);
+            WebsocketClientController.getPlayer().setColor(fromPlayer.getColor());
             gameSearchAction.switchToGameLobby(username);
         }
         if (action == Action.GAME_JOINED_SUCCESSFULLY){
+            WebsocketClientController.getPlayer().setColor(fromPlayer.getColor());
             gameSearchAction.switchToGameLobby(username);
         }
     }

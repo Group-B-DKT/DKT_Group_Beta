@@ -1,6 +1,5 @@
 package com.example.dkt_group_beta.activities;
 
-
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,11 +18,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 
-import android.util.Log;
-import android.view.View;
-
-import android.view.animation.Animation;
-
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,6 +29,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
@@ -42,18 +38,16 @@ import com.example.dkt_group_beta.communication.controller.WebsocketClientContro
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
+import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.model.Field;
-import com.example.dkt_group_beta.model.Game;
-import com.example.dkt_group_beta.model.Player;
+
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
     private static final int NUMBER_OF_FIELDS = 32;
-
     private static final int NUMBER_OF_FIGURES = 6;
     private List<ImageView> imageViews;
     private boolean isPopupWindowOpen = false;
@@ -69,6 +63,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private ImageView diceImageView2;
     private int rollCounter = 0;
     private GameBoardViewModel gameBoardViewModel;
+    private RecyclerView rvPlayerStats;
+
     private Game game;
     private int[] diceResults;
 
@@ -98,7 +94,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         diceResults = new int[2];
 
         players = (List<Player>) getIntent().getSerializableExtra("players");
+        rvPlayerStats = findViewById(R.id.rv_playerStats);
+
         List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
+
+        game = new Game(players, fields);
+        gameBoardViewModel = new GameBoardViewModel(this,game);
 
         this.imageViews = new ArrayList<>();
         runOnUiThread(() -> {
@@ -177,30 +178,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
                 ImageView imageView = figures.get(i - 1);
                 if (imageView != null && resourceId != 0) {
-                    imageView.setImageBitmap(
-                            decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+                        imageView.setImageBitmap(
+                                decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
                 }
             }
         });
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
-    }
-
-    @Override
-    protected void onStart() {
-
-        super.onStart();
-        new Thread(() -> {
-//            try {
-//                Thread.sleep(5000);
-//
-//                for (Player p: players) {
-//                    setPosition(0, p.getCharacterView());
-//                }
-//               animation(players.get(0).getCharacterView(), 100);
-//            } catch (InterruptedException e) {
-//                Thread.currentThread().interrupt();
-//            }
-        }).start();
+        createPlayerItems(players);
 
         testButton = findViewById(R.id.popUpCards);
         Log.d("DEBUG", "IST: " + player.getUsername());
@@ -208,6 +192,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             disableView(testButton);
 
         testButton.setOnClickListener(v -> dicePopUp());
+    }
+
+    private void createPlayerItems(List<Player> players) {
+        players.sort(Comparator.comparing(Player::getId));
+        PlayerItemAdapter adapter = new PlayerItemAdapter(this, players);
+        rvPlayerStats.setLayoutManager(new LinearLayoutManager(this));
+        rvPlayerStats.setAdapter(adapter);
     }
 
     public int[] getPositionFromView(View view) {
@@ -299,10 +290,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
 
-            popupWindow.setOnDismissListener(() -> {
-                isPopupWindowOpen = false;
-                // set isPopupWindowOpen to false if it is closed
-            });
+            popupWindow.setOnDismissListener(() -> isPopupWindowOpen = false);
+                // set isPopupWindowOpen to false if it is closed);
             isPopupWindowOpen = true;
             popupWindow.showAtLocation(imageViews.get(0), Gravity.CENTER, 0, 0);
             // initialising listener for the acceleration sensor
@@ -311,7 +300,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             rollButton = popupView.findViewById(R.id.rollButton);
             rollButton.setOnClickListener(v -> {
-                if (diceRolling) {
+                if (diceRolling){
                     diceRolling = false;
                     // Roll the dice and update the images
                     rollDiceAnimation(diceImageView1);
@@ -320,10 +309,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 } else {
                     popupWindow.dismiss();
                     gameBoardViewModel.movePlayer(diceResults[0] + diceResults[1]);
+                    disableView(testButton);
                 }
 
             });
-            Log.d("DEBUG", "IsOnTurn: " + player.isOnTurn());
+            Log.d("DEBUG", "IsOnTurn: "+player.isOnTurn());
 
             if (!player.isOnTurn()) {
                 disableView(rollButton);
@@ -331,59 +321,55 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
     }
 
-    private void disableView(View view) {
+    private void disableView(View view){
         ViewGroup.LayoutParams param = view.getLayoutParams();
         param.height = 1;
         param.width = 1;
         view.setLayoutParams(param);
     }
 
-    private void rollDiceAnimation(ImageView imageView) {
-        RotateAnimation rotateAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF,
+    private void rollDiceAnimation(ImageView imageView){
+        RotateAnimation rotateAnimation = new RotateAnimation(0,360, Animation.RELATIVE_TO_SELF,
                 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotateAnimation.setDuration(500);
         rotateAnimation.setInterpolator(new LinearInterpolator());
 
         rotateAnimation.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
-
+            public void onAnimationStart(Animation animation) { // not used
             }
-
             @Override
             public void onAnimationEnd(Animation animation) {
                 rollCounter++;
                 rollDice(imageView);
             }
-
             @Override
-            public void onAnimationRepeat(Animation animation) {
+            public void onAnimationRepeat(Animation animation) { // not used
 
             }
         });
         imageView.startAnimation(rotateAnimation);
     }
-
     private void rollDice(ImageView imageView) {
-        int diceResult = gameBoardViewModel.getRandomNumber(1, 6);
+        int diceResult = gameBoardViewModel.getRandomNumber(1,6);
 
-        diceResults[rollCounter - 1] = diceResult;
-        Log.d("Debug", rollCounter + ", " + diceResult);
+        diceResults[rollCounter-1] = diceResult;
+        Log.d("Debug",rollCounter + ", " +diceResult);
         showDice(diceResult, imageView);
 
-        if (rollCounter == 2) {
+        if(rollCounter==2){
             gameBoardViewModel.rollDice(diceResults);
             rollCounter = 0;
         }
     }
 
-    private void showDice(int diceResult, ImageView imageView) {
+    private void showDice(int diceResult, ImageView imageView){
         int drawableResource = getResources().getIdentifier("dice" + diceResult, "drawable", getPackageName());
         imageView.setImageResource(drawableResource);
     }
 
-    public void showBothDice(int[] diceResult) {
-        runOnUiThread(() -> {
+    public void showBothDice(int[] diceResult){
+        runOnUiThread(()->{
             int drawableResource = getResources().getIdentifier("dice" + diceResult[0], "drawable", getPackageName());
             diceImageView1.setImageResource(drawableResource);
             drawableResource = getResources().getIdentifier("dice" + diceResult[1], "drawable", getPackageName());
@@ -396,7 +382,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         if (!player.isOnTurn())
             return;
         // only of the pop-up window is open, it is possible to shake the phone to roll the dice
-        if (isPopupWindowOpen == true && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+        if (isPopupWindowOpen && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             // acceleration along x-, y- and z-axis
             float x = event.values[0];
             float y = event.values[1];
@@ -414,16 +400,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    public void onAccuracyChanged(Sensor sensor, int accuracy) { // not used
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
     }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -461,14 +445,3 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-

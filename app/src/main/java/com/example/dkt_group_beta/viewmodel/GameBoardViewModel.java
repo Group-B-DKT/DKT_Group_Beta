@@ -29,6 +29,7 @@ public class GameBoardViewModel {
     }
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
+            Log.d("DEBUG2", fromPlayer.getUsername());
             // array zurücksetzten, popup öffnen, showbothdice
             if (fromPlayer.getId().equals(player.getId())) {
                 return;

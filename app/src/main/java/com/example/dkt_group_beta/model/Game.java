@@ -6,9 +6,7 @@ import java.util.stream.Collectors;
 
 public class Game {
     public static final int MIN_PLAYER = 2;
-
     private SecureRandom random;
-
     private List<Player> players;
     private List<Field> fields;
 
