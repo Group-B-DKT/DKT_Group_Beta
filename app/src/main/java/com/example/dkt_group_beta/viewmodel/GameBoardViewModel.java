@@ -48,7 +48,15 @@ public class GameBoardViewModel {
             Player movePlayer = game.getPlayerById(fromPlayer.getId());
             int repetition = Integer.parseInt(param);
             gameBoardAction.animation(movePlayer, repetition);
+        }
 
+        if (action == Action.END_TURN){
+            if (player.isOnTurn()){
+                gameBoardAction.disableEndTurnButton();
+                player.setOnTurn(false);
+            }else{
+                gameBoardAction.enableEndTurnButton();
+            }
         }
     }
 

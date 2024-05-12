@@ -59,6 +59,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private Button testButton;
     private Button btn_endTurn;
 
+    private ViewGroup.LayoutParams endTurn_layout;
+
     private Player player;
     private boolean diceRolling = true;
 
@@ -97,6 +99,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         diceResults = new int[2];
 
         btn_endTurn = findViewById(R.id.btn_endTurn);
+        endTurn_layout = btn_endTurn.getLayoutParams();
 
         players = (List<Player>) getIntent().getSerializableExtra("players");
         players.sort(Comparator.comparing(Player::getId));
@@ -291,6 +294,16 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         player.getCharacterView().startAnimation(animation);
     }
 
+    @Override
+    public void disableEndTurnButton() {
+        disableView(btn_endTurn);
+    }
+
+    @Override
+    public void enableEndTurnButton() {
+        btn_endTurn.setLayoutParams(endTurn_layout);
+    }
+
 
     public void dicePopUp() {
         runOnUiThread(() -> {
@@ -473,5 +486,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }
         return animation;
     }
+
+
 
 }

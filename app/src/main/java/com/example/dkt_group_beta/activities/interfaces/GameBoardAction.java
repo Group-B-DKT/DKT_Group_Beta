@@ -10,4 +10,7 @@ public interface GameBoardAction {
     void showBothDice(int[] diceResult);
     void animation(Player player, int repetition);
 
-    }
+    void disableEndTurnButton();
+
+    void enableEndTurnButton();
+}
