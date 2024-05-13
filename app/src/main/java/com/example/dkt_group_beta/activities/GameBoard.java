@@ -311,7 +311,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     private void checkEndFieldPosition() {
-        if (fields.get(player.getCurrentPosition()).getFieldType() != FieldType.ASSET){
+        Field field = fields.get(player.getCurrentPosition());
+        if (field.getFieldType() != FieldType.ASSET &&
+            field.getOwner() == null &&
+            player.getMoney() >= field.getPrice()){
+
             showCard(findViewById(R.id.gameBoard), "field" + (player.getCurrentPosition()+1));
         }
     }
