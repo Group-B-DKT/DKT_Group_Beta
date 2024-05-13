@@ -66,13 +66,13 @@ public class GameBoardViewModel {
                 gameBoardAction.enableEndTurnButton();
             }
             game.setPlayerTurn(fromPlayer.getId());
-            gameBoardAction.updatePlayerStats(fromPlayer.getId());
+            gameBoardAction.updatePlayerStats();
         }
 
         if (action == Action.BUY_FIELD) {
             game.updateField(fields.get(0));
             gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
-
+            gameBoardAction.updatePlayerStats();
         }
     }
 

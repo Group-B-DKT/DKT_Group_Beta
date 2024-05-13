@@ -40,6 +40,7 @@ import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
+import com.example.dkt_group_beta.model.enums.FieldType;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.model.Field;
@@ -90,6 +91,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     int currentplace = 0;
 
     List<Player> players;
+    List<Field> fields;
 
 
     @Override
@@ -115,7 +117,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         players = (List<Player>) getIntent().getSerializableExtra("players");
         players.removeIf(p -> p.getId().equals(player.getId()));
         players.add(player);
-        List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
+        fields = (List<Field>) getIntent().getSerializableExtra("fields");
 
         players.sort(Comparator.comparing(Player::getId));
 
@@ -182,15 +184,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             ImageView imageView = findViewById(resourceId);
             if (imageView != null) {
                 imageViews.add(imageView);
-                String resourceName = getResources().getResourceEntryName(imageView.getId());
-                // enable clicking on an image view and opening pop-up
-                imageView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.d("ImageView", "ImageView ID: " + imageView.getId());
-                        showCard(v, resourceName);
-                    }
-                });
+//                String resourceName = getResources().getResourceEntryName(imageView.getId());
+//                // enable clicking on an image view and opening pop-up
+//                imageView.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Log.d("ImageView", "ImageView ID: " + imageView.getId());
+//                        showCard(v, resourceName);
+//                    }
+//                });
             }
         }
         testButton.setOnClickListener(v -> dicePopUp());
@@ -297,6 +299,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         ImageView characterImageView = movePlayer.getCharacterView();
 
         if (repetition == 0) {
+            if (movePlayer.getId().equals(player.getId()))
+                checkEndFieldPosition();
             return;
         }
 
@@ -326,6 +330,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         movePlayer.getCharacterView().startAnimation(animation);
     }
 
+    private void checkEndFieldPosition() {
+        if (fields.get(player.getCurrentPosition()).getFieldType() != FieldType.ASSET){
+            showCard(findViewById(R.id.gameBoard), "field" + (player.getCurrentPosition()+1));
+        }
+    }
+
     @Override
     public void disableEndTurnButton() {
         runOnUiThread(() -> {
@@ -348,7 +358,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     @Override
-    public void updatePlayerStats(String playerId) {
+    public void updatePlayerStats() {
         runOnUiThread(() -> {
             rvPlayerStats.getAdapter().notifyDataSetChanged();
         });
@@ -364,7 +374,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             testButton.setLayoutParams(params);
         });
     }
-
 
     public void dicePopUp() {
         runOnUiThread(() -> {
@@ -528,6 +537,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
         int imageResourceId = getResources().getIdentifier("card" + viewID, "drawable", getPackageName());
         popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
+
+        Button btn_buy = popupView.findViewById(R.id.btn_buy);
+        btn_buy.setOnClickListener(v -> {
+            gameBoardViewModel.buyField(player.getCurrentPosition());
+            popupWindow.dismiss();
+        });
     }
 
     public void setPosition(int start, Player player) {
