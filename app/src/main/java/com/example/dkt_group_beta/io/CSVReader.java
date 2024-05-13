@@ -30,9 +30,16 @@ public class CSVReader {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(";");
                 Log.d("DEBUG", Arrays.toString(values));
+
+                int price;
+                try {
+                    price = Integer.parseInt(values[2]);
+                }catch (Exception e){
+                    price = -1;
+                }
                 list.add(new Field(Integer.parseInt(values[0]),
                                    values[1],
-                                   Integer.parseInt(values[2]),
+                                   price,
                                    Boolean.parseBoolean(values[3]),
                                    FieldType.valueOf(values[4])));
             }

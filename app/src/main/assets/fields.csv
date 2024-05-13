@@ -1,31 +1,31 @@
 ID;Name;Price;isBuyable;FieldType
-1;Los!;200;false;ASSET
-2;Hafnersee;200;true;NORMAL
-3;Ereignisfeld;200;false;ASSET
-4;Pyramidenkogel;200;true;SPECIAL
-5;Reifnitz;200;true;NORMAL
-6;Dellach;200;true;NORMAL
-7;Wörtherseeschifffahrt;200;true;SPECIAL
-8;Gemeinschaftsfeld;200;false;ASSET
-9;Kathreinkogel;200;true;NORMAL
-10;Gesetzesverletzung;200;false;ASSET
+1;Los!;;false;ASSET
+2;Hafnersee;120;true;NORMAL
+3;Ereignisfeld;;false;ASSET
+4;Pyramidenkogel;150;true;SPECIAL
+5;Reifnitz;220;true;NORMAL
+6;Dellach;220;true;NORMAL
+7;Wörtherseeschifffahrt;150;true;SPECIAL
+8;Gemeinschaftsfeld;;false;ASSET
+9;Kathreinkogel;100;true;NORMAL
+10;Gesetzesverletzung;;false;ASSET
 11;Auen;200;true;NORMAL
-12;Kraftwerk Forstsee;200;true;SPECIAL
-13;Tierpark Rosegg;200;true;SPECIAL
-14;Casinoplatz;200;true;NORMAL
-15;Seecorso;200;true;NORMAL
-16;Gemeinschaftsfeld;200;false;ASSET
-17;Töschling;200;true;NORMAL
-18;Urlaubsgeld;200;false;ASSET
+12;Kraftwerk Forstsee;160;true;SPECIAL
+13;Tierpark Rosegg;160;true;SPECIAL
+14;Casinoplatz;250;true;NORMAL
+15;Seecorso;300;true;NORMAL
+16;Gemeinschaftsfeld;;false;ASSET
+17;Töschling;180;true;NORMAL
+18;Urlaubsgeld;;false;ASSET
 19;St. Martin;200;true;NORMAL
-20;Ereignisfeld;200;false;ASSET
-21;Seeuferstraße;200;true;NORMAL
-22;Annastraße;200;true;NORMAL
-23;Gemeinschaftsfeld;200;false;ASSET
-24;Koschatweg;200;true;NORMAL
-25;Knast;200;false;ASSET
-26;Römerweg;200;true;NORMAL
-27;Reptilienzoo;200;true;SPECIAL
-28;Lorettoweg;200;true;NORMAL
-29;Süduferstraße;200;true;NORMAL
-30;Lorettoweg;200;true;NORMAL
+20;Ereignisfeld;;false;ASSET
+21;Seeuferstraße;250;true;NORMAL
+22;Annastraße;300;true;NORMAL
+23;Gemeinschaftsfeld;;false;ASSET
+24;Koschatweg;300;true;NORMAL
+25;Knast;;false;ASSET
+26;Römerweg;180;true;NORMAL
+27;Reptilienzoo;160;true;SPECIAL
+28;Lorettoweg;220;true;NORMAL
+29;Süduferstraße;250;true;NORMAL
+30;Lorettoweg;160;true;NORMAL

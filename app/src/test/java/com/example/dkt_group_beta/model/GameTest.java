@@ -50,7 +50,7 @@ class GameTest {
     }
 
     @Test
-    public void testBuyField() {
+    void testBuyField() {
         List<Field> fields = new ArrayList<>();
         fields.add(new Field(0, "100", 500, true));
         fields.add(new Field(1, "300", 200,true));
@@ -69,7 +69,7 @@ class GameTest {
     }
 
     @Test
-    public void testifMoneyIsReduced() {
+    void testifMoneyIsReduced() {
         List<Field> fields = new ArrayList<>();
         fields.add(new Field(0, "100", 500, true));
         List<Player> players = new ArrayList<>();
@@ -84,7 +84,7 @@ class GameTest {
         assertEquals(Player.START_MONEY-500, player.getMoney());
     }
     @Test
-    public void testifMoneyIsToLess() {
+    void testifMoneyIsToLess() {
         List<Field> fields = new ArrayList<>();
         fields.add(new Field(0, "100", 3000, true));
         List<Player> players = new ArrayList<>();
@@ -99,23 +99,23 @@ class GameTest {
 
     }
     @Test
-    public void testBuyFieldSecond() {
+    void testBuyFieldSecond() {
         fields.get(0).setOwnable(false);
         assertNull(game.buyField(0));
     }
     @Test
-    public void testBuyFieldIndexLessThanZero() {
+    void testBuyFieldIndexLessThanZero() {
         assertNull(game.buyField(-1));
     }
     @Test
-    public void testBuyFieldIndexGreaterThanSize() {
+    void testBuyFieldIndexGreaterThanSize() {
         assertNull(game.buyField(fields.size()));
         assertNull(game.buyField(fields.size()+1));
     }
 
 
     @Test
-    public void testUpdateField() {
+    void testUpdateField() {
         Field updateField = new Field(1, "Updated Field", false);
 
         game.updateField(updateField);
@@ -123,20 +123,49 @@ class GameTest {
     }
 
     @Test
-    public void testUpdatePlayer() {
+    void testUpdateFieldNoField() {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field(1, "Field1", true));
+        fields.add(new Field(2, "Field2", true));
+        fields.add(new Field(3, "Field3", true));
+
+        Game game = new Game(players, new ArrayList<>(fields));
+
+        Field updateField = new Field(100, "Updated Field", false);
+        game.updateField(updateField);
+
+        assertEquals(4, game.getFields().size());
+    }
+
+    @Test
+    void testUpdatePlayer() {
         Player updatedPlayer = new Player("New Player","1");
         game.updatePlayer(updatedPlayer);
         assertEquals("New Player", game.getPlayers().get(0).getUsername());
 
     }
     @Test
-    public void testUpdateFieldSecond() {
+    void updatePlayerNoPlayer(){
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("Player1", "1"));
+        players.add(new Player("Player2", "2"));
+
+        Game game = new Game(new ArrayList<>(players), fields);
+
+        Player updatedPlayer = new Player("New Player","10000");
+        game.updatePlayer(updatedPlayer);
+
+        assertEquals(3, game.getPlayers().size());
+    }
+
+    @Test
+    void testUpdateFieldSecond() {
         Field updateField = fields.get(1);
         game.updateField(updateField);
         assertEquals("Field1", game.getFields().get(0).getName());
     }
     @Test
-    public void testUpdatePlayerSecond() {
+    void testUpdatePlayerSecond() {
         Player updatedPlayer = players.get(1);
         game.updatePlayer(updatedPlayer);
         assertEquals("Player1", game.getPlayers().get(0).getUsername());
@@ -175,6 +204,11 @@ class GameTest {
         fields1.add(new Field(2, "Field2", true));
         Game game1 = new Game(Collections.singletonList(player), fields1);
         assertEquals(1, game1.getOwnedFields(player).size());
+    }
+
+    @Test
+    void testGetOwnedFieldsEmpty(){
+        assertTrue(game.getOwnedFields(null).isEmpty());
     }
 
     @Test

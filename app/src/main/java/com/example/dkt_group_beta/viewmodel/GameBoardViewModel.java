@@ -31,7 +31,7 @@ public class GameBoardViewModel {
 
     public void buyField(int index) {
         Field field = game.buyField(index);
-        gameBoardAction.markBoughtField(index);
+//        gameBoardAction.markBoughtField(index);
         actionController.buyField(field);
 
     }
@@ -66,13 +66,15 @@ public class GameBoardViewModel {
                 gameBoardAction.enableEndTurnButton();
             }
             game.setPlayerTurn(fromPlayer.getId());
-            gameBoardAction.updatePlayerStats(fromPlayer.getId());
+            gameBoardAction.updatePlayerStats();
         }
 
         if (action == Action.BUY_FIELD) {
             game.updateField(fields.get(0));
+            if (!fromPlayer.getId().equals(player.getId()))
+                game.updatePlayer(fromPlayer);
             gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
-
+            gameBoardAction.updatePlayerStats();
         }
     }
 

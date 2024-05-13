@@ -184,7 +184,7 @@ class PlayerTest {
 
 
     @Test
-    public void testGetCharacterView() {
+    void testGetCharacterView() {
         ImageView character = new ImageView(null);
         Player player = new Player("username", "id");
         player.setCharacterView(character);
@@ -192,7 +192,7 @@ class PlayerTest {
     }
 
     @Test
-    public void testGetCurrentPosition() {
+    void testGetCurrentPosition() {
         Player player = new Player("username", "id");
         player.setCurrentPosition(5);
         assertEquals(5, player.getCurrentPosition());

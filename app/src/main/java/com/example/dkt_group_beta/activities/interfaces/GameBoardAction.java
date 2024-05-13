@@ -10,6 +10,6 @@ public interface GameBoardAction {
     void animation(Player player, int repetition);
     void disableEndTurnButton();
     void enableEndTurnButton();
-    void updatePlayerStats(String playerId);
+    void updatePlayerStats();
     void enableDiceButton();
 }

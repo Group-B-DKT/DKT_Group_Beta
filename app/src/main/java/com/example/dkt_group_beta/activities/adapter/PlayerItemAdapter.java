@@ -1,7 +1,6 @@
 package com.example.dkt_group_beta.activities.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
