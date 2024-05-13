@@ -27,6 +27,7 @@ import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameLobbyViewModel;
 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +55,6 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
         isHost = WebsocketClientController.getPlayer().isHost();
 
         this.layoutGameLobbyBtn = findViewById(R.id.layout_gameLobby_btn);
@@ -65,6 +65,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
 
         this.scrollviewLayout = findViewById(R.id.scrollview_gameLobby_layout);
         this.btnLeave = findViewById(R.id.btn_leave);
+
         this.btnLeave.setOnClickListener(v -> gameLobbyViewModel.leaveGame());
 
 
@@ -99,6 +100,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         });
 
     }
+
     @Override
     public void removePlayerFromView(Player player) {
         runOnUiThread(() -> {
@@ -128,7 +130,6 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         startActivity(intent);
         finish();
     }
-
 
     private LinearLayout getLinearLayout(int id) {
         LinearLayout linearLayout = new LinearLayout(this);

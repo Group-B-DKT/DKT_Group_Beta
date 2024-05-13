@@ -1,21 +1,34 @@
 package com.example.dkt_group_beta.model;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.*;
+
+import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 
 class GameTest {
 
     private List<Player> players;
     private List<Field> fields;
     private Game game;
+
+    private static MockedStatic<WebsocketClientController> websocketClientController;
+
+
+    @BeforeAll
+    static void setUpStatic() {
+
+        websocketClientController = Mockito.mockStatic(WebsocketClientController.class);
+
+    }
 
     @BeforeEach
     void setUp() {
@@ -35,6 +48,101 @@ class GameTest {
         assertEquals(2, game.getPlayers().size());
         assertEquals(2, game.getFields().size());
     }
+
+    @Test
+    public void testBuyField() {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field(0, "100", 500, true));
+        fields.add(new Field(1, "300", 200,true));
+        fields.add(new Field(2, "500", 300, true));
+        List<Player> players = new ArrayList<>();
+        Player player = new Player("TestPlayer", "2");
+        players.add(player);
+        websocketClientController.when(WebsocketClientController::getPlayer).thenReturn(player);
+        game = new Game(players,fields);
+
+
+        Field boughtField = game.buyField(1);
+
+        assertNotNull(boughtField);
+        assertEquals(player, boughtField.getOwner());
+    }
+
+    @Test
+    public void testifMoneyIsReduced() {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field(0, "100", 500, true));
+        List<Player> players = new ArrayList<>();
+        Player player = new Player("TestPlayer", "2");
+        players.add(player);
+        websocketClientController.when(WebsocketClientController::getPlayer).thenReturn(player);
+        game = new Game(players,fields);
+
+        Field boughtField = game.buyField(0);
+
+        assertNotNull(boughtField);
+        assertEquals(Player.START_MONEY-500, player.getMoney());
+    }
+    @Test
+    public void testifMoneyIsToLess() {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field(0, "100", 3000, true));
+        List<Player> players = new ArrayList<>();
+        Player player = new Player("TestPlayer", "2");
+        players.add(player);
+        websocketClientController.when(WebsocketClientController::getPlayer).thenReturn(player);
+        game = new Game(players,fields);
+
+        Field boughtField = game.buyField(0);
+
+        assertNull(game.buyField(0));
+
+    }
+    @Test
+    public void testBuyFieldSecond() {
+        fields.get(0).setOwnable(false);
+        assertNull(game.buyField(0));
+    }
+    @Test
+    public void testBuyFieldIndexLessThanZero() {
+        assertNull(game.buyField(-1));
+    }
+    @Test
+    public void testBuyFieldIndexGreaterThanSize() {
+        assertNull(game.buyField(fields.size()));
+        assertNull(game.buyField(fields.size()+1));
+    }
+
+
+    @Test
+    public void testUpdateField() {
+        Field updateField = new Field(1, "Updated Field", false);
+
+        game.updateField(updateField);
+        assertEquals("Updated Field", game.getFields().get(0).getName());
+    }
+
+    @Test
+    public void testUpdatePlayer() {
+        Player updatedPlayer = new Player("New Player","1");
+        game.updatePlayer(updatedPlayer);
+        assertEquals("New Player", game.getPlayers().get(0).getUsername());
+
+    }
+    @Test
+    public void testUpdateFieldSecond() {
+        Field updateField = fields.get(1);
+        game.updateField(updateField);
+        assertEquals("Field1", game.getFields().get(0).getName());
+    }
+    @Test
+    public void testUpdatePlayerSecond() {
+        Player updatedPlayer = players.get(1);
+        game.updatePlayer(updatedPlayer);
+        assertEquals("Player1", game.getPlayers().get(0).getUsername());
+
+    }
+
     @Test
     void testGetRandomNumber(){
         int min = 2;

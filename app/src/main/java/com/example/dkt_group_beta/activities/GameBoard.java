@@ -4,16 +4,17 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.ViewGroup;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
@@ -43,38 +44,47 @@ import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.model.Field;
 
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
-    private static final int NUMBER_OF_FIELDS = 32;
+    private static final int NUMBER_OF_FIELDS = 30;
     private static final int NUMBER_OF_FIGURES = 6;
     private List<ImageView> imageViews;
+
+    private GameBoardViewModel gameBoardViewModel;
+
     private boolean isPopupWindowOpen = false;
+
     SensorManager sensorManager;
+
     private static final float SHAKE_THRESHOLD = 15.0f; // Sensitivity -> how much the device moves
+
     private Button rollButton;
+
     private Button testButton;
     private Button btn_endTurn;
 
     private ViewGroup.LayoutParams endTurn_layout;
 
     private Player player;
+
     private boolean diceRolling = true;
 
     private ImageView diceImageView1;
+
     private ImageView diceImageView2;
+
     private int rollCounter = 0;
-    private GameBoardViewModel gameBoardViewModel;
-    private RecyclerView rvPlayerStats;
 
     private Game game;
+
+    private RecyclerView rvPlayerStats;
+
     private int[] diceResults;
 
-    private List<ImageView> figures;
     ImageView character;
 
     int currentplace = 0;
@@ -84,7 +94,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("ASD", "HEREEEE");
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game_board);
@@ -153,25 +162,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         gameBoardViewModel = new GameBoardViewModel(this, game);
 
 
-        this.figures = new ArrayList<>();
-        runOnUiThread(() -> {
-
-            for (int i = 1; i <= NUMBER_OF_FIGURES; i++) {
-                int resourceId = this.getResources()
-                        .getIdentifier("character" + i, "id", this.getPackageName());
-                figures.add(findViewById(resourceId));
-
-                resourceId = this.getResources()
-                        .getIdentifier("character" + i, "drawable", this.getPackageName());
-
-
-                ImageView imageView = figures.get(i - 1);
-                if (imageView != null && resourceId != 0) {
-                        imageView.setImageBitmap(
-                                decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
-                }
-            }
-        });
+        // Todo: Remove just ofr testing mark fields by clicking on field
+//        for (int i = 0; i < imageViews.size(); i++) {
+//            int finalI = i;
+//            imageViews.get(i).setOnClickListener(v -> markBoughtField(finalI, player.getColor()));
+//        }
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
         createPlayerItems(game.getPlayers());
@@ -229,6 +224,26 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
     }
 
+
+    public void buyField(int index) {
+            gameBoardViewModel.buyField(index);
+    }
+
+    public void markBoughtField(int index, int color){
+        Log.d("DEBUG", "variable:" + index);
+        runOnUiThread(() -> {
+            ImageView imageView = imageViews.get(index);
+            if (imageView != null) {
+                imageView.setPadding(10,10 ,10,10);
+                imageView.setBackgroundColor(color);
+            }
+        });
+    }
+
+    public void markBoughtField(int index){
+        markBoughtField(index, Color.rgb(255,70,0));
+    }
+
     private void createPlayerItems(List<Player> players) {
         PlayerItemAdapter adapter = new PlayerItemAdapter(this, players);
         rvPlayerStats.setLayoutManager(new LinearLayoutManager(this));
@@ -277,15 +292,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
     @Override
-    public void animation(Player player, int repetition) {
+    public void animation(Player movePlayer, int repetition) {
 
-        ImageView characterImageView = player.getCharacterView();
+        ImageView characterImageView = movePlayer.getCharacterView();
 
         if (repetition == 0) {
             return;
         }
 
-        Animation animation = getAnimation(player);
+        Animation animation = getAnimation(movePlayer);
         animation.setDuration(500); // Dauer basierend auf Anzahl der Schritte
         animation.setRepeatCount(0); // Keine Wiederholung, da die Position manuell aktualisiert wird
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -297,18 +312,18 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             @Override
             public void onAnimationEnd(Animation animation) {
                 animation.cancel();
-                player.setCurrentPosition(player.getCurrentPosition()+1);
-                if (player.getCurrentPosition() >= NUMBER_OF_FIELDS - 2)
-                    player.setCurrentPosition(0);
-                setPosition(player.getCurrentPosition(), player);
-                animation(player, repetition - 1);
+                movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
+                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS)
+                    movePlayer.setCurrentPosition(0);
+                setPosition(movePlayer.getCurrentPosition(), movePlayer);
+                animation(movePlayer, repetition - 1);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) { // method not used
             }
         });
-        player.getCharacterView().startAnimation(animation);
+        movePlayer.getCharacterView().startAnimation(animation);
     }
 
     @Override
@@ -366,7 +381,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
             popupWindow.setOnDismissListener(() -> isPopupWindowOpen = false);
-                // set isPopupWindowOpen to false if it is closed);
             isPopupWindowOpen = true;
             popupWindow.showAtLocation(imageViews.get(0), Gravity.CENTER, 0, 0);
             // initialising listener for the acceleration sensor
@@ -513,7 +527,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
         int imageResourceId = getResources().getIdentifier("card" + viewID, "drawable", getPackageName());
-        popupImageView.setImageResource(imageResourceId);
+        popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
     }
 
     public void setPosition(int start, Player player) {
@@ -538,23 +552,30 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
 
-    private Animation getAnimation(Player player) {
-        float xDelta = 110;
-        float yDelta = 70;
+    private Animation getAnimation(Player movePlayer) {
+        ImageView character = movePlayer.getCharacterView();
+        int index = players.indexOf(movePlayer);
+        int nextPosition = movePlayer.getCurrentPosition() + 1;
+        if (nextPosition >= NUMBER_OF_FIELDS){
+            nextPosition = 0;
+        }
 
-        Animation animation;
-        if (player.getCurrentPosition() <= 10) {
-            animation = new TranslateAnimation(0, xDelta * -1, 0, 0);
+        float xDelta;
+        float yDelta;
+        int[] pos = getPositionFromView(imageViews.get(nextPosition));
+        Animation animation = null;
+        if(movePlayer.getCurrentPosition() <= 10 || (movePlayer.getCurrentPosition() >= 15 && movePlayer.getCurrentPosition() <= 25)){
+            pos[0] += (index%2 == 0) ? 0 : character.getWidth();
+            pos[1] += (index/2) * character.getHeight();
+        } else{
+            pos[0] += (index/2) * character.getWidth();
+            pos[1] += (index%2 == 0) ? 0 : character.getHeight();
         }
-        else if (player.getCurrentPosition() < 15) {
-            animation = new TranslateAnimation(0, 0, 0, yDelta * -1);
-        }
-        else if (player.getCurrentPosition() < 25){
-            animation = new TranslateAnimation(0, xDelta, 0, 0);
-        }
-        else {
-            animation = new TranslateAnimation(0, 0, 0, yDelta);
-        }
+        xDelta = pos[0] - character.getX();
+        yDelta = pos[1] - character.getY();
+
+        animation = new TranslateAnimation(0, xDelta, 0, yDelta);
+
         return animation;
     }
 }

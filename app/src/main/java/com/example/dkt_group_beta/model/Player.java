@@ -4,7 +4,6 @@ import android.widget.ImageView;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Random;
 
 
 public class Player implements Serializable {

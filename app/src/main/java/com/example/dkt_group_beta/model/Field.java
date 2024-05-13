@@ -11,18 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import lombok.Getter;
-
 public class Field implements Serializable {
 
-    @Getter
     private int id;
     private String name;
     private int price = 0;
-    private transient Player owner;
-    private final boolean ownable;
+    private Player owner;
+    private boolean ownable;
     private transient Hotel hotel;
     private transient List<Building> buildings = new ArrayList<>();
+
     private FieldType fieldType;
 
     public Field(int id, String name, int price, boolean ownable, FieldType fieldType) {
@@ -57,9 +55,13 @@ public class Field implements Serializable {
     public int getId() {
         return id;
     }
+    public void setId(int newId) { id = newId;}
 
     public int getPrice() {
         return price;
+    }
+    public void setPrice(int newPrice) {
+        price = newPrice;
     }
 
     public void setOwner(Player player) {
@@ -68,6 +70,9 @@ public class Field implements Serializable {
 
     public boolean getOwnable() {
         return ownable;
+    }
+    public void setOwnable(boolean newOwnable) {
+        ownable = newOwnable;
     }
 
     public Player getOwner() {

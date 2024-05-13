@@ -16,6 +16,7 @@ import com.example.dkt_group_beta.model.Player;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameLobbyViewModel {
     private List<Player> connectedPlayers;
@@ -108,6 +109,7 @@ public class GameLobbyViewModel {
     }
 
     private void handleGameStarted(Player fromPlayer, List<Field> fields) {
+        Log.d("PL1", fromPlayer.getId() + "|  " +connectedPlayers.stream().map(p -> p.getId() + ": " + p.isOnTurn()).collect(Collectors.toList()));
         Player isOnTurnPlayer = this.connectedPlayers.stream()
                                                      .filter(p -> p.getId().equals(fromPlayer.getId()))
                                                      .findFirst().orElse(null);
@@ -115,6 +117,8 @@ public class GameLobbyViewModel {
             return;
         }
         isOnTurnPlayer.setOnTurn(true);
+        Log.d("PL2", isOnTurnPlayer.getId() + ": " + isOnTurnPlayer.isOnTurn());
+        Log.d("PL3", fromPlayer.getId() + "|  " +connectedPlayers.stream().map(p -> p.getId() + ": " + p.isOnTurn()).collect(Collectors.toList()));
         gameLobbyAction.switchToGameBoard(this.connectedPlayers, fields);
     }
 

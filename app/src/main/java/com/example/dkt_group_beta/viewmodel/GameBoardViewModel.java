@@ -28,6 +28,14 @@ public class GameBoardViewModel {
         this.game = game;
         player = WebsocketClientController.getPlayer();
     }
+
+    public void buyField(int index) {
+        Field field = game.buyField(index);
+        gameBoardAction.markBoughtField(index);
+        actionController.buyField(field);
+
+    }
+
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
             Log.d("DEBUG", fromPlayer.getUsername());
@@ -59,6 +67,12 @@ public class GameBoardViewModel {
             }
             game.setPlayerTurn(fromPlayer.getId());
             gameBoardAction.updatePlayerStats(fromPlayer.getId());
+        }
+
+        if (action == Action.BUY_FIELD) {
+            game.updateField(fields.get(0));
+            gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
+
         }
     }
 
