@@ -12,7 +12,7 @@
     <ImageView
         android:id="@+id/popUpCards"
         android:layout_width="wrap_content"
-        android:layout_height="285dp"
+        android:layout_height="275dp"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:src="@drawable/field1" />
