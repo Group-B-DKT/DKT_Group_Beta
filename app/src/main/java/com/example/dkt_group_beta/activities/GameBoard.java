@@ -85,7 +85,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     private int[] diceResults;
 
-    private List<ImageView> figures;
     ImageView character;
 
     int currentplace = 0;
@@ -163,31 +162,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         gameBoardViewModel = new GameBoardViewModel(this, game);
 
 
-        this.figures = new ArrayList<>();
-        runOnUiThread(() -> {
-
-            for (int i = 1; i <= NUMBER_OF_FIGURES; i++) {
-                int resourceId = this.getResources()
-                        .getIdentifier("character" + i, "id", this.getPackageName());
-                figures.add(findViewById(resourceId));
-
-                resourceId = this.getResources()
-                        .getIdentifier("character" + i, "drawable", this.getPackageName());
-
-
-                ImageView imageView = figures.get(i - 1);
-                if (imageView != null && resourceId != 0) {
-                        imageView.setImageBitmap(
-                                decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
-                }
-            }
-        });
-
-
-        for (int i = 0; i < imageViews.size(); i++) {
-            int finalI = i;
-            imageViews.get(i).setOnClickListener(v -> markBoughtField(finalI, player.getColor()));
-        }
+        // Todo: Remove just ofr testing mark fields by clicking on field
+//        for (int i = 0; i < imageViews.size(); i++) {
+//            int finalI = i;
+//            imageViews.get(i).setOnClickListener(v -> markBoughtField(finalI, player.getColor()));
+//        }
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
         createPlayerItems(game.getPlayers());
@@ -198,7 +177,22 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             disableView(testButton);
             disableView(btn_endTurn);
         }
-
+        for (int i = 1; i <= NUMBER_OF_FIELDS; i++) {
+            int resourceId = this.getResources().getIdentifier("field" + i, "id", this.getPackageName());
+            ImageView imageView = findViewById(resourceId);
+            if (imageView != null) {
+                imageViews.add(imageView);
+                String resourceName = getResources().getResourceEntryName(imageView.getId());
+                // enable clicking on an image view and opening pop-up
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("ImageView", "ImageView ID: " + imageView.getId());
+                        showCard(v, resourceName);
+                    }
+                });
+            }
+        }
         testButton.setOnClickListener(v -> dicePopUp());
         btn_endTurn.setOnClickListener(v -> {
             if (player.isOnTurn()){
@@ -509,7 +503,32 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         sensorManager.unregisterListener(this);
     }
 
+    public void my_button_onClick_working(View view) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.activity_pop_up, null);
 
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+    }
+
+    private void showCard(View view, String viewID) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+        ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
+        int imageResourceId = getResources().getIdentifier("card" + viewID, "drawable", getPackageName());
+        popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
+    }
 
     public void setPosition(int start, Player player) {
 
@@ -559,7 +578,4 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         return animation;
     }
-
-
-
 }

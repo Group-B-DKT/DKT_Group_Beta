@@ -71,7 +71,7 @@ public class GameBoardViewModel {
 
         if (action == Action.BUY_FIELD) {
             game.updateField(fields.get(0));
-            gameBoardAction.markBoughtField(fields.get(0).getId()-1);
+            gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
 
         }
     }

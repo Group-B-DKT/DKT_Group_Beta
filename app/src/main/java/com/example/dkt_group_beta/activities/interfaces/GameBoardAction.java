@@ -6,6 +6,7 @@ public interface GameBoardAction {
     void dicePopUp();
     void showBothDice(int[] diceResult);
     void markBoughtField(int index);
+    void markBoughtField(int index, int color);
     void animation(Player player, int repetition);
     void disableEndTurnButton();
     void enableEndTurnButton();

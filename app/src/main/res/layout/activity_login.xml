@@ -66,13 +66,19 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/test_button"
-        android:layout_width="wrap_content"
-        android:layout_height="100dp"
-        android:text="Button"
-        tools:layout_editor_absoluteX="90dp"
-        tools:layout_editor_absoluteY="294dp"
-        tools:ignore="MissingConstraints" />
 
+
+
+
+        android:id="@+id/buttonBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="go to board"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.737"
+        app:layout_constraintStart_toEndOf="@+id/Login"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.168" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
