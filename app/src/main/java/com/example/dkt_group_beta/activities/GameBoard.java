@@ -22,7 +22,6 @@ import android.widget.Button;
 
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import androidx.activity.EdgeToEdge;
@@ -48,9 +47,13 @@ import com.example.dkt_group_beta.model.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
+    private static final String TAG = "DEBUG";
+    private static final String DEF_TYPE = "drawable";
+    private static final String FIELD_NAME = FIELD_NAME;
     private static final int NUMBER_OF_FIELDS = 30;
     private List<ImageView> imageViews;
 
@@ -65,9 +68,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private Button rollButton;
 
     private Button testButton;
-    private Button btn_endTurn;
+    private Button btnEndTurn;
 
-    private ViewGroup.LayoutParams endTurn_layout;
+    private ViewGroup.LayoutParams endTurnLayout;
 
     private Player player;
 
@@ -78,8 +81,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private ImageView diceImageView2;
 
     private int rollCounter = 0;
-
-    private Game game;
 
     private RecyclerView rvPlayerStats;
 
@@ -103,13 +104,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
 
         character = findViewById(R.id.character);
-        btn_endTurn = findViewById(R.id.btn_endTurn);
+        btnEndTurn = findViewById(R.id.btn_endTurn);
         rvPlayerStats = findViewById(R.id.rv_playerStats);
 
         player = WebsocketClientController.getPlayer();
 
         diceResults = new int[2];
-        endTurn_layout = new ViewGroup.LayoutParams(btn_endTurn.getLayoutParams());
+        endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
 
         players = (List<Player>) getIntent().getSerializableExtra("players");
         players.removeIf(p -> p.getId().equals(player.getId()));
@@ -136,7 +137,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
             int resourceId = this.getResources()
-                    .getIdentifier("character" + (i+1), "drawable", this.getPackageName());
+                    .getIdentifier("character" + (i+1), DEF_TYPE, this.getPackageName());
 
 
             if (resourceId != 0) {
@@ -155,20 +156,20 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             }
         });
 
-        game = new Game(players, fields);
+        Game game = new Game(players, fields);
         gameBoardViewModel = new GameBoardViewModel(this, game);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
         createPlayerItems(game.getPlayers());
 
         testButton = findViewById(R.id.popUpCards);
-        Log.d("DEBUG", "IST: " + player.getUsername());
+        Log.d(TAG, "IST: " + player.getUsername());
         if (!player.isOnTurn()) {
             disableView(testButton);
-            disableView(btn_endTurn);
+            disableView(btnEndTurn);
         }
         for (int i = 1; i <= NUMBER_OF_FIELDS; i++) {
-            int resourceId = this.getResources().getIdentifier("field" + i, "id", this.getPackageName());
+            int resourceId = this.getResources().getIdentifier(FIELD_NAME + i, "id", this.getPackageName());
             ImageView imageView = findViewById(resourceId);
             if (imageView != null) {
                 imageViews.add(imageView);
@@ -176,7 +177,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }
 
         testButton.setOnClickListener(v -> dicePopUp());
-        btn_endTurn.setOnClickListener(v -> {
+        btnEndTurn.setOnClickListener(v -> {
             if (player.isOnTurn()){
                 gameBoardViewModel.endTurn();
                 disableView(testButton);
@@ -190,11 +191,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         runOnUiThread(() -> {
             for (int i = 1; i <= NUMBER_OF_FIELDS; i++) {
                 int resourceId = this.getResources()
-                        .getIdentifier("field" + i, "id", this.getPackageName());
+                        .getIdentifier(FIELD_NAME + i, "id", this.getPackageName());
                 imageViews.add(findViewById(resourceId));
 
                 resourceId = this.getResources()
-                        .getIdentifier("field" + i, "drawable", this.getPackageName());
+                        .getIdentifier(FIELD_NAME + i, DEF_TYPE, this.getPackageName());
 
 
                 ImageView imageView = imageViews.get(i - 1);
@@ -212,7 +213,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     public void markBoughtField(int index, int color){
-        Log.d("DEBUG", "variable:" + index);
+        Log.d(TAG, "variable:" + index);
         runOnUiThread(() -> {
             ImageView imageView = imageViews.get(index);
             if (imageView != null) {
@@ -235,7 +236,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     public int[] getPositionFromView(View view) {
         int[] res = new int[2];
         view.getLocationOnScreen(res);
-//        res[0] -= character.getLayoutParams().width;
         return res;
     }
 
@@ -290,7 +290,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                Log.d("DEBUG", "Y3: " + characterImageView.getY());
+                Log.d(TAG, "Y3: " + characterImageView.getY());
             }
 
             @Override
@@ -316,36 +316,33 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             field.getOwner() == null &&
             player.getMoney() >= field.getPrice()){
 
-            showCard(findViewById(R.id.gameBoard), "field" + (player.getCurrentPosition()+1));
+            showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
         }
     }
 
     @Override
     public void disableEndTurnButton() {
         runOnUiThread(() -> {
-            ViewGroup.LayoutParams params = btn_endTurn.getLayoutParams();
+            ViewGroup.LayoutParams params = btnEndTurn.getLayoutParams();
             params.height = 1;
             params.width = 1;
-            btn_endTurn.setLayoutParams(params);
+            btnEndTurn.setLayoutParams(params);
         });
     }
 
     @Override
     public void enableEndTurnButton() {
         runOnUiThread(() -> {
-            ViewGroup.LayoutParams params = btn_endTurn.getLayoutParams();
-            params.height = endTurn_layout.height;
-            params.width = endTurn_layout.width;
-            btn_endTurn.setLayoutParams(params);
-//            btn_endTurn.setLayoutParams(endTurn_layout);
+            ViewGroup.LayoutParams params = btnEndTurn.getLayoutParams();
+            params.height = endTurnLayout.height;
+            params.width = endTurnLayout.width;
+            btnEndTurn.setLayoutParams(params);
         });
     }
 
     @Override
     public void updatePlayerStats() {
-        runOnUiThread(() -> {
-            rvPlayerStats.getAdapter().notifyDataSetChanged();
-        });
+        runOnUiThread(() -> rvPlayerStats.getAdapter().notifyDataSetChanged());
     }
 
     @Override
@@ -353,8 +350,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         diceRolling = true;
         runOnUiThread(() -> {
             ViewGroup.LayoutParams params = testButton.getLayoutParams();
-            params.height = endTurn_layout.height;
-            params.width = endTurn_layout.width;
+            params.height = endTurnLayout.height;
+            params.width = endTurnLayout.width;
             testButton.setLayoutParams(params);
         });
     }
@@ -367,8 +364,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             diceImageView1 = popupView.findViewById(R.id.diceImageView1);
             diceImageView2 = popupView.findViewById(R.id.diceImageView2);
 
-            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int width = WRAP_CONTENT;
+            int height = WRAP_CONTENT;
             boolean focusable = true;
             PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
@@ -395,7 +392,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 }
 
             });
-            Log.d("DEBUG", "IsOnTurn: "+player.isOnTurn());
+            Log.d(TAG, "IsOnTurn: "+player.isOnTurn());
 
             if (!player.isOnTurn()) {
                 disableView(rollButton);
@@ -446,15 +443,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     private void showDice(int diceResult, ImageView imageView){
-        int drawableResource = getResources().getIdentifier("dice" + diceResult, "drawable", getPackageName());
+        int drawableResource = getResources().getIdentifier("dice" + diceResult, DEF_TYPE, getPackageName());
         imageView.setImageResource(drawableResource);
     }
 
     public void showBothDice(int[] diceResult){
         runOnUiThread(()->{
-            int drawableResource = getResources().getIdentifier("dice" + diceResult[0], "drawable", getPackageName());
+            int drawableResource = getResources().getIdentifier("dice" + diceResult[0], DEF_TYPE, getPackageName());
             diceImageView1.setImageResource(drawableResource);
-            drawableResource = getResources().getIdentifier("dice" + diceResult[1], "drawable", getPackageName());
+            drawableResource = getResources().getIdentifier("dice" + diceResult[1], DEF_TYPE, getPackageName());
             diceImageView2.setImageResource(drawableResource);
         });
     }
@@ -496,34 +493,22 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         sensorManager.unregisterListener(this);
     }
 
-    public void my_button_onClick_working(View view) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.activity_pop_up, null);
-
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
-        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-    }
-
     private void showCard(View view, String viewID) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int width = WRAP_CONTENT;
+        int height = WRAP_CONTENT;
         boolean focusable = true;
 
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
         popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
         ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
-        int imageResourceId = getResources().getIdentifier("card" + viewID, "drawable", getPackageName());
+        int imageResourceId = getResources().getIdentifier("card" + viewID, DEF_TYPE, getPackageName());
         popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
 
-        Button btn_buy = popupView.findViewById(R.id.btn_buy);
-        btn_buy.setOnClickListener(v -> {
+        Button btnBuy = popupView.findViewById(R.id.btn_buy);
+        btnBuy.setOnClickListener(v -> {
             gameBoardViewModel.buyField(player.getCurrentPosition());
             popupWindow.dismiss();
         });
@@ -534,25 +519,25 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         int index = players.indexOf(player);
         int x = getPositionFromView(imageViews.get(start))[0];
         int y = getPositionFromView(imageViews.get(start))[1];
-        ImageView character = player.getCharacterView();
+        ImageView mCharacter = player.getCharacterView();
 
         if(player.getCurrentPosition() <= 10 || (player.getCurrentPosition() >= 15 && player.getCurrentPosition() <= 25)){
-            x += (index%2 == 0) ? 0 : character.getWidth();
-            y += (index/2) * character.getHeight();
+            x += (index%2 == 0) ? 0 : mCharacter.getWidth();
+            y += (index/2) * mCharacter.getHeight();
         } else{
-            x += (index/2) * character.getWidth();
-            y += (index%2 == 0) ? 0 : character.getHeight();
+            x += (index/2) * mCharacter.getWidth();
+            y += (index%2 == 0) ? 0 : mCharacter.getHeight();
         }
 
-        character.setX(x);
-        character.setY(y);
+        mCharacter.setX(x);
+        mCharacter.setY(y);
 
     }
 
 
 
     private Animation getAnimation(Player movePlayer) {
-        ImageView character = movePlayer.getCharacterView();
+        ImageView mCharacter = movePlayer.getCharacterView();
         int index = players.indexOf(movePlayer);
         int nextPosition = movePlayer.getCurrentPosition() + 1;
         if (nextPosition >= NUMBER_OF_FIELDS){
@@ -564,14 +549,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         int[] pos = getPositionFromView(imageViews.get(nextPosition));
         Animation animation = null;
         if(movePlayer.getCurrentPosition() <= 10 || (movePlayer.getCurrentPosition() >= 15 && movePlayer.getCurrentPosition() <= 25)){
-            pos[0] += (index%2 == 0) ? 0 : character.getWidth();
-            pos[1] += (index/2) * character.getHeight();
+            pos[0] += (index%2 == 0) ? 0 : mCharacter.getWidth();
+            pos[1] += (index/2) * mCharacter.getHeight();
         } else{
-            pos[0] += (index/2) * character.getWidth();
-            pos[1] += (index%2 == 0) ? 0 : character.getHeight();
+            pos[0] += (index/2) * mCharacter.getWidth();
+            pos[1] += (index%2 == 0) ? 0 : mCharacter.getHeight();
         }
-        xDelta = pos[0] - character.getX();
-        yDelta = pos[1] - character.getY();
+        xDelta = pos[0] - mCharacter.getX();
+        yDelta = pos[1] - mCharacter.getY();
 
         animation = new TranslateAnimation(0, xDelta, 0, yDelta);
 
