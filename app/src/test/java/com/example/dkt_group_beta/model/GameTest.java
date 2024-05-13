@@ -123,12 +123,36 @@ class GameTest {
     }
 
     @Test
+    void testUpdateFieldNoField() {
+        List<Field> fields = new ArrayList<>();
+        fields.add(new Field(1, "Field1", true));
+        fields.add(new Field(2, "Field2", true));
+        fields.add(new Field(3, "Field3", true));
+
+        Game game = new Game(players, new ArrayList<>(fields));
+
+        Field updateField = new Field(100, "Updated Field", false);
+
+        assertEquals(fields, game.getFields());
+    }
+
+    @Test
     public void testUpdatePlayer() {
         Player updatedPlayer = new Player("New Player","1");
         game.updatePlayer(updatedPlayer);
         assertEquals("New Player", game.getPlayers().get(0).getUsername());
 
     }
+    @Test
+    void updatePlayerNoPlayer(){
+        List<Player> players = new ArrayList<>();
+        players.add(new Player("Player1", "1"));
+        players.add(new Player("Player2", "2"));
+        Game game = new Game(new ArrayList<>(players), fields);
+        Player updatedPlayer = new Player("New Player","10000");
+        assertEquals(players, game.getPlayers());
+    }
+
     @Test
     public void testUpdateFieldSecond() {
         Field updateField = fields.get(1);
@@ -175,6 +199,11 @@ class GameTest {
         fields1.add(new Field(2, "Field2", true));
         Game game1 = new Game(Collections.singletonList(player), fields1);
         assertEquals(1, game1.getOwnedFields(player).size());
+    }
+
+    @Test
+    void testGetOwnedFieldsEmpty(){
+        assertTrue(game.getOwnedFields(null).isEmpty());
     }
 
     @Test
