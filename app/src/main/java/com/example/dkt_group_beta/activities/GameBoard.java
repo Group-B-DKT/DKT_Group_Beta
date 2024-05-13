@@ -184,7 +184,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
 
 
-        for (int i = 0; i < imageViews.size() - 2; i++) {
+        for (int i = 0; i < imageViews.size(); i++) {
             int finalI = i;
             imageViews.get(i).setOnClickListener(v -> markBoughtField(finalI, player.getColor()));
         }
