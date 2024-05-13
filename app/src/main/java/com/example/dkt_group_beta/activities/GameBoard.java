@@ -52,7 +52,6 @@ import java.util.stream.Collectors;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
     private static final int NUMBER_OF_FIELDS = 30;
-    private static final int NUMBER_OF_FIGURES = 6;
     private List<ImageView> imageViews;
 
     private GameBoardViewModel gameBoardViewModel;
@@ -88,8 +87,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     ImageView character;
 
-    int currentplace = 0;
-
     List<Player> players;
     List<Field> fields;
 
@@ -118,9 +115,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         players.removeIf(p -> p.getId().equals(player.getId()));
         players.add(player);
         fields = (List<Field>) getIntent().getSerializableExtra("fields");
-
         players.sort(Comparator.comparing(Player::getId));
-
 
         initializeFieldsImageViews();
 
@@ -163,13 +158,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         game = new Game(players, fields);
         gameBoardViewModel = new GameBoardViewModel(this, game);
 
-
-        // Todo: Remove just ofr testing mark fields by clicking on field
-//        for (int i = 0; i < imageViews.size(); i++) {
-//            int finalI = i;
-//            imageViews.get(i).setOnClickListener(v -> markBoughtField(finalI, player.getColor()));
-//        }
-
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
         createPlayerItems(game.getPlayers());
 
@@ -184,17 +172,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             ImageView imageView = findViewById(resourceId);
             if (imageView != null) {
                 imageViews.add(imageView);
-//                String resourceName = getResources().getResourceEntryName(imageView.getId());
-//                // enable clicking on an image view and opening pop-up
-//                imageView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Log.d("ImageView", "ImageView ID: " + imageView.getId());
-//                        showCard(v, resourceName);
-//                    }
-//                });
             }
         }
+
         testButton.setOnClickListener(v -> dicePopUp());
         btn_endTurn.setOnClickListener(v -> {
             if (player.isOnTurn()){
