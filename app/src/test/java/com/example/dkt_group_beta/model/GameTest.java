@@ -190,7 +190,14 @@ class GameTest {
         assertEquals(null, game.getPlayerById("10000"));
     }
 
-
+    @Test
+    void testSetPlayerTurn(){
+        players.get(0).setOnTurn(false);
+        players.get(1).setOnTurn(true);
+        game.setPlayerTurn(players.get(0).getId());
+        assertTrue(players.get(0).isOnTurn());
+        assertFalse(players.get(1).isOnTurn());
+    }
 
 
  }

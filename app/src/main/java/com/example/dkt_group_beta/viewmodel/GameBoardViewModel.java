@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameBoardViewModel {
     private ActionController actionController;
@@ -37,7 +38,7 @@ public class GameBoardViewModel {
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
-            Log.d("DEBUG2", fromPlayer.getUsername());
+            Log.d("DEBUG", fromPlayer.getUsername());
             // array zurücksetzten, popup öffnen, showbothdice
             if (fromPlayer.getId().equals(player.getId())) {
                 return;
@@ -51,12 +52,21 @@ public class GameBoardViewModel {
         }
 
         if(action == Action.MOVE_PLAYER){
-
-            Log.d("MOVE", param);
             Player movePlayer = game.getPlayerById(fromPlayer.getId());
             int repetition = Integer.parseInt(param);
             gameBoardAction.animation(movePlayer, repetition);
+        }
 
+        if (action == Action.END_TURN){
+            if (player.isOnTurn()){
+                gameBoardAction.disableEndTurnButton();
+                player.setOnTurn(false);
+            }else if (player.getId().equals(fromPlayer.getId())){
+                gameBoardAction.enableDiceButton();
+                gameBoardAction.enableEndTurnButton();
+            }
+            game.setPlayerTurn(fromPlayer.getId());
+            gameBoardAction.updatePlayerStats(fromPlayer.getId());
         }
 
         if (action == Action.BUY_FIELD) {
@@ -79,5 +89,7 @@ public class GameBoardViewModel {
         actionController.movePlayer(dice);
 
     }
-
+    public void endTurn() {
+        actionController.endTurn();
+    }
 }

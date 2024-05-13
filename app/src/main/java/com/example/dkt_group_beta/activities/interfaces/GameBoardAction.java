@@ -7,5 +7,8 @@ public interface GameBoardAction {
     void showBothDice(int[] diceResult);
     void markBoughtField(int index);
     void animation(Player player, int repetition);
-
+    void disableEndTurnButton();
+    void enableEndTurnButton();
+    void updatePlayerStats(String playerId);
+    void enableDiceButton();
 }

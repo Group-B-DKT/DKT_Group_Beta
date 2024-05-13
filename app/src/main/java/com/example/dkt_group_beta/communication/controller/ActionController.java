@@ -98,6 +98,11 @@ public class ActionController {
 
     }
 
+    public void endTurn(){
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.END_TURN, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
 
 
     private void onMessageReceived(Object actionObject) {
@@ -109,6 +114,4 @@ public class ActionController {
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
         handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer(), actionJsonObject.getFields());
     }
-
-
 }

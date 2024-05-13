@@ -47,6 +47,7 @@ import com.example.dkt_group_beta.model.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
     private static final int NUMBER_OF_FIELDS = 30;
@@ -64,6 +65,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private Button rollButton;
 
     private Button testButton;
+    private Button btn_endTurn;
+
+    private ViewGroup.LayoutParams endTurn_layout;
 
     private Player player;
 
@@ -101,40 +105,23 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
 
         character = findViewById(R.id.character);
+        btn_endTurn = findViewById(R.id.btn_endTurn);
+        rvPlayerStats = findViewById(R.id.rv_playerStats);
 
         player = WebsocketClientController.getPlayer();
 
         diceResults = new int[2];
+        endTurn_layout = new ViewGroup.LayoutParams(btn_endTurn.getLayoutParams());
 
         players = (List<Player>) getIntent().getSerializableExtra("players");
-        players.sort(Comparator.comparing(Player::getId));
-        rvPlayerStats = findViewById(R.id.rv_playerStats);
-
+        players.removeIf(p -> p.getId().equals(player.getId()));
+        players.add(player);
         List<Field> fields = (List<Field>) getIntent().getSerializableExtra("fields");
 
-        game = new Game(players, fields);
-        gameBoardViewModel = new GameBoardViewModel(this,game);
-
-        this.imageViews = new ArrayList<>();
-        runOnUiThread(() -> {
-            for (int i = 1; i <= NUMBER_OF_FIELDS; i++) {
-                int resourceId = this.getResources()
-                        .getIdentifier("field" + i, "id", this.getPackageName());
-                imageViews.add(findViewById(resourceId));
-
-                resourceId = this.getResources()
-                        .getIdentifier("field" + i, "drawable", this.getPackageName());
+        players.sort(Comparator.comparing(Player::getId));
 
 
-                ImageView imageView = imageViews.get(i - 1);
-                if (imageView != null && resourceId != 0) {
-                    imageView.setImageBitmap(
-                            decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
-                }
-            }
-        });
-
-
+        initializeFieldsImageViews();
 
         ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
         for (int i = 0; i < players.size(); i++) {
@@ -163,24 +150,17 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
             players.get(i).setCharacterView(x);
-
-
-
-
         }
 
         constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
                                                     int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
             for (Player p: players) {
-                setPosition(0, p);
+                setPosition(p.getCurrentPosition(), p);
             }
-
-
         });
 
         game = new Game(players, fields);
         gameBoardViewModel = new GameBoardViewModel(this, game);
-
 
 
         this.figures = new ArrayList<>();
@@ -203,20 +183,51 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             }
         });
 
+
         for (int i = 0; i < imageViews.size() - 2; i++) {
             int finalI = i;
             imageViews.get(i).setOnClickListener(v -> markBoughtField(finalI, player.getColor()));
         }
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
-        createPlayerItems(players);
+        createPlayerItems(game.getPlayers());
 
         testButton = findViewById(R.id.popUpCards);
         Log.d("DEBUG", "IST: " + player.getUsername());
-        if (!player.isOnTurn())
+        if (!player.isOnTurn()) {
             disableView(testButton);
+            disableView(btn_endTurn);
+        }
 
         testButton.setOnClickListener(v -> dicePopUp());
+        btn_endTurn.setOnClickListener(v -> {
+            if (player.isOnTurn()){
+                gameBoardViewModel.endTurn();
+                disableView(testButton);
+                diceRolling = false;
+            }
+        });
+    }
+
+    private void initializeFieldsImageViews() {
+        this.imageViews = new ArrayList<>();
+        runOnUiThread(() -> {
+            for (int i = 1; i <= NUMBER_OF_FIELDS; i++) {
+                int resourceId = this.getResources()
+                        .getIdentifier("field" + i, "id", this.getPackageName());
+                imageViews.add(findViewById(resourceId));
+
+                resourceId = this.getResources()
+                        .getIdentifier("field" + i, "drawable", this.getPackageName());
+
+
+                ImageView imageView = imageViews.get(i - 1);
+                if (imageView != null && resourceId != 0) {
+                    imageView.setImageBitmap(
+                            decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+                }
+            }
+        });
     }
 
 
@@ -240,7 +251,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     private void createPlayerItems(List<Player> players) {
-
         PlayerItemAdapter adapter = new PlayerItemAdapter(this, players);
         rvPlayerStats.setLayoutManager(new LinearLayoutManager(this));
         rvPlayerStats.setAdapter(adapter);
@@ -320,6 +330,45 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             }
         });
         movePlayer.getCharacterView().startAnimation(animation);
+    }
+
+    @Override
+    public void disableEndTurnButton() {
+        runOnUiThread(() -> {
+            ViewGroup.LayoutParams params = btn_endTurn.getLayoutParams();
+            params.height = 1;
+            params.width = 1;
+            btn_endTurn.setLayoutParams(params);
+        });
+    }
+
+    @Override
+    public void enableEndTurnButton() {
+        runOnUiThread(() -> {
+            ViewGroup.LayoutParams params = btn_endTurn.getLayoutParams();
+            params.height = endTurn_layout.height;
+            params.width = endTurn_layout.width;
+            btn_endTurn.setLayoutParams(params);
+//            btn_endTurn.setLayoutParams(endTurn_layout);
+        });
+    }
+
+    @Override
+    public void updatePlayerStats(String playerId) {
+        runOnUiThread(() -> {
+            rvPlayerStats.getAdapter().notifyDataSetChanged();
+        });
+    }
+
+    @Override
+    public void enableDiceButton() {
+        diceRolling = true;
+        runOnUiThread(() -> {
+            ViewGroup.LayoutParams params = testButton.getLayoutParams();
+            params.height = endTurn_layout.height;
+            params.width = endTurn_layout.width;
+            testButton.setLayoutParams(params);
+        });
     }
 
 
@@ -510,4 +559,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         return animation;
     }
+
+
+
 }
