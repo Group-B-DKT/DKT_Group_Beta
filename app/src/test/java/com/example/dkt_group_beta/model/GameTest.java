@@ -132,8 +132,9 @@ class GameTest {
         Game game = new Game(players, new ArrayList<>(fields));
 
         Field updateField = new Field(100, "Updated Field", false);
+        game.updateField(updateField);
 
-        assertEquals(fields, game.getFields());
+        assertEquals(4, game.getFields().size());
     }
 
     @Test
@@ -148,9 +149,13 @@ class GameTest {
         List<Player> players = new ArrayList<>();
         players.add(new Player("Player1", "1"));
         players.add(new Player("Player2", "2"));
+
         Game game = new Game(new ArrayList<>(players), fields);
+
         Player updatedPlayer = new Player("New Player","10000");
-        assertEquals(players, game.getPlayers());
+        game.updatePlayer(updatedPlayer);
+
+        assertEquals(3, game.getPlayers().size());
     }
 
     @Test
