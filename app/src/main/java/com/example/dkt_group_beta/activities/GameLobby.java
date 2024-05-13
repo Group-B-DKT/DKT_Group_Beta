@@ -126,7 +126,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         Intent intent = new Intent(GameLobby.this, GameSearch.class);
         intent.putExtra("username", currentUsername);
         startActivity(intent);
-
+        finish();
     }
 
 
@@ -215,6 +215,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         intent.putExtra("players", (Serializable) connectedPlayers);
         intent.putExtra("fields", (Serializable) fields);
         startActivity(intent);
+        finish();
     }
 
 

@@ -86,4 +86,28 @@ public class Game {
                           .filter(f -> f.getOwner() != null && f.getOwner().getId().equals(player.getId()))
                           .collect(Collectors.toList());
     }
+
+
+    public Player getPlayerById(String id){
+
+        for (Player p: players) {
+
+            if(p.getId().equals(id)){
+                return p;
+            }
+
+        }
+        return null;
+    }
+
+    public void setPlayerTurn(String id) {
+        for (Player p: players) {
+            if (p.isOnTurn()){
+                p.setOnTurn(false);
+            }
+            if (p.getId().equals(id)) {
+                p.setOnTurn(true);
+            }
+        }
+    }
 }

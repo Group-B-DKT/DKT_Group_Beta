@@ -19,7 +19,7 @@ import com.example.dkt_group_beta.viewmodel.LoginViewModel;
 public class Login extends AppCompatActivity {
 
     private Button buttonLogin;
-    private Button buttonBoard;
+
     private EditText etUsername;
     private LoginViewModel loginViewModel;
 
@@ -43,11 +43,7 @@ public class Login extends AppCompatActivity {
         buttonLogin.setOnClickListener(v -> loginViewModel.onLogin(etUsername.getText().toString()));
         Log.d("debug", "Gespeicherte Namen" + loginViewModel.getSavedUsername());
 
-        buttonBoard = findViewById(R.id.buttonBoard);
-        buttonBoard.setOnClickListener(v -> {
-                Intent intent = new Intent(Login.this, GameBoard.class);
-                startActivity(intent);
-        });
+
     }
 
     public void switchToGameView (String username) {
@@ -55,7 +51,6 @@ public class Login extends AppCompatActivity {
         Intent intent = new Intent(Login.this, GameSearch.class);
         intent.putExtra("username", username);
         startActivity(intent);
-
-
+        finish();
     }
 }

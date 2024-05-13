@@ -77,6 +77,23 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
+    public void movePlayer(int dice){
+
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.MOVE_PLAYER, Integer.toString(dice), null, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+
+
+
+    }
+
+    public void endTurn(){
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.END_TURN, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))
             return;
@@ -86,5 +103,4 @@ public class ActionController {
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
         handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer(), actionJsonObject.getFields());
     }
-
 }
