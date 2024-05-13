@@ -61,11 +61,7 @@ public class GameLobbyViewModel {
             return;
         }
         List<Field> fields;
-        try {
-            fields = Field.loadFields(gameLobbyAction.getContext());
-        } catch (IOException e) {
-            return;
-        }
+        fields = Field.loadFields(gameLobbyAction.getContext());
         actionController.gameStarted(fields);
     }
 
