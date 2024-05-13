@@ -1,6 +1,5 @@
 package com.example.dkt_group_beta.communication.controller;
 
-import android.app.sdksandbox.RequestSurfacePackageException;
 import android.util.Log;
 
 import com.example.dkt_group_beta.communication.ActionJsonObject;
@@ -8,12 +7,10 @@ import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
 import com.example.dkt_group_beta.model.Field;
-import com.example.dkt_group_beta.networking.WebSocketClient;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

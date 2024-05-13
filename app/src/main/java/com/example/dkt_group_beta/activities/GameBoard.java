@@ -53,7 +53,7 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
     private static final String TAG = "DEBUG";
     private static final String DEF_TYPE = "drawable";
-    private static final String FIELD_NAME = FIELD_NAME;
+    private static final String FIELD_NAME = "field";
     private static final int NUMBER_OF_FIELDS = 30;
     private List<ImageView> imageViews;
 

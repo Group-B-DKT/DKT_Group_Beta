@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.dkt_group_beta.io.CSVReader;
 import com.example.dkt_group_beta.model.enums.FieldType;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +82,7 @@ public class Field implements Serializable {
         return fieldType;
     }
 
-    public static List<Field> loadFields(Context context) throws IOException {
+    public static List<Field> loadFields(Context context) {
         return CSVReader.readFields(context);
     }
     public boolean hasHotel(){

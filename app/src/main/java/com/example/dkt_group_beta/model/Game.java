@@ -1,10 +1,6 @@
 package com.example.dkt_group_beta.model;
 
-import android.util.Log;
-
-import com.example.dkt_group_beta.activities.GameBoard;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
-import com.example.dkt_group_beta.networking.WebSocketClient;
 
 import java.security.SecureRandom;
 import java.util.List;
