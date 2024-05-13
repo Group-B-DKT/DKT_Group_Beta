@@ -99,4 +99,15 @@ public class Game {
         }
         return null;
     }
+
+    public void setPlayerTurn(String id) {
+        for (Player p: players) {
+            if (p.isOnTurn()){
+                p.setOnTurn(false);
+            }
+            if (p.getId().equals(id)) {
+                p.setOnTurn(true);
+            }
+        }
+    }
 }
