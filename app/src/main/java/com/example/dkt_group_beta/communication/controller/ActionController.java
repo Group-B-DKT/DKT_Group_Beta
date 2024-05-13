@@ -44,7 +44,7 @@ public class ActionController {
     }
     public void buyField(Field field) {
         int gameId = WebsocketClientController.getConnectedGameId();
-        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BUY_FIELD, null, null, Collections.singletonList(field));
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BUY_FIELD, null, WebsocketClientController.getPlayer(), Collections.singletonList(field));
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
 

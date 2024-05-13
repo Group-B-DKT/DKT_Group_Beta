@@ -129,10 +129,11 @@ public class Game {
         Player savedPlayer = this.players.stream()
                 .filter(f -> f.getId().equals(player.getId()))
                 .findAny().orElse(null);
-        if (player == null){
+        if (savedPlayer == null){
             this.players.add(player);
         }else{
             int index = this.players.indexOf(savedPlayer);
+            player.setCharacterView(savedPlayer.getCharacterView());
             this.players.set(index, player);
         }
     }
