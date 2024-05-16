@@ -109,74 +109,67 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         rvPlayerStats = findViewById(R.id.rv_playerStats);
 
 
-//        player = WebsocketClientController.getPlayer();
+        player = WebsocketClientController.getPlayer();
 
         diceResults = new int[2];
         endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
 
 
-//        players = (List<Player>) getIntent().getSerializableExtra("players");
-//        players.removeIf(p -> p.getId().equals(player.getId()));
-//        players.add(player);
-//        fields = (List<Field>) getIntent().getSerializableExtra("fields");
-//        players.sort(Comparator.comparing(Player::getId));
+        players = (List<Player>) getIntent().getSerializableExtra("players");
+        players.removeIf(p -> p.getId().equals(player.getId()));
+        players.add(player);
+        fields = (List<Field>) getIntent().getSerializableExtra("fields");
+        players.sort(Comparator.comparing(Player::getId));
 
         initializeFieldsImageViews();
 
         ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
-//        for (int i = 0; i < players.size(); i++) {
-//
-//            final ImageView x;
-//            if(i == 0){
-//               x = character;
-//            }else{
-//                x = new ImageView(this);
-//
-//                constraintLayout.addView(x);
-//
-//                x.setLayoutParams(character.getLayoutParams());
-//            }
-//            ImageViewCompat.setImageTintList(x, ColorStateList.valueOf(players.get(i).getColor()));
-//
-//
-//            int resourceId = this.getResources()
-//                    .getIdentifier("character" + (i+1), DEF_TYPE, this.getPackageName());
-//
-//
-//            if (resourceId != 0) {
-//                x.setImageBitmap(
-//                        decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
-//            }
-//
-//            x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
-//            players.get(i).setCharacterView(x);
-//        }
-//
+        for (int i = 0; i < players.size(); i++) {
+            final ImageView x;
+            if(i == 0){
+               x = character;
+            }else{
+                x = new ImageView(this);
+                constraintLayout.addView(x);
+                x.setLayoutParams(character.getLayoutParams());
+            }
+            ImageViewCompat.setImageTintList(x, ColorStateList.valueOf(players.get(i).getColor()));
+
+            int resourceId = this.getResources()
+                    .getIdentifier("character" + (i+1), DEF_TYPE, this.getPackageName());
+
+            if (resourceId != 0) {
+                x.setImageBitmap(
+                        decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+            }
+            x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
+            players.get(i).setCharacterView(x);
+        }
         constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
                                                     int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
-//            for (Player p: players) {
-//                setPosition(p.getCurrentPosition(), p);
-//            }
+            for (Player p: players) {
+                setPosition(p.getCurrentPosition(), p);
 
-//            ConstraintLayout layout = findViewById(R.id.sideLayout);
-//            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) layout.getLayoutParams();
-//            params.width = (int)(Resources.getSystem().getDisplayMetrics().widthPixels / 2.5);
-//            layout.setLayoutParams(params);
-
+                ViewGroup.LayoutParams params = p.getCharacterView().getLayoutParams();
+                int size = findViewById(R.id.field1).getWidth() / 2;
+                params.width = size;
+                params.height = size;
+                p.getCharacterView().setLayoutParams(params);
+            }
         });
 
-//        Game game = new Game(players, fields);
-//        gameBoardViewModel = new GameBoardViewModel(this, game);
+        Game game = new Game(players, fields);
+        gameBoardViewModel = new GameBoardViewModel(this, game);
 
-//        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
-//        createPlayerItems(game.getPlayers());
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
+        createPlayerItems(game.getPlayers());
 
-//        testButton = findViewById(R.id.popUpCards);
-//        Log.d(TAG, "IST: " + player.getUsername());
-//        if (!player.isOnTurn()) {
-//            disableView(testButton);
-//            disableView(btnEndTurn);
-//        }
+        testButton = findViewById(R.id.popUpCards);
+        Log.d(TAG, "IST: " + player.getUsername());
+        if (!player.isOnTurn()) {
+            disableView(testButton);
+            disableView(btnEndTurn);
+        }
         for (int i = 1; i <= NUMBER_OF_FIELDS; i++) {
             int resourceId = this.getResources().getIdentifier(FIELD_NAME + i, "id", this.getPackageName());
             ImageView imageView = findViewById(resourceId);
@@ -185,14 +178,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             }
         }
 
-//        testButton.setOnClickListener(v -> dicePopUp());
-//        btnEndTurn.setOnClickListener(v -> {
-//            if (player.isOnTurn()){
-//                gameBoardViewModel.endTurn();
-//                disableView(testButton);
-//                diceRolling = false;
-//            }
-//        });
+        testButton.setOnClickListener(v -> dicePopUp());
+        btnEndTurn.setOnClickListener(v -> {
+            if (player.isOnTurn()){
+                gameBoardViewModel.endTurn();
+                disableView(testButton);
+                diceRolling = false;
+            }
+        });
     }
 
     private void initializeFieldsImageViews() {
