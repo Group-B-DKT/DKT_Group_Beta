@@ -484,15 +484,16 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_playerStats"
             android:layout_width="match_parent"
-            android:layout_height="224dp"
+            android:layout_height="0dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toTopOf="@+id/build_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.819" />
+            app:layout_constraintTop_toBottomOf="@+id/build_button" />
 
         <Button
             android:id="@+id/build_button"
@@ -505,12 +506,10 @@
             android:backgroundTint="@android:color/holo_green_dark"
             android:text="BAUEN"
             app:cornerRadius="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/rv_playerStats"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_endTurn"
