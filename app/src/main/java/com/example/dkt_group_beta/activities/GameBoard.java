@@ -103,6 +103,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             return insets;
         });
 
+
         character = findViewById(R.id.character);
         btnEndTurn = findViewById(R.id.btn_endTurn);
         rvPlayerStats = findViewById(R.id.rv_playerStats);
@@ -113,11 +114,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         diceResults = new int[2];
         endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
 
-        ConstraintLayout layout = findViewById(R.id.sideLayout);
-        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) layout.getLayoutParams();
-        Log.d(TAG, "onCreate: " + layout.getHeight() + " " + layout.getWidth());
-        params.width = (int)(Resources.getSystem().getDisplayMetrics().widthPixels / 2.5);
-        layout.setLayoutParams(params);
 
 //        players = (List<Player>) getIntent().getSerializableExtra("players");
 //        players.removeIf(p -> p.getId().equals(player.getId()));
@@ -162,10 +158,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 //                setPosition(p.getCurrentPosition(), p);
 //            }
 
-//            ConstraintLayout layout = findViewById(R.id.gameboardLayout);
+//            ConstraintLayout layout = findViewById(R.id.sideLayout);
 //            ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) layout.getLayoutParams();
-//            Log.d(TAG, "onCreate: " + layout.getHeight() + " " + layout.getWidth());
-//            params.width = (int)(layout.getHeight());
+//            params.width = (int)(Resources.getSystem().getDisplayMetrics().widthPixels / 2.5);
 //            layout.setLayoutParams(params);
 
         });
