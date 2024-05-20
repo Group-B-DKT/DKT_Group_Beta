@@ -6,6 +6,7 @@ import com.example.dkt_group_beta.communication.ActionJsonObject;
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
+import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
 import com.google.gson.Gson;
@@ -100,7 +101,14 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
-
+    public void showCard(Card card){
+        Gson gson =new Gson(); // convert String, int, .. into Json-Object
+        int gameId = WebsocketClientController.getConnectedGameId();
+        String payload = gson.toJson(card);
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.SPECIAL_CARD_SHOW, payload, WebsocketClientController.getPlayer()); // Action, card, and player send to server
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg); // sends message to server
+    }
 
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))
