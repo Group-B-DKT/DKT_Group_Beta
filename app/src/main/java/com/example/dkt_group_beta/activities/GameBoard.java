@@ -37,6 +37,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.io.CardCSVReader;
+import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.model.enums.FieldType;
@@ -90,8 +92,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     List<Player> players;
     List<Field> fields;
-
-
+    List<Card> cards;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +118,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         players.add(player);
         fields = (List<Field>) getIntent().getSerializableExtra("fields");
         players.sort(Comparator.comparing(Player::getId));
+        cards = CardCSVReader.readCards(getApplicationContext(),"risiko.csv");
 
         initializeFieldsImageViews();
 
@@ -184,6 +186,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 diceRolling = false;
             }
         });
+
+        List<Card> risikoCards = CardCSVReader.readCards(getApplicationContext(), "risiko.csv");
+        List<Card> bankCards = CardCSVReader.readCards(getApplicationContext(), "bank.csv");
+        Log.d("DEBUG", ""+risikoCards);
+//        constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
+//                                                    int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
+//            showCard(findViewById(R.id.gameBoard), risikoCards.get(0).getImageResource());
+//
+//        });
     }
 
     private void initializeFieldsImageViews() {
@@ -316,7 +327,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             field.getOwner() == null &&
             player.getMoney() >= field.getPrice()){
 
-            showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
+            showCard(findViewById(R.id.gameBoard), "card" + FIELD_NAME + (player.getCurrentPosition()+1));
+        }else if (field.getFieldType() != FieldType.SPECIAL){
+            showCardSpecial();
         }
     }
 
@@ -493,25 +506,34 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         sensorManager.unregisterListener(this);
     }
 
-    private void showCard(View view, String viewID) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
-        int width = WRAP_CONTENT;
-        int height = WRAP_CONTENT;
-        boolean focusable = true;
+    public void showCard(View view, String viewID) {
+        Log.d("game-card","ShowCard");
+        runOnUiThread(()->{
+                    LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+                    View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
+                    int width = WRAP_CONTENT;
+                    int height = WRAP_CONTENT;
+                    boolean focusable = true;
 
-        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+                    PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
-        ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
-        int imageResourceId = getResources().getIdentifier("card" + viewID, DEF_TYPE, getPackageName());
-        popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
+                    //popupWindow.setOutsideTouchable(false);
 
-        Button btnBuy = popupView.findViewById(R.id.btn_buy);
-        btnBuy.setOnClickListener(v -> {
-            gameBoardViewModel.buyField(player.getCurrentPosition());
-            popupWindow.dismiss();
-        });
+                    popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+
+                    ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
+                    int imageResourceId = getResources().getIdentifier(viewID, DEF_TYPE, getPackageName());
+                    popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
+
+                    Button btnBuy = popupView.findViewById(R.id.btn_buy);
+                    btnBuy.setOnClickListener(v -> {
+                        gameBoardViewModel.buyField(player.getCurrentPosition());
+                        popupWindow.dismiss();
+                    });
+                });
+    }
+    public void showCard(Card card){
+        showCard(findViewById(R.id.gameBoard ),card.getImageResource());
     }
 
     public void setPosition(int start, Player player) {
@@ -561,5 +583,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         animation = new TranslateAnimation(0, xDelta, 0, yDelta);
 
         return animation;
+    }
+    private void showCardSpecial() {
+        int indexCard = gameBoardViewModel.getRandomNumber(0,cards.size()-1);
+        Card currentCard = cards.get(indexCard);
+        showCard(currentCard);
+        gameBoardViewModel.showCard(currentCard);
     }
 }

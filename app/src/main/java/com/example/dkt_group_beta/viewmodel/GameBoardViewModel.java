@@ -6,6 +6,7 @@ import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.communication.enums.Action;
+import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
@@ -37,6 +38,7 @@ public class GameBoardViewModel {
     }
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
+        Log.d("game-card","handleAction: " + action.toString());
         if(action == Action.ROLL_DICE) {
             Log.d("DEBUG", fromPlayer.getUsername());
             // array zurücksetzten, popup öffnen, showbothdice
@@ -76,6 +78,22 @@ public class GameBoardViewModel {
             gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
             gameBoardAction.updatePlayerStats();
         }
+        if (action == Action.SPECIAL_CARD_SHOW){
+            Log.d("DEBUG", fromPlayer.getUsername());
+            if (fromPlayer.getId().equals(player.getId())) {
+                return;
+            }
+            Log.d("game",""+action);
+            Gson gson = new Gson();
+            Card card = gson.fromJson(param, Card.class);
+            Log.d("game-card","card: "+ card.toString());
+            gameBoardAction.showCard(card);
+
+        }
+    }
+
+    public void showCard(Card card){
+        actionController.showCard(card);
     }
 
     public int getRandomNumber(int min, int max){

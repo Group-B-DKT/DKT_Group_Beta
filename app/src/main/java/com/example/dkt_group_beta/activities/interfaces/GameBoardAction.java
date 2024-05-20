@@ -1,5 +1,8 @@
 package com.example.dkt_group_beta.activities.interfaces;
 
+import android.view.View;
+
+import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Player;
 
 public interface GameBoardAction {
@@ -12,4 +15,5 @@ public interface GameBoardAction {
     void enableEndTurnButton();
     void updatePlayerStats();
     void enableDiceButton();
+    void showCard(Card card);
 }
