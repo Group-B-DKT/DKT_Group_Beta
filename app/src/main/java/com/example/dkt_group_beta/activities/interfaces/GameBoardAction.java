@@ -15,5 +15,7 @@ public interface GameBoardAction {
     void enableEndTurnButton();
     void updatePlayerStats();
     void enableDiceButton();
-    void showCard(Card card);
+    void showCardRisiko(int cardIndex, boolean showBtn);
+    void showCardBank(int cardIndex, boolean showBtn);
+
 }
