@@ -101,11 +101,15 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
-    public void showCard(Card card){
-        Gson gson =new Gson(); // convert String, int, .. into Json-Object
+    public void showRisikoCard(int cardIndex){
         int gameId = WebsocketClientController.getConnectedGameId();
-        String payload = gson.toJson(card);
-        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.SPECIAL_CARD_SHOW, payload, WebsocketClientController.getPlayer()); // Action, card, and player send to server
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RISIKO_CARD_SHOW, Integer.toString(cardIndex), WebsocketClientController.getPlayer()); // Action, card, and player send to server
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg); // sends message to server
+    }
+    public void showBankCard(int cardIndex){
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BANK_CARD_SHOW, Integer.toString(cardIndex), WebsocketClientController.getPlayer()); // Action, card, and player send to server
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg); // sends message to server
     }
