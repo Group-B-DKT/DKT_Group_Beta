@@ -299,7 +299,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
                 if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS)
                     movePlayer.setCurrentPosition(0);
+
                 setPosition(movePlayer.getCurrentPosition(), movePlayer);
+                passStart(movePlayer);
                 animation(movePlayer, repetition - 1);
             }
 
