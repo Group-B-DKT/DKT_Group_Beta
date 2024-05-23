@@ -308,6 +308,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             }
         });
         movePlayer.getCharacterView().startAnimation(animation);
+
+        //passStartAufrufen
     }
 
     private void checkEndFieldPosition() {
@@ -562,4 +564,22 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         return animation;
     }
+
+
+    private void passStart(Player player){
+
+        if(player.getCurrentPosition() == 0){
+            player.setMoney(player.getMoney() + 400);
+            Log.d("MONEY", "Player at position 0");
+        }else{
+            player.setMoney(player.getMoney() + 200);
+            Log.d("MONEY", "Player passed start");
+
+        }
+
+    }
+
+
+
+
 }
