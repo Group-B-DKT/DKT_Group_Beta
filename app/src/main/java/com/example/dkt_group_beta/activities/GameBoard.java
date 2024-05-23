@@ -276,6 +276,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void animation(Player movePlayer, int repetition) {
 
+        final boolean[] passedStart = {false};
         ImageView characterImageView = movePlayer.getCharacterView();
 
         if (repetition == 0) {
@@ -297,12 +298,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             public void onAnimationEnd(Animation animation) {
                 animation.cancel();
                 movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
-                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS)
+                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS) {
                     movePlayer.setCurrentPosition(0);
-
+                    passedStart[0] = true;
+                }
                 setPosition(movePlayer.getCurrentPosition(), movePlayer);
-                passStart(movePlayer);
                 animation(movePlayer, repetition - 1);
+
             }
 
             @Override
@@ -310,8 +312,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             }
         });
         movePlayer.getCharacterView().startAnimation(animation);
-
-        //passStartAufrufen
     }
 
     private void checkEndFieldPosition() {
@@ -321,6 +321,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             player.getMoney() >= field.getPrice()){
 
             showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
+        }
+
+        if(player.getCurrentPosition() == 0){
+            player.setMoney(player.getMoney() + 400);
+            Log.d("MONEY", "Player at position 0");
+        }else{
+            player.setMoney(player.getMoney() + 200);
+            Log.d("MONEY", "Player passed start");
+
         }
     }
 
@@ -567,19 +576,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         return animation;
     }
 
-
-    private void passStart(Player player){
-
-        if(player.getCurrentPosition() == 0){
-            player.setMoney(player.getMoney() + 400);
-            Log.d("MONEY", "Player at position 0");
-        }else{
-            player.setMoney(player.getMoney() + 200);
-            Log.d("MONEY", "Player passed start");
-
-        }
-
-    }
 
 
 
