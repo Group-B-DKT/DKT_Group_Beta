@@ -78,22 +78,32 @@ public class GameBoardViewModel {
             gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
             gameBoardAction.updatePlayerStats();
         }
-        if (action == Action.SPECIAL_CARD_SHOW){
+        if (action == Action.RISIKO_CARD_SHOW){
             Log.d("DEBUG", fromPlayer.getUsername());
+            int cardIndex = Integer.parseInt(param);
+            boolean showBtn = false;
             if (fromPlayer.getId().equals(player.getId())) {
-                return;
+                showBtn = true;
             }
-            Log.d("game",""+action);
-            Gson gson = new Gson();
-            Card card = gson.fromJson(param, Card.class);
-            Log.d("game-card","card: "+ card.toString());
-            gameBoardAction.showCard(card);
-
+            gameBoardAction.showCardRisiko(cardIndex, showBtn);
+        }
+        if (action == Action.BANK_CARD_SHOW){
+            Log.d("DEBUG", fromPlayer.getUsername());
+            int cardIndex = Integer.parseInt(param);
+            boolean showBtn = false;
+            if (fromPlayer.getId().equals(player.getId())) {
+                showBtn = true;
+            }
+            gameBoardAction.showCardBank(cardIndex, showBtn);
         }
     }
-
-    public void showCard(Card card){
-        actionController.showCard(card);
+    public void landOnRisikoCard(int cardAmount){
+        int randomNumber = getRandomNumber(0,cardAmount-1);
+        actionController.showRisikoCard(randomNumber);
+    }
+    public void landOnBankCard(int cardAmount){
+        int randomNumber = getRandomNumber(0,cardAmount-1);
+        actionController.showBankCard(randomNumber);
     }
 
     public int getRandomNumber(int min, int max){
