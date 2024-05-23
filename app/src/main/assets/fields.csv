@@ -1,12 +1,12 @@
 ID;Name;Price;isBuyable;FieldType
 1;Los!;;false;ASSET
 2;Hafnersee;120;true;NORMAL
-3;Ereignisfeld;;false;ASSET
+3;Ereignisfeld;;false;RISIKO
 4;Pyramidenkogel;150;true;SPECIAL
 5;Reifnitz;220;true;NORMAL
 6;Dellach;220;true;NORMAL
 7;Wörtherseeschifffahrt;150;true;SPECIAL
-8;Gemeinschaftsfeld;;false;ASSET
+8;Gemeinschaftsfeld;;false;BANK
 9;Kathreinkogel;100;true;NORMAL
 10;Gesetzesverletzung;;false;ASSET
 11;Auen;200;true;NORMAL
@@ -14,14 +14,14 @@ ID;Name;Price;isBuyable;FieldType
 13;Tierpark Rosegg;160;true;SPECIAL
 14;Casinoplatz;250;true;NORMAL
 15;Seecorso;300;true;NORMAL
-16;Gemeinschaftsfeld;;false;ASSET
+16;Gemeinschaftsfeld;;false;BANK
 17;Töschling;180;true;NORMAL
 18;Urlaubsgeld;;false;ASSET
 19;St. Martin;200;true;NORMAL
-20;Ereignisfeld;;false;ASSET
+20;Ereignisfeld;;false;RISIKO
 21;Seeuferstraße;250;true;NORMAL
 22;Annastraße;300;true;NORMAL
-23;Gemeinschaftsfeld;;false;ASSET
+23;Gemeinschaftsfeld;;false;BANK
 24;Koschatweg;300;true;NORMAL
 25;Knast;;false;ASSET
 26;Römerweg;180;true;NORMAL
