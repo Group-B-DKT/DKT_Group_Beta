@@ -76,6 +76,11 @@ public class GameBoardViewModel {
             gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
             gameBoardAction.updatePlayerStats();
         }
+
+        if(action == Action.UPDATE_MONEY){
+            game.updatePlayer(player);
+            gameBoardAction.updatePlayerStats();
+        }
     }
 
     public int getRandomNumber(int min, int max){
@@ -98,13 +103,15 @@ public class GameBoardViewModel {
     public void passStart(boolean passedStart){
 
         if(player.getCurrentPosition() == 0){
-            game.setMoney(player, 400);
+            game.setMoney(400);
             Log.d("MONEY", "Player at position 0" + player.getMoney());
-        }else if(passedStart == true){
-            game.setMoney(player, 200);
+        }else if(passedStart){
+            game.setMoney(200);
             Log.d("MONEY", "Player passed start" + player.getMoney());
 
         }
+
+        actionController.moneyUpdate();
 
     }
 }

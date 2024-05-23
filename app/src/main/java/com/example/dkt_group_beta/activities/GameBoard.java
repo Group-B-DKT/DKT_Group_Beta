@@ -324,19 +324,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
         }
-
-
-
         gameBoardViewModel.passStart(passedStart);
 
-       /* if(player.getCurrentPosition() == 0){
-            player.setMoney(player.getMoney() + 400);
-            Log.d("MONEY", "Player at position 0" + player.getMoney());
-        }else if(passedStart == true){
-            player.setMoney(player.getMoney() + 200);
-            Log.d("MONEY", "Player passed start" + player.getMoney());
-
-        }*/
     }
 
     @Override

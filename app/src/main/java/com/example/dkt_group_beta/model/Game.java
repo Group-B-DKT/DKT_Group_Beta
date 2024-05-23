@@ -159,9 +159,8 @@ public class Game {
     }
 
 
-    //setmoney - methode von passSTart
 
-    public void setMoney(Player player, int money){
+    public void setMoney(int money){
 
         player.setMoney(player.getMoney() + money);
     }
