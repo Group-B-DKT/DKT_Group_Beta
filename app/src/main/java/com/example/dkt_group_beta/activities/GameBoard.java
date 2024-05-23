@@ -281,7 +281,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         if (repetition == 0) {
             if (movePlayer.getId().equals(player.getId()))
-                checkEndFieldPosition();
+                checkEndFieldPosition(passedStart[0]);
             return;
         }
 
@@ -314,7 +314,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         movePlayer.getCharacterView().startAnimation(animation);
     }
 
-    private void checkEndFieldPosition() {
+    private void checkEndFieldPosition(boolean passedStart) {
         Field field = fields.get(player.getCurrentPosition());
         if (field.getFieldType() != FieldType.ASSET &&
             field.getOwner() == null &&
@@ -325,10 +325,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         if(player.getCurrentPosition() == 0){
             player.setMoney(player.getMoney() + 400);
-            Log.d("MONEY", "Player at position 0");
-        }else{
+            Log.d("MONEY", "Player at position 0" + player.getMoney());
+        }else if(passedStart == true){
             player.setMoney(player.getMoney() + 200);
-            Log.d("MONEY", "Player passed start");
+            Log.d("MONEY", "Player passed start" + player.getMoney());
 
         }
     }
