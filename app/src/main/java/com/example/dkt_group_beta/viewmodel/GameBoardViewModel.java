@@ -94,4 +94,17 @@ public class GameBoardViewModel {
     public void endTurn() {
         actionController.endTurn();
     }
+
+    public void passStart(boolean passedStart){
+
+        if(player.getCurrentPosition() == 0){
+            game.setMoney(player, 400);
+            Log.d("MONEY", "Player at position 0" + player.getMoney());
+        }else if(passedStart == true){
+            game.setMoney(player, 200);
+            Log.d("MONEY", "Player passed start" + player.getMoney());
+
+        }
+
+    }
 }

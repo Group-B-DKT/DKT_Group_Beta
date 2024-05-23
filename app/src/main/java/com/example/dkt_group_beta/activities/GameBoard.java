@@ -91,6 +91,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     List<Player> players;
     List<Field> fields;
 
+    public boolean passedStart;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -276,12 +278,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void animation(Player movePlayer, int repetition) {
 
-        final boolean[] passedStart = {false};
+
         ImageView characterImageView = movePlayer.getCharacterView();
 
         if (repetition == 0) {
             if (movePlayer.getId().equals(player.getId()))
-                checkEndFieldPosition(passedStart[0]);
+                checkEndFieldPosition(passedStart);
             return;
         }
 
@@ -300,7 +302,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
                 if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS) {
                     movePlayer.setCurrentPosition(0);
-                    passedStart[0] = true;
+                    passedStart = true;
                 }
                 setPosition(movePlayer.getCurrentPosition(), movePlayer);
                 animation(movePlayer, repetition - 1);
@@ -323,14 +325,18 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
         }
 
-        if(player.getCurrentPosition() == 0){
+
+
+        gameBoardViewModel.passStart(passedStart);
+
+       /* if(player.getCurrentPosition() == 0){
             player.setMoney(player.getMoney() + 400);
             Log.d("MONEY", "Player at position 0" + player.getMoney());
         }else if(passedStart == true){
             player.setMoney(player.getMoney() + 200);
             Log.d("MONEY", "Player passed start" + player.getMoney());
 
-        }
+        }*/
     }
 
     @Override
