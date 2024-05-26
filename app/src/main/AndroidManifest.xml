@@ -34,12 +34,8 @@
 
         <activity
             android:name=".activities.GameBoard"
-            android:exported="true"
+            android:exported="false"
             android:screenOrientation="landscape">
-
-
-
-
         </activity>
 
 
