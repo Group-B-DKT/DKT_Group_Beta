@@ -50,6 +50,11 @@ public class Build extends AppCompatActivity {
             Field field = ownedFields.get(imageViews.indexOf(imageView));
             if (ownedFields.contains(field)) {
                 imageView.setColorFilter(Color.RED, PorterDuff.Mode.MULTIPLY);
+                imageView.setOnClickListener(v -> {
+                    if (game.buyHouse(currentPlayer, new House(House.getHOUSE_PRICE(), currentPlayer, field.getId(), field))) {
+                        updateGameBoard(new House(House.getHOUSE_PRICE(), currentPlayer, field.getId(), field));
+                    }
+                });
             }
         }
     }
@@ -59,5 +64,6 @@ public class Build extends AppCompatActivity {
         int fieldId = field.getId();
         ImageView imageView = imageViews.get(fieldId - 1);
         imageView.setImageResource(R.drawable.house);
+        currentPlayer.setMoney(currentPlayer.getMoney() - house.getHousePrice());
     }
 }
