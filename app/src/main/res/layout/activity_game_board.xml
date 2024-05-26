@@ -371,7 +371,22 @@
             app:layout_constraintTop_toBottomOf="@+id/field21"
             app:layout_constraintVertical_bias="0.0" />
 
-
+        <TextView
+            android:id="@+id/build_text_view"
+            android:layout_width="212dp"
+            android:layout_height="101dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="9dp"
+            android:background="#4CAF50"
+            android:text="Um zu BAUEN klicken Sie auf die hervorgehobenen Felder"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/field30"
+            app:layout_constraintEnd_toStartOf="@+id/field29"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintStart_toEndOf="@+id/field13"
+            app:layout_constraintTop_toBottomOf="@+id/popUpCards"
+            app:layout_constraintVertical_bias="0.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -393,22 +408,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/constraintLayout">
 
-        <TextView
-            android:id="@+id/build_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="78dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:text="Um zu BAUEN klicken Sie auf die hervorgehobenen Felder"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/build_button"
-            app:layout_constraintVertical_bias="0.428" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_playerStats"
             android:layout_width="match_parent"
@@ -428,7 +427,7 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_centerHorizontal="true"
-            android:backgroundTint="@android:color/holo_green_dark"
+            android:backgroundTint="#4CAF50"
             android:text="BAUEN"
             app:layout_constraintBottom_toTopOf="@+id/build_text_view"
             app:layout_constraintEnd_toEndOf="parent"
