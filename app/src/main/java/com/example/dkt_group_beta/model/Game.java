@@ -87,6 +87,19 @@ public class Game {
         }
         return count;
     }
+    public boolean sellBuilding(Player player, Building building) {
+        Field field = building.getField();
+        if (field.getOwner() == player) {
+            if (building instanceof House) {
+                player.setMoney(player.getMoney() + ((House) building).getHousePrice() / 2);
+            } else if (building instanceof Hotel) {
+                player.setMoney(player.getMoney() + ((Hotel) building).getPrice() / 2);
+            }
+            field.getBuildings().remove(building);
+            return true;
+        }
+        return false;
+    }
 
     public List<Field> getOwnedFields(Player player) {
         return this.fields.stream()
