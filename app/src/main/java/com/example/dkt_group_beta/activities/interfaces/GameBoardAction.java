@@ -12,4 +12,5 @@ public interface GameBoardAction {
     void enableEndTurnButton();
     void updatePlayerStats();
     void enableDiceButton();
+    void showDiscconetPopUp(Player disconnectedPlayer);
 }

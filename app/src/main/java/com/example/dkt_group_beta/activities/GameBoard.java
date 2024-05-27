@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -512,6 +513,38 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             gameBoardViewModel.buyField(player.getCurrentPosition());
             popupWindow.dismiss();
         });
+    }
+
+    @Override
+    public void showDiscconetPopUp(Player disconnectedPlayer){
+        final int RECONNECT_DURATION = 10; // in minutes
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_connection_lost, null);
+        int width = WRAP_CONTENT;
+        int height = WRAP_CONTENT;
+
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+        popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+
+        Button btnKickPlayer = popupView.findViewById(R.id.btn_kickPlayer);
+        if (!this.player.isHost()){
+            disableView(btnKickPlayer);
+        }
+        TextView playerDisconnected = popupView.findViewById(R.id.txt_playerDisconnected);
+        TextView remainingTime = popupView.findViewById(R.id.txt_remainingTime);
+
+        playerDisconnected.setText(disconnectedPlayer.getUsername() + " " + getText(R.string.disconnected_player));
+        remainingTime.setText(getText(R.string.remaining_time));
+
+        countdown(RECONNECT_DURATION, remainingTime);
+
+    }
+
+    private void countdown(int reconnectDuration, TextView remainingTime) {
+//        new Thread(() -> {
+//
+//        }).start();
     }
 
     public void setPosition(int start, Player player) {
