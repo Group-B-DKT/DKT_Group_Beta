@@ -53,6 +53,14 @@ public class GameBoardViewModel {
         if (action == Action.BUY_FIELD) {
             handleBuyField(fromPlayer, fields);
         }
+
+        if (action == Action.CONNECTION_LOST){
+            handleConnectionLost();
+        }
+    }
+
+    private void handleConnectionLost() {
+
     }
 
     private void handleBuyField(Player fromPlayer, List<Field> fields) {

@@ -27,4 +27,5 @@
     <string name="choose_character">Wähle deine Spielfigur!</string>
     <string name="end_turn">End Turn</string>
     <string name="buy_field">Buy Field</string>
+    <string name="btn_kick_player">Kick Player</string>
 </resources>
