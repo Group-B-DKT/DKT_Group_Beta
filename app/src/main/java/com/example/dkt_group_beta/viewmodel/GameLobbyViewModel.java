@@ -87,7 +87,7 @@ public class GameLobbyViewModel {
         Log.d("DEBUG", "GameLobbyViewModel::handleAction/ " + action);
 
 
-        if (action == Action.LEAVE_GAME) {
+        if (action == Action.LEAVE_GAME || action == Action.CONNECTION_LOST) {
             handleLeaveGame(fromPlayer);
         }
         if (action == Action.HOST_CHANGED) {
