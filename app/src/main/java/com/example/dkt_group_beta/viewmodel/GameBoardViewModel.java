@@ -11,9 +11,7 @@ import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
 import com.google.gson.Gson;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameBoardViewModel {
     private ActionController actionController;
@@ -55,12 +53,12 @@ public class GameBoardViewModel {
         }
 
         if (action == Action.CONNECTION_LOST){
-            handleConnectionLost();
+            handleConnectionLost(fromPlayer);
         }
     }
 
-    private void handleConnectionLost() {
-
+    private void handleConnectionLost(Player disconnectedPlayer) {
+        gameBoardAction.showDisconnectPopUp(disconnectedPlayer);
     }
 
     private void handleBuyField(Player fromPlayer, List<Field> fields) {

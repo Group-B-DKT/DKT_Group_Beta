@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
@@ -516,28 +517,30 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     @Override
-    public void showDiscconetPopUp(Player disconnectedPlayer){
+    public void showDisconnectPopUp(Player disconnectedPlayer){
         final int RECONNECT_DURATION = 10; // in minutes
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_connection_lost, null);
-        int width = WRAP_CONTENT;
-        int height = WRAP_CONTENT;
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_connection_lost, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
 
-        PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
-        popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, true);
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
 
-        Button btnKickPlayer = popupView.findViewById(R.id.btn_kickPlayer);
-        if (!this.player.isHost()){
-            disableView(btnKickPlayer);
-        }
-        TextView playerDisconnected = popupView.findViewById(R.id.txt_playerDisconnected);
-        TextView remainingTime = popupView.findViewById(R.id.txt_remainingTime);
+            Button btnKickPlayer = popupView.findViewById(R.id.btn_kickPlayer);
+            if (!this.player.isHost()) {
+                disableView(btnKickPlayer);
+            }
+            TextView playerDisconnected = popupView.findViewById(R.id.txt_playerDisconnected);
+            TextView remainingTime = popupView.findViewById(R.id.txt_remainingTime);
 
-        playerDisconnected.setText(disconnectedPlayer.getUsername() + " " + getText(R.string.disconnected_player));
-        remainingTime.setText(getText(R.string.remaining_time));
+            playerDisconnected.setText(disconnectedPlayer.getUsername() + " " + getText(R.string.disconnected_player));
+            remainingTime.setText(getText(R.string.remaining_time));
 
-        countdown(RECONNECT_DURATION, remainingTime);
+            countdown(RECONNECT_DURATION, remainingTime);
+        });
 
     }
 
