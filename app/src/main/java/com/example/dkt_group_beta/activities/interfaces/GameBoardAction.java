@@ -2,6 +2,8 @@ package com.example.dkt_group_beta.activities.interfaces;
 
 import com.example.dkt_group_beta.model.Player;
 
+import java.time.LocalTime;
+
 public interface GameBoardAction {
     void dicePopUp();
     void showBothDice(int[] diceResult);
@@ -12,5 +14,5 @@ public interface GameBoardAction {
     void enableEndTurnButton();
     void updatePlayerStats();
     void enableDiceButton();
-    void showDisconnectPopUp(Player disconnectedPlayer);
+    void showDisconnectPopUp(Player disconnectedPlayer, LocalTime serverTime);
 }

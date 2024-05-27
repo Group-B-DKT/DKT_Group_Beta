@@ -11,6 +11,7 @@ import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
 import com.google.gson.Gson;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class GameBoardViewModel {
@@ -53,12 +54,12 @@ public class GameBoardViewModel {
         }
 
         if (action == Action.CONNECTION_LOST){
-            handleConnectionLost(fromPlayer);
+            handleConnectionLost(fromPlayer, LocalTime.parse(param));
         }
     }
 
-    private void handleConnectionLost(Player disconnectedPlayer) {
-        gameBoardAction.showDisconnectPopUp(disconnectedPlayer);
+    private void handleConnectionLost(Player disconnectedPlayer, LocalTime serverTime) {
+        gameBoardAction.showDisconnectPopUp(disconnectedPlayer, serverTime);
     }
 
     private void handleBuyField(Player fromPlayer, List<Field> fields) {

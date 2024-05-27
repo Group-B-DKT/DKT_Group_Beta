@@ -45,6 +45,7 @@ import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.model.Field;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -517,8 +518,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     @Override
-    public void showDisconnectPopUp(Player disconnectedPlayer){
-        final int RECONNECT_DURATION = 10; // in minutes
+    public void showDisconnectPopUp(Player disconnectedPlayer, LocalTime serverTime){
+        final int RECONNECT_DURATION = 1 * 60; // in seconds
 
         runOnUiThread(() -> {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -539,15 +540,27 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             playerDisconnected.setText(disconnectedPlayer.getUsername() + " " + getText(R.string.disconnected_player));
             remainingTime.setText(getText(R.string.remaining_time));
 
-            countdown(RECONNECT_DURATION, remainingTime);
+            int diff = LocalTime.now().toSecondOfDay() - serverTime.toSecondOfDay();
+            countdown(RECONNECT_DURATION - diff, remainingTime);
         });
 
     }
 
-    private void countdown(int reconnectDuration, TextView remainingTime) {
-//        new Thread(() -> {
-//
-//        }).start();
+    private void countdown(final int startTime, TextView remainingTime) {
+        new Thread(() -> {
+            long lastTime = System.currentTimeMillis();
+            int time = startTime;
+            while (time > 0){
+                if (System.currentTimeMillis() - lastTime >= 1000) {
+                    int min = time / 60;
+                    int sec = time % 60;
+                    String timeStr = String.format("%02d:%02d", min, sec);
+                    runOnUiThread(() -> remainingTime.setText(getText(R.string.remaining_time) + " " + timeStr));
+                    time--;
+                    lastTime = System.currentTimeMillis();
+                }
+            }
+        }).start();
     }
 
     public void setPosition(int start, Player player) {
