@@ -518,7 +518,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
                     PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
-                    //popupWindow.setOutsideTouchable(false);
+                    popupWindow.setTouchable(true);
+                    popupWindow.setFocusable(false);
+                    popupWindow.setOutsideTouchable(false);
 
                     popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
