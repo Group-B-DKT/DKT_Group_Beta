@@ -101,8 +101,6 @@ public class GameBoardViewModel {
 
     public void passStartOrUrlaubsgeld(boolean passedStart){
 
-        player.setCurrentPosition(17);
-
         if(player.getCurrentPosition() == 0){
             game.setMoney(400);
             Log.d("MONEY", "Player at position 0" + player.getMoney());
