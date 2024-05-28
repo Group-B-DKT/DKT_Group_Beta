@@ -102,12 +102,17 @@ public class GameBoardViewModel {
 
     public void passStart(boolean passedStart){
 
+        player.setCurrentPosition(17);
+
         if(player.getCurrentPosition() == 0){
             game.setMoney(400);
             Log.d("MONEY", "Player at position 0" + player.getMoney());
         }else if(passedStart){
             game.setMoney(200);
             Log.d("MONEY", "Player passed start" + player.getMoney());
+        }else if(player.getCurrentPosition() == 17){
+            game.setMoney(100);
+            Log.d("MONEY", "URLAUBSGELD" + player.getMoney());
 
         }
 
