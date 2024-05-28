@@ -13,7 +13,6 @@ import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameBoardViewModel {
     private ActionController actionController;
@@ -100,7 +99,7 @@ public class GameBoardViewModel {
         actionController.endTurn();
     }
 
-    public void passStart(boolean passedStart){
+    public void passStartOrUrlaubsgeld(boolean passedStart){
 
         player.setCurrentPosition(17);
 
