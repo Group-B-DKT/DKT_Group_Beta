@@ -90,6 +90,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     List<Player> players;
     List<Field> fields;
+    ImageView build;
 
 
     @Override
@@ -354,6 +355,28 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             params.width = endTurnLayout.width;
             testButton.setLayoutParams(params);
         });
+    }
+    public void buildPopUp (){
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.activity_build, null);
+
+            int width = WRAP_CONTENT;
+            int height = WRAP_CONTENT;
+            boolean focusable = true;
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+            popupWindow.showAtLocation(imageViews.get(0), Gravity.CENTER, 0, 0);
+            // initialising listener for the acceleration sensor
+            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                    SensorManager.SENSOR_DELAY_NORMAL);
+
+            Button buildButton = popupView.findViewById(R.id.buildButton);
+            buildButton.setOnClickListener(v -> {
+                gameBoardViewModel.buyBuilding(player.getCurrentPosition());
+                popupWindow.dismiss();
+            });
+        }
     }
 
     public void dicePopUp() {
