@@ -8,6 +8,7 @@ import com.example.dkt_group_beta.communication.controller.WebsocketClientContro
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.google.gson.Gson;
 
@@ -35,6 +36,11 @@ public class GameBoardViewModel {
         actionController.buyField(field);
 
     }
+    public void buyBuilding(Player player, House house){
+        boolean building = game.buyHouse(player, house);
+        actionController.buyBuilding(building);
+    }
+
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
@@ -76,9 +82,15 @@ public class GameBoardViewModel {
             gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
             gameBoardAction.updatePlayerStats();
         }
-    }
+        if (action == Action.BUY_BUILDING) {
+            game.updateField(fields.get(0));
+            game.updatePlayer(fromPlayer);
+            gameBoardAction.updatePlayerStats();
+        }
+}
 
-    public int getRandomNumber(int min, int max){
+
+public int getRandomNumber(int min, int max){
         return game.getRandomNumber(min,max);
     }
 

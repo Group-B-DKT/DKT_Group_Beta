@@ -38,6 +38,7 @@ import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.model.enums.FieldType;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
@@ -356,7 +357,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             testButton.setLayoutParams(params);
         });
     }
-    public void buildPopUp (){
+    public void buildPopUp (Player player, House house){
         runOnUiThread(() -> {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.activity_build, null);
@@ -373,10 +374,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             Button buildButton = popupView.findViewById(R.id.buildButton);
             buildButton.setOnClickListener(v -> {
-                gameBoardViewModel.buyBuilding(player.getCurrentPosition());
+                gameBoardViewModel.buyBuilding(player, house);
                 popupWindow.dismiss();
             });
-        }
+        });
     }
 
     public void dicePopUp() {

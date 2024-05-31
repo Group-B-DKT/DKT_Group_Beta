@@ -47,6 +47,14 @@ public class ActionController {
 
     }
 
+    public void buyBuilding(boolean building){
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BUY_BUILDING, null, WebsocketClientController.getPlayer());
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+
 
     public void isReady(boolean isReady){
         ActionJsonObject actionJsonObject;
@@ -111,4 +119,6 @@ public class ActionController {
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
         handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer(), actionJsonObject.getFields());
     }
+
+
 }
