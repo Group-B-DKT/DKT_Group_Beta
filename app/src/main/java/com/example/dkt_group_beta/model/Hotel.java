@@ -8,4 +8,7 @@ public class Hotel extends Building{
     public Hotel(int price, Player owner, int position, Field field) {
         super(price, owner, position, field);
     }
+    public static int getHotelPrice(){
+        return HOTEL_PRICE;
+    }
 }

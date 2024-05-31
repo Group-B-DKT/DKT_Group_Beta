@@ -12,7 +12,7 @@ public class House extends Building{
         super(price, owner, position, field);
     }
 
-    public int getHousePrice(){
+    public static int getHousePrice(){
         return HOUSE_PRICE;
     }
 
