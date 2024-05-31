@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,7 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
@@ -50,7 +52,7 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
+public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction, CheatDialogFragment.OnInputListener{
     private static final String TAG = "DEBUG";
     private static final String DEF_TYPE = "drawable";
     private static final String FIELD_NAME = "field";
@@ -90,6 +92,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     List<Player> players;
     List<Field> fields;
+    private Sensor proximitySensor;
+    private SensorEventListener proximitySensorListener;
 
 
     @Override
@@ -186,6 +190,30 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 diceRolling = false;
             }
         });
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        if (proximitySensor == null) {
+            Toast.makeText(this, "Proximity sensor not available", Toast.LENGTH_SHORT).show();
+        }
+
+        proximitySensorListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (event.values[0] < proximitySensor.getMaximumRange()) {
+                    // Hand is near the display
+                    Toast.makeText(getApplicationContext(), "Cheat Mode Activated", Toast.LENGTH_SHORT).show();
+                    CheatDialogFragment dialog = new CheatDialogFragment();
+                    dialog.inputListener = GameBoard.this;
+                    dialog.show(getSupportFragmentManager(), "InputDialogFragment");
+                }
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                // We can ignore this for now
+            }
+        };
     }
 
     private void initializeFieldsImageViews() {
@@ -563,5 +591,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         animation = new TranslateAnimation(0, xDelta, 0, yDelta);
 
         return animation;
+    }
+
+    @Override
+    public void sendCheatValue(int input) {
+        gameBoardViewModel.submitCheat(input);
     }
 }

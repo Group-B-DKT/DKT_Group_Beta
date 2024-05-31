@@ -94,4 +94,8 @@ public class GameBoardViewModel {
     public void endTurn() {
         actionController.endTurn();
     }
+
+    public void submitCheat(int money) {
+        actionController.submitCheat(money);
+    }
 }
