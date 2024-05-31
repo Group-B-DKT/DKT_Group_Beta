@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -91,7 +92,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     List<Player> players;
     List<Field> fields;
-    ImageView build;
+    Button build;
 
 
     @Override
@@ -108,6 +109,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         character = findViewById(R.id.character);
         btnEndTurn = findViewById(R.id.btn_endTurn);
         rvPlayerStats = findViewById(R.id.rv_playerStats);
+        build = findViewById(R.id.build_button);
 
         player = WebsocketClientController.getPlayer();
 
@@ -179,6 +181,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }
 
         testButton.setOnClickListener(v -> dicePopUp());
+        build.setOnClickListener(v -> {
+                buildPopUp(player, new House(100, player, player.getCurrentPosition(), fields.get(player.getCurrentPosition())));
+        });
         btnEndTurn.setOnClickListener(v -> {
             if (player.isOnTurn()){
                 gameBoardViewModel.endTurn();
