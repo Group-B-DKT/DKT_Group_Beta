@@ -10,6 +10,7 @@ import com.example.dkt_group_beta.communication.controller.ConnectController;
 import com.example.dkt_group_beta.communication.controller.InfoController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.communication.enums.Action;
+import com.example.dkt_group_beta.communication.enums.ConnectType;
 import com.example.dkt_group_beta.communication.enums.Info;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.GameInfo;
@@ -27,7 +28,7 @@ public class GameSearchViewModel extends ViewModel {
 
     public GameSearchViewModel(String uri, String username, String id, GameSearchAction gameSearchAction){
         WebsocketClientController.connectToServer(uri, id, username);
-        connectController = new ConnectController(this::onConnectionEstablished);
+        connectController = new ConnectController(this::handleConnect);
         infoController = new InfoController(this::handleInfo);
         actionController = new ActionController(this::handleAction);
         this.gameSearchAction = gameSearchAction;
@@ -62,7 +63,7 @@ public class GameSearchViewModel extends ViewModel {
 
     }
 
-    void onConnectionEstablished(){
+    void handleConnect(ConnectType connectType){
         gameSearchAction.onConnectionEstablished();
     }
 

@@ -19,8 +19,8 @@ public class ConnectController {
         if (!(connectObject instanceof ConnectJsonObject))
             return;
 
-        if (((ConnectJsonObject)connectObject).getConnectType() == ConnectType.CONNECTION_ESTABLISHED)
-            handleConnect.onConnectionEstablished();
+        ConnectJsonObject connectJsonObject = (ConnectJsonObject) connectObject;
+        handleConnect.handleConnect(connectJsonObject.getConnectType());
     }
 
 
