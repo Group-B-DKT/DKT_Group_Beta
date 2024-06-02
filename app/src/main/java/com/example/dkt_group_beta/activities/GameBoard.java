@@ -1,6 +1,5 @@
 package com.example.dkt_group_beta.activities;
 
-import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -181,8 +180,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }
 
         testButton.setOnClickListener(v -> dicePopUp());
+
         build.setOnClickListener(v -> {
-                buildPopUp(player, new House(100, player, player.getCurrentPosition(), fields.get(player.getCurrentPosition())));
+            if (player.isOnTurn()) {
+                buildPopUp(player);
+            }
         });
         btnEndTurn.setOnClickListener(v -> {
             if (player.isOnTurn()){
@@ -362,27 +364,21 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             testButton.setLayoutParams(params);
         });
     }
-    public void buildPopUp (Player player, House house){
+    public void buildPopUp(Player player) {
         runOnUiThread(() -> {
-            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = inflater.inflate(R.layout.activity_build, null);
-
-            int width = WRAP_CONTENT;
-            int height = WRAP_CONTENT;
-            boolean focusable = true;
-            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-            popupWindow.showAtLocation(imageViews.get(0), Gravity.CENTER, 0, 0);
-            // initialising listener for the acceleration sensor
-            sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                    SensorManager.SENSOR_DELAY_NORMAL);
-
-            Button buildButton = popupView.findViewById(R.id.buildButton);
-            buildButton.setOnClickListener(v -> {
-                gameBoardViewModel.buyBuilding(player, house);
-                popupWindow.dismiss();
-            });
+            for (Field field : fields) {
+                if (field.getOwner() != null && field.getOwner().getId().equals(player.getId())) {
+                    int fieldIndex = fields.indexOf(field);
+                    highlightField(fieldIndex);
+                }
+            }
         });
+    }
+    private void highlightField(int index) {
+        ImageView imageView = imageViews.get(index);
+        if (imageView != null) {
+            imageView.setBackgroundColor(Color.YELLOW); //to test it for now
+        }
     }
 
     public void dicePopUp() {
