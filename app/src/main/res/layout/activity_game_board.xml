@@ -12,370 +12,440 @@
     android:background="#818979"
     tools:context=".activities.GameBoard">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
-        android:layout_width="wrap_content"
+        android:id="@+id/gameboardLayout"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintEnd_toStartOf="@+id/sideLayout"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
-        <ImageView
-            android:id="@+id/field27"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
-            android:rotation="180"
-            android:rotationX="180"
-            android:rotationY="-180"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
+
+        <LinearLayout
+            android:id="@+id/linear_top"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field26" />
-
-        <ImageView
-            android:id="@+id/field29"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
-            android:rotation="180"
-            android:rotationX="180"
-            android:rotationY="-180"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field28" />
-
-        <ImageView
-            android:id="@+id/field28"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
-            android:rotation="180"
-            android:rotationX="180"
-            android:rotationY="-180"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field27" />
-
-        <ImageView
-            android:id="@+id/field30"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
-            android:rotation="180"
-            android:rotationX="-180"
-            android:rotationY="180"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field29" />
-
-        <ImageView
-            android:id="@+id/field26"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field25"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field25"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toEndOf="@+id/field24"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field24"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toEndOf="@+id/field23"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field23"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toEndOf="@+id/field22"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field22"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toEndOf="@+id/field21"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field21"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toEndOf="@+id/field20"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field20"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toEndOf="@+id/field19"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field19"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toEndOf="@+id/field18"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field18"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toEndOf="@+id/field17"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field17"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toEndOf="@+id/field16"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/field16"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/field15"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field16" />
+            <ImageView
+                android:id="@+id/field16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/field14"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
-            android:rotationX="-360"
-            android:rotationY="360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field15" />
+            <ImageView
+                android:id="@+id/field17"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/field13"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
-            android:rotationX="-360"
-            android:rotationY="360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field14" />
+            <ImageView
+                android:id="@+id/field18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
 
-        <ImageView
-            android:id="@+id/field12"
-            android:layout_width="90dp"
-            android:layout_height="45dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field13" />
+            <ImageView
+                android:id="@+id/field19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
 
-        <ImageView
-            android:id="@+id/field4"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
+
+
+            <ImageView
+                android:id="@+id/field20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/field21"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/field22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/field23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/field24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/field25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/field26"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field5" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-        <ImageView
-            android:id="@+id/field11"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
-        <ImageView
-            android:id="@+id/field10"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field11" />
+            <ImageView
+                android:id="@+id/field11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/field5" />
 
-        <ImageView
-            android:id="@+id/field1"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
+            <ImageView
+                android:id="@+id/field10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/field9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/field11" />
+
+            <ImageView
+                android:id="@+id/field8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/field2" />
+
+            <ImageView
+                android:id="@+id/field7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/field3" />
+
+            <ImageView
+                android:id="@+id/field6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/field6" />
+
+            <ImageView
+                android:id="@+id/field5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/field7" />
+
+            <ImageView
+                android:id="@+id/field4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/field8" />
+
+            <ImageView
+                android:id="@+id/field3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/field9" />
+
+            <ImageView
+                android:id="@+id/field2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/field10" />
+
+            <ImageView
+                android:id="@+id/field1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:rotationX="-360"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/field4" />
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/middleLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/linear_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/field2" />
-
-        <ImageView
-            android:id="@+id/field2"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field3" />
-
-        <ImageView
-            android:id="@+id/field5"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field6" />
-
-        <ImageView
-            android:id="@+id/field6"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field7" />
-
-        <ImageView
-            android:id="@+id/field7"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field8" />
-
-        <ImageView
-            android:id="@+id/field8"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field9" />
-
-        <ImageView
-            android:id="@+id/field9"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field10" />
-
-        <ImageView
-            android:id="@+id/field3"
-            android:layout_width="45dp"
-            android:layout_height="90dp"
-            android:rotationX="-360"
-            android:scaleType="fitXY"
-            android:adjustViewBounds="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/field4" />
-
-        <ImageView
-            android:id="@+id/risiko_mitte"
-            android:layout_width="65dp"
-            android:layout_height="78dp"
-            android:layout_marginStart="128dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.556"
-            app:srcCompat="@drawable/field3" />
+            app:layout_constraintTop_toBottomOf="@+id/linear_top">
 
-        <ImageView
-            android:id="@+id/bank_mitte"
-            android:layout_width="65dp"
-            android:layout_height="78dp"
-            android:layout_marginEnd="132dp"
-            app:layout_constraintBottom_toBottomOf="@+id/field4"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.553"
-            app:srcCompat="@drawable/field16" />
+            <LinearLayout
+                android:id="@+id/linearLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/popUpCards"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:backgroundTint="#FF0000"
-            android:text="Roll Dice"
-            app:layout_constraintBottom_toTopOf="@+id/field6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/field21"
-            app:layout_constraintVertical_bias="0.0" />
+                <ImageView
+                    android:id="@+id/field15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
 
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_top" />
 
+                <ImageView
+                    android:id="@+id/field14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+
+                    android:rotationX="-360"
+                    android:rotationY="360"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/field15" />
+
+                <ImageView
+                    android:id="@+id/field13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+
+                    android:rotationX="-360"
+                    android:rotationY="360"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/field14" />
+
+                <ImageView
+                    android:id="@+id/field12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/field13" />
+
+            </LinearLayout>
+
+            <!--            <ImageView-->
+            <!--                android:id="@+id/risiko_mitte"-->
+            <!--                android:layout_width="65dp"-->
+            <!--                android:layout_height="78dp"-->
+            <!--                android:layout_marginStart="20dp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toStartOf="@+id/bank_mitte"-->
+            <!--                app:layout_constraintHorizontal_bias="0.0"-->
+            <!--                app:layout_constraintStart_toEndOf="@+id/linearLeft"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                app:srcCompat="@drawable/field3" />-->
+
+            <!--            <ImageView-->
+            <!--                android:id="@+id/bank_mitte"-->
+            <!--                android:layout_width="65dp"-->
+            <!--                android:layout_height="78dp"-->
+            <!--                android:layout_marginEnd="20dp"-->
+            <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--                app:layout_constraintEnd_toStartOf="@+id/linearRight"-->
+            <!--                app:layout_constraintTop_toTopOf="parent"-->
+            <!--                app:srcCompat="@drawable/field16" />-->
+
+            <Button
+                android:id="@+id/popUpCards"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#669800"
+                android:text="Roll Dice"
+                app:cornerRadius="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearRight"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/field27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:rotation="180"
+                    android:rotationX="180"
+                    android:rotationY="-180"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linear_top" />
+
+                <ImageView
+                    android:id="@+id/field28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:rotation="180"
+                    android:rotationX="180"
+                    android:rotationY="-180"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/field28" />
+
+                <ImageView
+                    android:id="@+id/field29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:rotation="180"
+                    android:rotationX="180"
+                    android:rotationY="-180"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/field27" />
+
+                <ImageView
+                    android:id="@+id/field30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:rotation="180"
+                    android:rotationX="-180"
+                    android:rotationY="180"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/field29" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     <ImageView
         android:id="@+id/character"
@@ -387,68 +457,76 @@
         app:srcCompat="@drawable/character1" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/sideLayout"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/constraintLayout">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="percent"
+        app:layout_constraintWidth_percent=".4">
 
         <TextView
             android:id="@+id/build_text_view"
             android:layout_width="match_parent"
-            android:layout_height="78dp"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="96dp"
             android:text="Um zu BAUEN klicken Sie auf die hervorgehobenen Felder"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/build_button"
-            app:layout_constraintVertical_bias="0.428" />
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_playerStats"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/build_button"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/build_text_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_endTurn"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintTop_toBottomOf="@+id/build_button" />
 
         <Button
             android:id="@+id/build_button"
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_centerHorizontal="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="@android:color/holo_green_dark"
             android:text="BAUEN"
-            app:layout_constraintBottom_toTopOf="@+id/build_text_view"
+            app:cornerRadius="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rv_playerStats"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
             android:id="@+id/btn_endTurn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#C15F2A"
             android:text="@string/end_turn"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toTopOf="@+id/rv_playerStats"
+            android:textSize="12sp"
+            app:cornerRadius="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" /> <!-- Die TextView wird zunächst unsichtbar gemacht -->
+            app:layout_constraintTop_toBottomOf="@+id/build_text_view"
+            app:layout_constraintVertical_bias="1.0" /> <!-- Die TextView wird zunächst unsichtbar gemacht -->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
