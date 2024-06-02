@@ -550,7 +550,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         new Thread(() -> {
             long lastTime = System.currentTimeMillis();
             int time = startTime;
-            while (time > 0){
+            while (time >= 0){
                 if (System.currentTimeMillis() - lastTime >= 1000) {
                     int min = time / 60;
                     int sec = time % 60;
