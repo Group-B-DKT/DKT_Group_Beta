@@ -7,11 +7,13 @@ import android.provider.Settings;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import static android.view.ViewGroup.LayoutParams;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private static final int MAX_PLAYER = 6;
@@ -46,7 +49,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game_search);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_searchMain), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -89,10 +92,30 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
 
     @Override
     public void reconnectToGame(GameInfo gameInfo) {
-
+        showPopup(gameInfo.getName());
     }
 
+    private void showPopup(String gameName) {
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_reconnect, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
+            boolean focusable = true;
 
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(findViewById(R.id.layout_searchMain), Gravity.CENTER, 0, 0);
+
+            TextView txtGameInfo = popupView.findViewById(R.id.txt_gameInfo);
+            txtGameInfo.setText(String.format(Locale.GERMAN, getString(R.string.reconnect_text), gameName));
+
+            Button btnReconnect = popupView.findViewById(R.id.btn_reconnect);
+            btnReconnect.setOnClickListener(v -> {});
+
+            Button btnDiscard = popupView.findViewById(R.id.btn_discardReconnect);
+            btnDiscard.setOnClickListener(v -> {});
+        });
+    }
 
 
     @Override
