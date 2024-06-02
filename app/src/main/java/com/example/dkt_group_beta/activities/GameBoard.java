@@ -366,20 +366,67 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
     public void buildPopUp(Player player) {
         runOnUiThread(() -> {
-            for (Field field : fields) {
-                if (field.getOwner() != null && field.getOwner().getId().equals(player.getId())) {
-                    int fieldIndex = fields.indexOf(field);
-                    highlightField(fieldIndex);
-                }
-            }
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.activity_build, null);
+
+
+            int width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            int height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            boolean focusable = true;
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+
+
+            Button buildButton = popupView.findViewById(R.id.buildButton);
+            buildButton.setOnClickListener(v -> {
+                getOwnedFields(player);
+                popupWindow.dismiss();
+            });
         });
     }
-    private void highlightField(int index) {
-        ImageView imageView = imageViews.get(index);
-        if (imageView != null) {
-            imageView.setBackgroundColor(Color.YELLOW); //to test it for now
+    private void getOwnedFields(Player player) {
+        for (Field field : fields) {
+            if (field.getOwner() != null && field.getOwner().getId().equals(player.getId())) {
+                int fieldIndex = fields.indexOf(field);
+                enableFieldClick(fieldIndex, player);
+            }
         }
     }
+
+    private void enableFieldClick(int index, Player player) {
+        ImageView imageView = imageViews.get(index);
+        if (imageView != null) {
+            imageView.setOnClickListener(v -> {
+                buildHouse(player, index);
+            });
+        }
+    }
+    private void buildHouse(Player player, int fieldIndex) {
+        House house = new House(100, player, fieldIndex, fields.get(fieldIndex));
+        gameBoardViewModel.buyBuilding(player, house);
+
+        ImageView houseView = new ImageView(this);
+        houseView.setImageResource(R.drawable.house);
+
+        int houseWidth = 50;
+        int houseHeight = 50;
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(houseWidth, houseHeight);
+        houseView.setLayoutParams(params);
+
+        ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+        constraintLayout.addView(houseView);
+
+        int[] position = getPositionFromView(imageViews.get(fieldIndex));
+
+
+        int xOffset = 10;
+        int yOffset = 10;
+        houseView.setX(position[0] + xOffset);
+        houseView.setY(position[1] + yOffset);
+    }
+
 
     public void dicePopUp() {
         runOnUiThread(() -> {
