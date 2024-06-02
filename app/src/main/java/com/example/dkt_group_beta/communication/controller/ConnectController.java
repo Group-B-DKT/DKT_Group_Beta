@@ -20,7 +20,7 @@ public class ConnectController {
             return;
 
         ConnectJsonObject connectJsonObject = (ConnectJsonObject) connectObject;
-        handleConnect.handleConnect(connectJsonObject.getConnectType());
+        handleConnect.handleConnect(connectJsonObject.getConnectType(), connectJsonObject.getGameInfo());
     }
 
 

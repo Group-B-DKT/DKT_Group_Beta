@@ -63,13 +63,17 @@ public class GameSearchViewModel extends ViewModel {
 
     }
 
-    void handleConnect(ConnectType connectType){
-        gameSearchAction.onConnectionEstablished();
+    void handleConnect(ConnectType connectType, GameInfo gameInfo){
+        if (connectType == ConnectType.CONNECTION_ESTABLISHED)
+            gameSearchAction.onConnectionEstablished();
+
+        if (connectType == ConnectType.RECONNECT_TO_GAME){
+            gameSearchAction.reconnectToGame(gameInfo);
+        }
     }
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if (fromPlayer == null || !fromPlayer.getUsername().equals(username)) {
-            Log.d("QWE", "" + action);
             this.receiveGames();
             return;
         }

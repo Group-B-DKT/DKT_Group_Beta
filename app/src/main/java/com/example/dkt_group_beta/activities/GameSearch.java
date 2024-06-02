@@ -23,6 +23,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.model.GameInfo;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
 import java.util.ArrayList;
@@ -84,6 +85,11 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         intent.putExtra("username", username);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void reconnectToGame(GameInfo gameInfo) {
+
     }
 
 
