@@ -50,7 +50,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game_lobby);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_searchMain), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_gameLobbyMain), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
