@@ -106,14 +106,17 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             return insets;
         });
 
+
         character = findViewById(R.id.character);
         btnEndTurn = findViewById(R.id.btn_endTurn);
         rvPlayerStats = findViewById(R.id.rv_playerStats);
+
 
         player = WebsocketClientController.getPlayer();
 
         diceResults = new int[2];
         endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
+
 
         players = (List<Player>) getIntent().getSerializableExtra("players");
         players.removeIf(p -> p.getId().equals(player.getId()));
@@ -125,37 +128,36 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
         for (int i = 0; i < players.size(); i++) {
-
             final ImageView x;
             if(i == 0){
                x = character;
             }else{
                 x = new ImageView(this);
-
                 constraintLayout.addView(x);
-
                 x.setLayoutParams(character.getLayoutParams());
             }
             ImageViewCompat.setImageTintList(x, ColorStateList.valueOf(players.get(i).getColor()));
 
-
             int resourceId = this.getResources()
                     .getIdentifier("character" + (i+1), DEF_TYPE, this.getPackageName());
-
 
             if (resourceId != 0) {
                 x.setImageBitmap(
                         decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
             }
-
             x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
             players.get(i).setCharacterView(x);
         }
-
         constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
                                                     int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
             for (Player p: players) {
                 setPosition(p.getCurrentPosition(), p);
+
+                ViewGroup.LayoutParams params = p.getCharacterView().getLayoutParams();
+                int size = findViewById(R.id.field1).getWidth() / 2;
+                params.width = size;
+                params.height = size;
+                p.getCharacterView().setLayoutParams(params);
             }
         });
 
@@ -461,8 +463,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (!player.isOnTurn())
-            return;
+//        if (!player.isOnTurn())
+//            return;
         // only of the pop-up window is open, it is possible to shake the phone to roll the dice
         if (isPopupWindowOpen && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             // acceleration along x-, y- and z-axis
@@ -487,13 +489,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-                SensorManager.SENSOR_DELAY_NORMAL);
+//        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+//                SensorManager.SENSOR_DELAY_NORMAL);
     }
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
+//        sensorManager.unregisterListener(this);
     }
 
     private void showCard(View view, String viewID) {
