@@ -77,7 +77,7 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
-        if (fromPlayer == null || !fromPlayer.getUsername().equals(username)) {
+        if (action != Action.RECONNECT_OK && (fromPlayer == null || !fromPlayer.getUsername().equals(username))) {
             this.receiveGames();
             return;
         }
@@ -92,7 +92,7 @@ public class GameSearchViewModel extends ViewModel {
             gameSearchAction.switchToGameLobby(username);
         }
         if (action == Action.RECONNECT_OK){
-            Log.d("DEBUG", "GameSearchViewModel::handleAction/ " + fromPlayer.getGameId());
+            Log.d("RECONNECT", "GameSearchViewModel::handleAction/ " + fromPlayer.getUsername());
         }
     }
 
