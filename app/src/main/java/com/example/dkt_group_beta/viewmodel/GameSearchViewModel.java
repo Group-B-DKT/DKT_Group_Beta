@@ -16,6 +16,7 @@ import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.GameInfo;
 import com.example.dkt_group_beta.model.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameSearchViewModel extends ViewModel {
@@ -24,6 +25,8 @@ public class GameSearchViewModel extends ViewModel {
     private final InfoController infoController;
     private final ActionController actionController;
     private final GameSearchAction gameSearchAction;
+
+    private List<Player> reconnectPlayerBuffer;
 
 
     public GameSearchViewModel(String uri, String username, String id, GameSearchAction gameSearchAction){
@@ -69,6 +72,7 @@ public class GameSearchViewModel extends ViewModel {
 
         if (connectType == ConnectType.RECONNECT_TO_GAME){
             gameSearchAction.reconnectToGame(gameInfo);
+            this.reconnectPlayerBuffer = gameInfo.getConnectedPlayers();
         }
     }
 
@@ -87,5 +91,13 @@ public class GameSearchViewModel extends ViewModel {
             WebsocketClientController.getPlayer().setColor(fromPlayer.getColor());
             gameSearchAction.switchToGameLobby(username);
         }
+        if (action == Action.RECONNECT_OK){
+            Log.d("DEBUG", "GameSearchViewModel::handleAction/ " + fromPlayer.getGameId());
+        }
+    }
+
+    public void reconnectToGame(int gameId) {
+        WebsocketClientController.getPlayer().setGameId(gameId);
+        actionController.reconnectToGame();
     }
 }

@@ -92,10 +92,10 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
 
     @Override
     public void reconnectToGame(GameInfo gameInfo) {
-        showPopup(gameInfo.getName());
+        showPopup(gameInfo.getName(), gameInfo.getId());
     }
 
-    private void showPopup(String gameName) {
+    private void showPopup(String gameName, int gameId) {
         runOnUiThread(() -> {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.popup_reconnect, null);
@@ -110,7 +110,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
             txtGameInfo.setText(String.format(Locale.GERMAN, getString(R.string.reconnect_text), gameName));
 
             Button btnReconnect = popupView.findViewById(R.id.btn_reconnect);
-            btnReconnect.setOnClickListener(v -> {});
+            btnReconnect.setOnClickListener(v -> gameSearchViewModel.reconnectToGame(gameId));
 
             Button btnDiscard = popupView.findViewById(R.id.btn_discardReconnect);
             btnDiscard.setOnClickListener(v -> {});
