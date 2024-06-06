@@ -93,6 +93,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     List<Player> players;
     List<Field> fields;
+
+    private boolean passedStart;
+
     List<Card> cards;
     List<Card> risikoCards;
     List<Card> bankCards;
@@ -292,7 +295,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         if (repetition == 0) {
             if (movePlayer.getId().equals(player.getId()))
-                checkEndFieldPosition();
+                checkEndFieldPosition(passedStart);
             return;
         }
 
@@ -309,8 +312,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             public void onAnimationEnd(Animation animation) {
                 animation.cancel();
                 movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
-                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS)
+                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS) {
                     movePlayer.setCurrentPosition(0);
+                    passedStart = true;
+                }
                 setPosition(movePlayer.getCurrentPosition(), movePlayer);
                 animation(movePlayer, repetition - 1);
             }
@@ -322,7 +327,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         movePlayer.getCharacterView().startAnimation(animation);
     }
 
-    private void checkEndFieldPosition() {
+    private void checkEndFieldPosition(boolean passedStart) {
         Field field = fields.get(player.getCurrentPosition());
         if ((field.getFieldType() == FieldType.NORMAL || field.getFieldType() == FieldType.SPECIAL) &&
             field.getOwner() == null &&
@@ -334,6 +339,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }else if (field.getFieldType() == FieldType.BANK){
             gameBoardViewModel.landOnBankCard(bankCards.size());
         }
+
+        if(passedStart) {
+            gameBoardViewModel.passStartOrMoneyField();
+        }
+
     }
 
     @Override

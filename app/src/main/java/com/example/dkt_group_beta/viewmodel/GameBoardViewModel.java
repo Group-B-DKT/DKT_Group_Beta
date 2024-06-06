@@ -96,6 +96,10 @@ public class GameBoardViewModel {
             }
             gameBoardAction.showCardBank(cardIndex, showBtn);
         }
+        if(action == Action.UPDATE_MONEY){
+            game.updatePlayer(fromPlayer);
+            gameBoardAction.updatePlayerStats();
+        }
     }
     public void landOnRisikoCard(int cardAmount){
         int randomNumber = getRandomNumber(0,cardAmount-1);
@@ -121,5 +125,19 @@ public class GameBoardViewModel {
     }
     public void endTurn() {
         actionController.endTurn();
+    }
+
+    public void passStartOrMoneyField(){
+
+        if(player.getCurrentPosition() == 0){
+            game.setMoney(400);
+        }else if(player.getCurrentPosition() == 17){
+            game.setMoney(100);
+        }else{
+            game.setMoney(200);
+        }
+
+        actionController.moneyUpdate();
+
     }
 }
