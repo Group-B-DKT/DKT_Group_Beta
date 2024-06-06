@@ -103,14 +103,10 @@ public class GameBoardViewModel {
 
         if(player.getCurrentPosition() == 0){
             game.setMoney(400);
-            Log.d("MONEY", "Player at position 0" + player.getMoney());
         }else if(player.getCurrentPosition() == 17){
             game.setMoney(100);
-            Log.d("MONEY", "URLAUBSGELD" + player.getMoney());
-
         }else{
             game.setMoney(200);
-            Log.d("MONEY", "Player passed start" + player.getMoney());
         }
 
         actionController.moneyUpdate();
