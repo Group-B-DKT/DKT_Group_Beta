@@ -328,7 +328,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }
 
         if(passedStart) {
-            gameBoardViewModel.passStartOrUrlaubsgeld();
+            gameBoardViewModel.passStartOrMoneyField();
         }
 
     }
