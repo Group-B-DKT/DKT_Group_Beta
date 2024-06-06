@@ -91,7 +91,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     List<Player> players;
     List<Field> fields;
 
-    public boolean passedStart;
+    private boolean passedStart;
 
 
     @Override
