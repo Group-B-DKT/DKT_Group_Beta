@@ -27,7 +27,7 @@ public class Game {
         if(min > max){
             return -1;
         }
-        return random.nextInt(max - min + 1) + min;
+       return random.nextInt(max - min + 1) + min;
     }
 
     public List<Player> getPlayers() {
@@ -157,4 +157,12 @@ public class Game {
             }
         }
     }
+
+
+
+    public void setMoney(int money){
+        player.setMoney(player.getMoney() + money);
+    }
+
+
 }
