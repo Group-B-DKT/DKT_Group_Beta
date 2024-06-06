@@ -99,7 +99,7 @@ public class GameBoardViewModel {
         actionController.endTurn();
     }
 
-    public void passStartOrUrlaubsgeld(){
+    public void passStartOrMoneyField(){
 
         if(player.getCurrentPosition() == 0){
             game.setMoney(400);
