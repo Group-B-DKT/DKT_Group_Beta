@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities.interfaces;
 
+import com.example.dkt_group_beta.model.Building;
 import com.example.dkt_group_beta.model.Player;
 
 public interface GameBoardAction {
@@ -12,4 +13,5 @@ public interface GameBoardAction {
     void enableEndTurnButton();
     void updatePlayerStats();
     void enableDiceButton();
+    void placeBuilding(int fieldIndex, Building building, int numberOfBuildings);
 }

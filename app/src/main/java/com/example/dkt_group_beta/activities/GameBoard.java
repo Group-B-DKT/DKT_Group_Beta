@@ -37,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.Building;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
@@ -404,27 +405,34 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }
     }
     private void buildHouse(Player player, int fieldIndex) {
-        House house = new House(100, player, fieldIndex, fields.get(fieldIndex));
-        gameBoardViewModel.buyBuilding(player, house);
+        Field field = fields.get(fieldIndex);
+        House house = new House(House.getHousePrice(), fieldIndex);
+        gameBoardViewModel.buyBuilding(player, house, field);
+    }
+    @Override
+    public void placeBuilding(int fieldIndex, Building building, int numberOfBuildings) {
+        runOnUiThread(() -> {
+            ImageView houseView = new ImageView(this);
+            int resourceId = building instanceof House ? R.drawable.house : R.drawable.hotel;
+            houseView.setImageResource(resourceId);
 
-        ImageView houseView = new ImageView(this);
-        houseView.setImageResource(R.drawable.house);
+            int houseWidth = 50;
+            int houseHeight = 50;
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(houseWidth, houseHeight);
+            houseView.setLayoutParams(params);
 
-        int houseWidth = 50;
-        int houseHeight = 50;
-        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(houseWidth, houseHeight);
-        houseView.setLayoutParams(params);
+            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+            constraintLayout.addView(houseView);
 
-        ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
-        constraintLayout.addView(houseView);
-
-        int[] position = getPositionFromView(imageViews.get(fieldIndex));
+            int[] position = getPositionFromView(imageViews.get(fieldIndex));
 
 
-        int xOffset = 10;
-        int yOffset = 10;
-        houseView.setX(position[0] + xOffset);
-        houseView.setY(position[1] + yOffset);
+            int xOffset = 10;
+            int yOffset = 10;
+            houseView.setX(position[0] + xOffset);
+            houseView.setY(position[1] + yOffset);
+        });
+
     }
 
 
