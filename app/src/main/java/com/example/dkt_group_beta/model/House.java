@@ -6,7 +6,7 @@ public class House extends Building{
     @Getter
     private static final int HOUSE_PRICE = 200;
     @Getter
-    private static final int MAX_AMOUNT = 2;
+    private static final int MAX_AMOUNT = 4;
 
     public House(int price, Player owner, int position, Field field) {
         super(price, owner, position, field);
