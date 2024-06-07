@@ -6,10 +6,10 @@ ID;VALUE;TYPE;PATHNAME
 5;-50;PAY;risikocard5
 6;50;PAY;risikocard6
 7;-180;PAY;risikocard7
-8;0;MOVE;risikocard8
+8;25;MOVE;0;risikocard8
 9;-50;PAY;risikocard9
-10;200;MOVE;risikocard10
+10;15;MOVE;200;risikocard10
 11;-80;PAY;risikocard11
-12;200;MOVE;risikocard12
+12;7;MOVE;200;risikocard12
 13;300;PAY;risikocard13
 14;-60;PAY;risikocard14
