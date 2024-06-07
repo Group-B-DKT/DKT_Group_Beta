@@ -377,7 +377,7 @@
 
             <LinearLayout
                 android:id="@+id/linearRight"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0"
                 android:orientation="vertical"
