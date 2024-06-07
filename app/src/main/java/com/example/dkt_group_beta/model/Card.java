@@ -1,18 +1,28 @@
 package com.example.dkt_group_beta.model;
 
 import com.example.dkt_group_beta.model.enums.CardType;
+import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 
-public class Card {
+public abstract class Card {
     private int id;
     private int amount;
     private String imageResource;
     private CardType type;
+    private GameBoardViewModel gameBoardViewModel;
 
     public Card(int id, int amount, CardType type,String imageResource) {
         this.id = id;
         this.amount = amount;
         this.imageResource = imageResource;
         this.type = type;
+    }
+
+    public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
+        this.gameBoardViewModel = gameBoardViewModel;
+    }
+
+    public GameBoardViewModel getGameBoardViewModel() {
+        return gameBoardViewModel;
     }
 
     public void setAmount(int amount) {
@@ -46,4 +56,6 @@ public class Card {
     public String getImageResource() {
         return imageResource;
     }
+
+     public abstract void doActionOfCard();
 }
