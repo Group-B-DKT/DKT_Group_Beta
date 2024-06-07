@@ -35,8 +35,10 @@ public class GameBoardViewModel {
 
     }
     public void payTaxes(Player player, Field field) {
-        game.payTaxes(player,field);
-        actionController.moneyUpdate();
+        boolean result = game.payTaxes(player,field);
+        if(result) {
+            actionController.moneyUpdate();
+        }
     }
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
