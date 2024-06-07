@@ -583,6 +583,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             if (!this.player.isHost()) {
                 disableView(btnKickPlayer);
             }
+            btnKickPlayer.setOnClickListener((v) -> {
+                this.players.forEach(p -> {
+                    if (!p.isConnected()) {
+                        gameBoardViewModel.removePlayer(player.getGameId(), p);
+                    }
+                });
+            });
+
             TextView playerDisconnected = popupView.findViewById(R.id.txt_playerDisconnected);
             TextView remainingTime = popupView.findViewById(R.id.txt_remainingTime);
 
