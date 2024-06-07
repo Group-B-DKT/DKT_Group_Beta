@@ -44,6 +44,15 @@ class GameTest {
     }
 
     @Test
+    void testSetMoney(){
+        Player player = new Player("player", "100");
+        websocketClientController.when(WebsocketClientController::getPlayer).thenReturn(player);
+        Game mygame = new Game(null, null);
+        mygame.setMoney(200);
+        assertEquals(Player.START_MONEY + 200, player.getMoney());
+    }
+
+    @Test
     void testGameInitialization() {
         assertEquals(2, game.getPlayers().size());
         assertEquals(2, game.getFields().size());

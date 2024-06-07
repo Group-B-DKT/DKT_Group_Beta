@@ -53,6 +53,11 @@ public class GameBoardViewModel {
             handleBuyField(fromPlayer, fields);
         }
 
+        if(action == Action.UPDATE_MONEY){
+            game.updatePlayer(fromPlayer);
+            gameBoardAction.updatePlayerStats();
+        }
+
         if (action == Action.CONNECTION_LOST){
             handleConnectionLost(fromPlayer, LocalTime.parse(param));
         }
@@ -109,5 +114,19 @@ public class GameBoardViewModel {
     }
     public void endTurn() {
         actionController.endTurn();
+    }
+
+    public void passStartOrMoneyField(){
+
+        if(player.getCurrentPosition() == 0){
+            game.setMoney(400);
+        }else if(player.getCurrentPosition() == 17){
+            game.setMoney(100);
+        }else{
+            game.setMoney(200);
+        }
+
+        actionController.moneyUpdate();
+
     }
 }

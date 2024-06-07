@@ -94,6 +94,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     List<Player> players;
     List<Field> fields;
 
+    private boolean passedStart;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,11 +283,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void animation(Player movePlayer, int repetition) {
 
+
         ImageView characterImageView = movePlayer.getCharacterView();
 
         if (repetition == 0) {
             if (movePlayer.getId().equals(player.getId()))
-                checkEndFieldPosition();
+                checkEndFieldPosition(passedStart);
             return;
         }
 
@@ -302,10 +305,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             public void onAnimationEnd(Animation animation) {
                 animation.cancel();
                 movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
-                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS)
+                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS) {
                     movePlayer.setCurrentPosition(0);
+                    passedStart = true;
+                }
                 setPosition(movePlayer.getCurrentPosition(), movePlayer);
                 animation(movePlayer, repetition - 1);
+
             }
 
             @Override
@@ -315,7 +321,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         movePlayer.getCharacterView().startAnimation(animation);
     }
 
-    private void checkEndFieldPosition() {
+    private void checkEndFieldPosition(boolean passedStart) {
         Field field = fields.get(player.getCurrentPosition());
         if (field.getFieldType() != FieldType.ASSET &&
             field.getOwner() == null &&
@@ -323,6 +329,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
         }
+
+        if(passedStart) {
+            gameBoardViewModel.passStartOrMoneyField();
+        }
+
     }
 
     @Override
@@ -463,8 +474,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-//        if (!player.isOnTurn())
-//            return;
         // only of the pop-up window is open, it is possible to shake the phone to roll the dice
         if (isPopupWindowOpen && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             // acceleration along x-, y- and z-axis
@@ -489,13 +498,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     protected void onResume() {
         super.onResume();
-//        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-//                SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
     }
     @Override
     protected void onPause() {
         super.onPause();
-//        sensorManager.unregisterListener(this);
+        sensorManager.unregisterListener(this);
     }
 
     private void showCard(View view, String viewID) {
@@ -613,4 +622,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         return animation;
     }
+
+
+
+
+
 }
