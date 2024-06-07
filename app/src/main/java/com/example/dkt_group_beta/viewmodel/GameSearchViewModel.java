@@ -16,7 +16,6 @@ import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.GameInfo;
 import com.example.dkt_group_beta.model.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameSearchViewModel extends ViewModel {
@@ -126,7 +125,6 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     public void discardReconnect(int gameId) {
-//        WebsocketClientController.getPlayer().setGameId(-1);
         actionController.discardReconnect(gameId);
     }
 }

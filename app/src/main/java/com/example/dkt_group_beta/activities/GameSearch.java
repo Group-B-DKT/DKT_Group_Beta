@@ -39,12 +39,10 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private static final int MAX_PLAYER = 6;
+    private static final String DEBUG_TAG = "DEBUG";
     private LinearLayout scrollviewLayout;
     private GameSearchViewModel gameSearchViewModel;
     private List<LinearLayout> gameFields;
-    private Button btnRefresh;
-    private Button btnConnect;
-    private Button btnCreateNew;
     private int selectedGameId = -1;
 
     private PopupWindow popupWindow;
@@ -62,16 +60,16 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         String deviceUniqueId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         this.gameSearchViewModel = new GameSearchViewModel(getString(R.string.ip_address), getIntent().getStringExtra("username"), deviceUniqueId, this);
 
-        this.scrollviewLayout = (LinearLayout) findViewById(R.id.scrollview_layout);
-        this.btnRefresh = findViewById(R.id.btn_refresh);
-        this.btnRefresh.setOnClickListener(v -> gameSearchViewModel.receiveGames());
+        this.scrollviewLayout = findViewById(R.id.scrollview_layout);
+        Button btnRefresh = findViewById(R.id.btn_refresh);
+        btnRefresh.setOnClickListener(v -> gameSearchViewModel.receiveGames());
         this.gameFields = new ArrayList<>();
 
-        this.btnCreateNew = findViewById(R.id.btn_createNew);
-        this.btnCreateNew.setOnClickListener(this::assertInputDialog);
+        Button btnCreateNew = findViewById(R.id.btn_createNew);
+        btnCreateNew.setOnClickListener(this::assertInputDialog);
 
-        this.btnConnect = findViewById(R.id.btn_connect);
-        this.btnConnect.setOnClickListener(v -> gameSearchViewModel.connectToGame(this.selectedGameId));
+        Button btnConnect = findViewById(R.id.btn_connect);
+        btnConnect.setOnClickListener(v -> gameSearchViewModel.connectToGame(this.selectedGameId));
 
         this.selectedGameId = -1;
     }
@@ -80,7 +78,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     public void refreshGameListItems() {
         runOnUiThread(() -> {
             this.gameFields.forEach(layout -> {
-                Log.d("DEBUG", "GameSearch::refreshGameList/ " + layout.getId());
+                Log.d(DEBUG_TAG, "GameSearch::refreshGameList/ " + layout.getId());
                 this.scrollviewLayout.removeView(layout);
             });
             this.gameFields.clear();
@@ -136,16 +134,16 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
             btnReconnect.setOnClickListener(v -> gameSearchViewModel.reconnectToGame(gameId));
 
             Button btnDiscard = popupView.findViewById(R.id.btn_discardReconnect);
-            btnDiscard.setOnClickListener(v -> {
-                gameSearchViewModel.discardReconnect(gameId);
-            });
+            btnDiscard.setOnClickListener(v ->
+                gameSearchViewModel.discardReconnect(gameId)
+            );
         });
     }
 
 
     @Override
     public void addGameToScrollView(int gameId, String gameName, int amountOfPLayer, boolean isStarted){
-        Log.d("DEBUG", "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);
+        Log.d(DEBUG_TAG, "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(gameId, amountOfPLayer);
 
@@ -247,7 +245,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
 
     @Override
     public void onConnectionEstablished(){
-        Log.d("DEBUG", "GameSearch::onConnectionEstablished/ ");
+        Log.d(DEBUG_TAG, "GameSearch::onConnectionEstablished/ ");
         this.gameSearchViewModel.receiveGames();
     }
 

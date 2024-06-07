@@ -36,7 +36,7 @@ public class GameBoardViewModel {
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
-            handleRollDice(action, param, fromPlayer);
+            handleRollDice(param, fromPlayer);
         }
 
         if(action == Action.MOVE_PLAYER){
@@ -104,7 +104,7 @@ public class GameBoardViewModel {
         gameBoardAction.updatePlayerStats();
     }
 
-    private void handleRollDice(Action action, String param, Player fromPlayer) {
+    private void handleRollDice(String param, Player fromPlayer) {
         Log.d("DEBUG", fromPlayer.getUsername());
         // array zurücksetzten, popup öffnen, showbothdice
         if (fromPlayer.getId().equals(player.getId())) {
