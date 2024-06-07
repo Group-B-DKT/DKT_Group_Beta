@@ -58,6 +58,13 @@ public class GameBoardViewModel {
             gameBoardAction.updatePlayerStats();
         }
 
+        if (action == Action.HOST_CHANGED){
+            if (fromPlayer.getId().equals(player.getId()) && !player.isHost()) {
+                player.setHost(fromPlayer.isHost());
+            }
+            game.updateHostStatus(fromPlayer.getId());
+        }
+
         if (action == Action.CONNECTION_LOST){
             handleConnectionLost(fromPlayer, LocalTime.parse(param));
         }

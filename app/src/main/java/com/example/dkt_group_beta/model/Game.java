@@ -165,4 +165,12 @@ public class Game {
     }
 
 
+    public void updateHostStatus(String playerId) {
+        this.players.forEach(p -> {
+            p.setHost(false);
+            if (p.getId().equals(playerId)){
+                p.setHost(true);
+            }
+        });
+    }
 }
