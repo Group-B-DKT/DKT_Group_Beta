@@ -47,6 +47,8 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private Button btnCreateNew;
     private int selectedGameId = -1;
 
+    private PopupWindow popupWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,6 +109,15 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         finish();
     }
 
+    @Override
+    public void removeReconnectPopUp() {
+        runOnUiThread(() -> {
+            if (popupWindow != null && popupWindow.isShowing()){
+                popupWindow.dismiss();
+            }
+        });
+    }
+
     private void showPopup(String gameName, int gameId) {
         runOnUiThread(() -> {
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -115,7 +126,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
             int height = MATCH_PARENT;
             boolean focusable = true;
 
-            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow = new PopupWindow(popupView, width, height, focusable);
             popupWindow.showAtLocation(findViewById(R.id.layout_searchMain), Gravity.CENTER, 0, 0);
 
             TextView txtGameInfo = popupView.findViewById(R.id.txt_gameInfo);
@@ -127,7 +138,6 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
             Button btnDiscard = popupView.findViewById(R.id.btn_discardReconnect);
             btnDiscard.setOnClickListener(v -> {
                 gameSearchViewModel.discardReconnect(gameId);
-                popupWindow.dismiss();
             });
         });
     }

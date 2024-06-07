@@ -18,6 +18,10 @@ public class InfoController {
         this.handleInfo = handleInfo;
         WebsocketClientController.addMessageHandler(this::onMessageReceived);
     }
+
+    public void removeMessageHandler() {
+        WebsocketClientController.removeMessageHandler(this::onMessageReceived);
+    }
     public void getGameListFromServer(){
         InfoJsonObject infoJsonObject = new InfoJsonObject(Info.GAME_LIST, null);
         String msg = WrapperHelper.toJsonFromObject(Request.INFO, infoJsonObject);

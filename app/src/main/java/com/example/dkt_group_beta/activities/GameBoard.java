@@ -98,6 +98,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     private PopupWindow popupReconnect;
 
+    private boolean isCountdownThreadToCancel = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -596,6 +598,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void removeReconnectPopUp() {
         runOnUiThread(() -> popupReconnect.dismiss());
+        isCountdownThreadToCancel = true;
     }
 
     @Override
@@ -621,6 +624,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
     }
 
+    @Override
+    public void setPlayerDisconnected(Player disconnectedPlayer) {
+        this.players.forEach(p -> {
+            if (p.getId().equals(disconnectedPlayer.getId())){
+                p.setConnected(false);
+            }
+        });
+    }
+
     private void countdown(final int startTime, TextView remainingTime) {
         new Thread(() -> {
             long lastTime = System.currentTimeMillis();
@@ -635,6 +647,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                     lastTime = System.currentTimeMillis();
                 }
             }
+            if (!isCountdownThreadToCancel) {
+                this.players.forEach(p -> {
+                    if (!p.isConnected()) {
+                        gameBoardViewModel.removePlayer(player.getGameId(), p);
+                    }
+                });
+            }
+            isCountdownThreadToCancel = false;
         }).start();
     }
 

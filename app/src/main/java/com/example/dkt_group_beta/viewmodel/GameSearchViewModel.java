@@ -21,9 +21,9 @@ import java.util.List;
 
 public class GameSearchViewModel extends ViewModel {
     private String username;
-    private final ConnectController connectController;
-    private final InfoController infoController;
-    private final ActionController actionController;
+    private ConnectController connectController;
+    private InfoController infoController;
+    private ActionController actionController;
     private final GameSearchAction gameSearchAction;
 
     private List<Player> reconnectPlayerBuffer;
@@ -77,7 +77,7 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
-        if (action != Action.RECONNECT_OK && (fromPlayer == null || !fromPlayer.getUsername().equals(username))) {
+        if (action != Action.RECONNECT_DISCARD && action != Action.RECONNECT_OK && (fromPlayer == null || !fromPlayer.getUsername().equals(username))) {
             this.receiveGames();
             return;
         }
@@ -89,10 +89,17 @@ public class GameSearchViewModel extends ViewModel {
         }
         if (action == Action.GAME_JOINED_SUCCESSFULLY){
             WebsocketClientController.getPlayer().setColor(fromPlayer.getColor());
+            this.actionController.removeMessageHandler();
+            this.connectController.removeMessageHandler();
+            this.infoController.removeMessageHandler();
             gameSearchAction.switchToGameLobby(username);
         }
         if (param != null && param.equals(WebsocketClientController.getPlayer().getId()) && action == Action.RECONNECT_OK){
             handleReconnectOk(fromPlayer, fields);
+        }
+        if (action == Action.RECONNECT_DISCARD && fromPlayer.getId().equals(WebsocketClientController.getPlayer().getId())){
+            gameSearchAction.removeReconnectPopUp();
+
         }
     }
 
@@ -107,6 +114,9 @@ public class GameSearchViewModel extends ViewModel {
                 playerMe.copyFrom(p);
             }
         });
+        this.actionController.removeMessageHandler();
+        this.connectController.removeMessageHandler();
+        this.infoController.removeMessageHandler();
         gameSearchAction.switchToGameBoard(reconnectPlayerBuffer, fields);
     }
 
@@ -116,7 +126,7 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     public void discardReconnect(int gameId) {
-        WebsocketClientController.getPlayer().setGameId(-1);
+//        WebsocketClientController.getPlayer().setGameId(-1);
         actionController.discardReconnect(gameId);
     }
 }

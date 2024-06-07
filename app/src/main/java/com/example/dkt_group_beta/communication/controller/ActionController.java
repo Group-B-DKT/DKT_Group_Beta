@@ -22,6 +22,11 @@ public class ActionController {
         this.handleAction = handleAction;
         WebsocketClientController.addMessageHandler(this::onMessageReceived);
     }
+
+    public void removeMessageHandler() {
+        WebsocketClientController.removeMessageHandler(this::onMessageReceived);
+    }
+
     public void createGame(String gameName){
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.CREATE_GAME, gameName);
         String msg = WrapperHelper.toJsonFromObject(Request.ACTION, actionJsonObject);
@@ -117,6 +122,12 @@ public class ActionController {
 
     public void discardReconnect(int gameId) {
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_DISCARD, Integer.toString(gameId), WebsocketClientController.getPlayer(), null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void removePlayer(int gameId, Player player) {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_DISCARD, Integer.toString(gameId), player, null);
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }

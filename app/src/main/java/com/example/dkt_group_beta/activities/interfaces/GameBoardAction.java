@@ -17,4 +17,5 @@ public interface GameBoardAction {
     void showDisconnectPopUp(Player disconnectedPlayer, LocalTime serverTime);
     void removeReconnectPopUp();
     void removePlayerFromGame(Player fromPlayer);
+    void setPlayerDisconnected(Player disconnectedPlayer);
 }

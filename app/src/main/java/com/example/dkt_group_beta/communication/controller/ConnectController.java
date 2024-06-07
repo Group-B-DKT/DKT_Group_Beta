@@ -15,6 +15,10 @@ public class ConnectController {
 
     }
 
+    public void removeMessageHandler() {
+        WebsocketClientController.removeMessageHandler(this::onMessageReceived);
+    }
+
     private void onMessageReceived(Object connectObject) {
         if (!(connectObject instanceof ConnectJsonObject))
             return;

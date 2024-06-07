@@ -113,8 +113,8 @@ public class GameLobbyViewModel {
             return;
         }
         isOnTurnPlayer.setOnTurn(true);
-        Log.d("PL2", isOnTurnPlayer.getId() + ": " + isOnTurnPlayer.isOnTurn());
-        Log.d("PL3", fromPlayer.getId() + "|  " +connectedPlayers.stream().map(p -> p.getId() + ": " + p.isOnTurn()).collect(Collectors.toList()));
+        this.actionController.removeMessageHandler();
+        this.infoController.removeMessageHandler();
         gameLobbyAction.switchToGameBoard(this.connectedPlayers, fields);
     }
 

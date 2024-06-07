@@ -80,6 +80,7 @@ public class GameBoardViewModel {
     }
 
     private void handleConnectionLost(Player disconnectedPlayer, LocalTime serverTime) {
+        gameBoardAction.setPlayerDisconnected(disconnectedPlayer);
         gameBoardAction.showDisconnectPopUp(disconnectedPlayer, serverTime);
     }
 
@@ -144,5 +145,9 @@ public class GameBoardViewModel {
 
         actionController.moneyUpdate();
 
+    }
+
+    public void removePlayer(int gameId, Player player) {
+        actionController.removePlayer(gameId, player);
     }
 }

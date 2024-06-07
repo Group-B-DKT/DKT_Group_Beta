@@ -18,4 +18,5 @@ public interface GameSearchAction {
 
     void switchToGameBoard(List<Player> connectedPlayers, List<Field> fields);
 
+    void removeReconnectPopUp();
 }
