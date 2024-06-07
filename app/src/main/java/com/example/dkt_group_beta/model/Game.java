@@ -45,6 +45,18 @@ public class Game {
         }
         return false;
     }
+    public boolean payTaxes(Player currentPlayer, Field field) {
+        Player owner = field.getOwner();
+        if (owner != null && !owner.getId().equals(currentPlayer.getId())) {
+            int taxAmount = field.getPrice();
+            if (currentPlayer.getMoney() > taxAmount) {
+                owner.setMoney(owner.getMoney() + taxAmount);
+                currentPlayer.setMoney(currentPlayer.getMoney()-taxAmount);
+                return true;
+            }
+        }
+        return false;
+    }
     public boolean buyHouse(Player player, House house) {
         Field field = house.getField();
         if (field.getOwner() == player && pay(player, house.getHousePrice())) {
