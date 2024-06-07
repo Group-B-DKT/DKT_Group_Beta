@@ -248,7 +248,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     public void markBoughtField(int index, int color){
-        Log.d(TAG, "variable:" + index);
         runOnUiThread(() -> {
             ImageView imageView = imageViews.get(index);
             if (imageView != null) {
@@ -260,6 +259,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     public void markBoughtField(int index){
         markBoughtField(index, Color.rgb(255,70,0));
+    }
+
+    public void unMarkBoughtField(int index){
+        runOnUiThread(() -> {
+            ImageView imageView = imageViews.get(index);
+            if (imageView != null) {
+                imageView.setPadding(0,0 ,0,0);
+            }
+        });
     }
 
     private void createPlayerItems(List<Player> players) {
@@ -588,6 +596,29 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void removeReconnectPopUp() {
         runOnUiThread(() -> popupReconnect.dismiss());
+    }
+
+    @Override
+    public void removePlayerFromGame(Player fromPlayer) {
+        runOnUiThread(() -> {
+            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+
+            Player clientPlayer = this.players.stream().filter(p -> p.getId().equals(fromPlayer.getId())).findFirst().orElse(null);
+            if (clientPlayer == null)
+                return;
+
+            constraintLayout.removeView(clientPlayer.getCharacterView());
+
+            for (Field f: this.fields) {
+                if (f.getOwner() == null || !f.getOwner().getId().equals(fromPlayer.getId())) {
+                    continue;
+                }
+                f.setOwner(null);
+                unMarkBoughtField(f.getId() - 1);
+            }
+            this.players.removeIf(p -> p.getId().equals(fromPlayer.getId()));
+            this.rvPlayerStats.getAdapter().notifyDataSetChanged();
+        });
     }
 
     private void countdown(final int startTime, TextView remainingTime) {

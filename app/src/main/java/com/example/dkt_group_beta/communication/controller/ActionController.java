@@ -115,6 +115,12 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
+    public void discardReconnect(int gameId) {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_DISCARD, Integer.toString(gameId), WebsocketClientController.getPlayer(), null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
 
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))

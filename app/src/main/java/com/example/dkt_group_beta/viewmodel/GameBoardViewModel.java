@@ -72,6 +72,11 @@ public class GameBoardViewModel {
         if (action == Action.RECONNECT_OK){
             gameBoardAction.removeReconnectPopUp();
         }
+
+        if (action == Action.RECONNECT_DISCARD){
+            gameBoardAction.removePlayerFromGame(fromPlayer);
+            gameBoardAction.removeReconnectPopUp();
+        }
     }
 
     private void handleConnectionLost(Player disconnectedPlayer, LocalTime serverTime) {

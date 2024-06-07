@@ -125,7 +125,10 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
             btnReconnect.setOnClickListener(v -> gameSearchViewModel.reconnectToGame(gameId));
 
             Button btnDiscard = popupView.findViewById(R.id.btn_discardReconnect);
-            btnDiscard.setOnClickListener(v -> {});
+            btnDiscard.setOnClickListener(v -> {
+                gameSearchViewModel.discardReconnect(gameId);
+                popupWindow.dismiss();
+            });
         });
     }
 
