@@ -25,9 +25,12 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.GameInfo;
+import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -93,6 +96,15 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     @Override
     public void reconnectToGame(GameInfo gameInfo) {
         showPopup(gameInfo.getName(), gameInfo.getId());
+    }
+
+    @Override
+    public void switchToGameBoard(List<Player> connectedPlayers, List<Field> fields) {
+        Intent intent = new Intent(this, GameBoard.class);
+        intent.putExtra("players", (Serializable) connectedPlayers);
+        intent.putExtra("fields", (Serializable) fields);
+        startActivity(intent);
+        finish();
     }
 
     private void showPopup(String gameName, int gameId) {

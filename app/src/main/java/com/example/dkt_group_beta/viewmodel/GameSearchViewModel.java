@@ -93,6 +93,16 @@ public class GameSearchViewModel extends ViewModel {
         }
         if (action == Action.RECONNECT_OK){
             Log.d("RECONNECT", "GameSearchViewModel::handleAction/ " + fromPlayer.getUsername());
+            Player playerMe = WebsocketClientController.getPlayer();
+            this.reconnectPlayerBuffer.forEach(p -> {
+                p.setOnTurn(false);
+                if (p.getId().equals(fromPlayer.getId()))
+                    p.setOnTurn(true);
+                if (p.getId().equals(playerMe.getId())){
+                    playerMe.setColor(p.getColor());
+                }
+            });
+            gameSearchAction.switchToGameBoard(reconnectPlayerBuffer, fields);
         }
     }
 
