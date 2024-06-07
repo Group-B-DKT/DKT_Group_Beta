@@ -161,6 +161,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 params.height = size;
                 p.getCharacterView().setLayoutParams(params);
             }
+
+            for (Field f: fields) {
+                if (f.getOwner() == null)
+                    continue;
+
+                markBoughtField(f.getId() - 1, f.getOwner().getColor());
+            }
         });
 
         Game game = new Game(players, fields);
