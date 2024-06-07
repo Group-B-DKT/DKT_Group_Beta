@@ -326,6 +326,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
         }
+            gameBoardViewModel.payTaxes(player, field);
+
 
         if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();

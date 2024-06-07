@@ -34,6 +34,10 @@ public class GameBoardViewModel {
         actionController.buyField(field);
 
     }
+    public void payTaxes(Player player, Field field) {
+        game.payTaxes(player,field);
+        actionController.moneyUpdate();
+    }
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
