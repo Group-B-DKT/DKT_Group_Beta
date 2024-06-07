@@ -15,4 +15,5 @@ public interface GameBoardAction {
     void updatePlayerStats();
     void enableDiceButton();
     void showDisconnectPopUp(Player disconnectedPlayer, LocalTime serverTime);
+    void removeReconnectPopUp();
 }

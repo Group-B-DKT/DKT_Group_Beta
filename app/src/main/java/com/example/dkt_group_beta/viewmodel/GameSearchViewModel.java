@@ -101,7 +101,6 @@ public class GameSearchViewModel extends ViewModel {
 
         this.reconnectPlayerBuffer.forEach(p -> {
             p.setOnTurn(false);
-            Log.d("ASD", p.getMoney() + " ");
             if (p.getId().equals(fromPlayer.getId()))
                 p.setOnTurn(true);
             if (p.getId().equals(playerMe.getId())){

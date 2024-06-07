@@ -61,6 +61,10 @@ public class GameBoardViewModel {
         if (action == Action.CONNECTION_LOST){
             handleConnectionLost(fromPlayer, LocalTime.parse(param));
         }
+
+        if (action == Action.RECONNECT_OK){
+            gameBoardAction.removeReconnectPopUp();
+        }
     }
 
     private void handleConnectionLost(Player disconnectedPlayer, LocalTime serverTime) {
