@@ -91,7 +91,7 @@ public class GameSearchViewModel extends ViewModel {
             WebsocketClientController.getPlayer().setColor(fromPlayer.getColor());
             gameSearchAction.switchToGameLobby(username);
         }
-        if (action == Action.RECONNECT_OK){
+        if (param != null && param.equals(WebsocketClientController.getPlayer().getId()) && action == Action.RECONNECT_OK){
             handleReconnectOk(fromPlayer, fields);
         }
     }
