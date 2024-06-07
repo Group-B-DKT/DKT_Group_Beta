@@ -129,6 +129,7 @@ public class Game {
             this.players.add(player);
         }else{
             int index = this.players.indexOf(savedPlayer);
+            player.setOnTurn(savedPlayer.isOnTurn());
             player.setCharacterView(savedPlayer.getCharacterView());
             this.players.set(index, player);
         }
@@ -163,6 +164,15 @@ public class Game {
     public void setMoney(int money){
         player.setMoney(player.getMoney() + money);
     }
-
-
+    public int getFieldListSize(){
+        return fields.size();
+    }
+    public int getFieldPosition(int fieldID){
+        for (int i = 0; i < fields.size(); i++) {
+            if(fields.get(i).getId() == fieldID){
+                return i;
+            }
+        }
+        return -1;
+    }
 }

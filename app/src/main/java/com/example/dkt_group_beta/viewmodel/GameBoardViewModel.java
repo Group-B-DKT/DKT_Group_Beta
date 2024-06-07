@@ -97,7 +97,11 @@ public class GameBoardViewModel {
             gameBoardAction.showCardBank(cardIndex, showBtn);
         }
         if(action == Action.UPDATE_MONEY){
-            game.updatePlayer(fromPlayer);
+            game.getPlayers().stream()
+                    .filter(p -> p.getId().equals(fromPlayer.getId()))
+                    .findAny()
+                    .orElse(null)
+                    .setMoney(fromPlayer.getMoney());
             gameBoardAction.updatePlayerStats();
         }
     }
@@ -136,8 +140,24 @@ public class GameBoardViewModel {
         }else{
             game.setMoney(200);
         }
-
         actionController.moneyUpdate();
+    }
 
+    public void payForCard(int amount){
+        game.setMoney(amount);
+        actionController.moneyUpdate();
+    }
+    public void moveForCard(int fieldID, int amount){
+        int fieldAmount = game.getFieldListSize();
+        int fieldPosition = game.getFieldPosition(fieldID);
+        int currentPosition = player.getCurrentPosition();
+        int moveAmount;
+        if(currentPosition > fieldPosition){
+            moveAmount = fieldAmount-(currentPosition-fieldPosition);
+            game.setMoney(amount);
+        }else{
+            moveAmount = fieldPosition - currentPosition;
+        }
+        actionController.movePlayer(moveAmount);
     }
 }
