@@ -45,32 +45,26 @@ public class Game {
         }
         return false;
     }
-    public boolean buyHouse(Player player, House house) {
-        Field field = house.getField();
-        if (field.getOwner() == player && pay(player, house.getHousePrice())) {
+    public boolean buyHouse(Player player, House house, Field field) {
+        if (field.getOwner().getId().equals(player.getId())  && pay(player, house.getHousePrice())) {
             if (field.hasHotel()) {
                 return false;
             } else if (getNumberOfHouses() == house.getMaxAmount()) {
-                return buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, player, house.getPosition(), field));
+                return buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, 10), field);
             } else {
                 field.addBuilding(house);
-                house.setOwner(player);
-                house.setField(field);
                 return true;
             }
         }
         return false;
     }
 
-    public boolean buyHotel(Player player, Hotel hotel) {
-        Field field = hotel.getField();
+    public boolean buyHotel(Player player, Hotel hotel, Field field) {
         if (field.getOwner() == player && pay(player, hotel.getPrice())) {
             if (field.hasHotel()) {
                 return false;
             } else {
                 field.addBuilding(hotel);
-                hotel.setOwner(player);
-                hotel.setField(field);
                 return true;
             }
         }
@@ -87,7 +81,7 @@ public class Game {
         }
         return count;
     }
-    public boolean sellBuilding(Player player, Building building) {
+    /*public boolean sellBuilding(Player player, Building building) {
         Field field = building.getField();
         if (field.getOwner() == player) {
             if (building instanceof House) {
@@ -99,7 +93,7 @@ public class Game {
             return true;
         }
         return false;
-    }
+    }*/
 
     public List<Field> getOwnedFields(Player player) {
         return this.fields.stream()
