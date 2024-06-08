@@ -7,6 +7,7 @@ import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
 import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
 import com.google.gson.Gson;
 
@@ -91,8 +92,14 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
 
+    }
 
+    public void moneyUpdate(){
 
+        Player player = WebsocketClientController.getPlayer();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.UPDATE_MONEY, null, player, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
     }
 
     public void endTurn(){

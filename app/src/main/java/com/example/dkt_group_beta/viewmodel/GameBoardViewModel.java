@@ -13,7 +13,6 @@ import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameBoardViewModel {
     private ActionController actionController;
@@ -76,6 +75,11 @@ public class GameBoardViewModel {
             gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
             gameBoardAction.updatePlayerStats();
         }
+
+        if(action == Action.UPDATE_MONEY){
+            game.updatePlayer(fromPlayer);
+            gameBoardAction.updatePlayerStats();
+        }
     }
 
     public int getRandomNumber(int min, int max){
@@ -97,5 +101,17 @@ public class GameBoardViewModel {
 
     public void submitCheat(int money) {
         actionController.submitCheat(money);
+      
+    public void passStartOrMoneyField(){
+
+        if(player.getCurrentPosition() == 0){
+            game.setMoney(400);
+        }else if(player.getCurrentPosition() == 17){
+            game.setMoney(100);
+        }else{
+            game.setMoney(200);
+        }
+
+        actionController.moneyUpdate();
     }
 }
