@@ -241,6 +241,45 @@ class GameTest {
         assertTrue(players.get(0).isOnTurn());
         assertFalse(players.get(1).isOnTurn());
     }
+    @Test
+    void testPayTaxes() {
+        Player currentPlayer = new Player("CurrentPlayer", "3");
+        currentPlayer.setMoney(1000);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true);
+        field.setOwner(fieldOwner);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertTrue(result);
+        assertEquals(currentPlayer.getMoney(), 800);
+        assertEquals(fieldOwner.getMoney(), 700);
 
+    }
+
+    @Test
+    void testPayTaxesNotEnoughMoney() {
+
+        Player currentPlayer = new Player("CurrentPlayer", "3");
+        currentPlayer.setMoney(100);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true);
+        field.setOwner(fieldOwner);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertFalse(result);
+
+    }
+    @Test
+    void testPayTaxesOwnerIsNull() {
+
+        Player currentPlayer = new Player("CurrentPlayer", "3");
+        currentPlayer.setMoney(100);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertFalse(result);
+
+    }
 
  }
