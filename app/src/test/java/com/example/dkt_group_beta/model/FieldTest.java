@@ -98,4 +98,10 @@ class FieldTest {
         field.setPrice(200);
         assertEquals(200, field.getPrice());
     }
+    @Test
+    void testAddBuilding(){
+        Building building = mock(Building.class);
+        field.addBuilding(building);
+        assertTrue(field.getBuildings().contains(building));
+    }
 }
