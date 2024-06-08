@@ -273,7 +273,7 @@ class GameTest {
     void testPayTaxesOwnerIsNull() {
 
         Player currentPlayer = new Player("CurrentPlayer", "3");
-        currentPlayer.setMoney(100);
+        currentPlayer.setMoney(700);
         Player fieldOwner = new Player("FieldOwner", "4");
         fieldOwner.setMoney(500);
         Field field = new Field(1, "Field1", 200, true);
@@ -281,5 +281,17 @@ class GameTest {
         assertFalse(result);
 
     }
+    @Test
+    void testPayTaxesIdIsIdentically() {
 
+        Player currentPlayer = new Player("CurrentPlayer", "4");
+        currentPlayer.setMoney(700);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true);
+        field.setOwner(fieldOwner);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertFalse(result);
+
+    }
  }
