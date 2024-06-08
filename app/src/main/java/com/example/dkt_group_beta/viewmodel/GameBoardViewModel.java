@@ -101,7 +101,7 @@ public class GameBoardViewModel {
 
     public void submitCheat(int money) {
         actionController.submitCheat(money);
-      
+    }
     public void passStartOrMoneyField(){
 
         if(player.getCurrentPosition() == 0){
