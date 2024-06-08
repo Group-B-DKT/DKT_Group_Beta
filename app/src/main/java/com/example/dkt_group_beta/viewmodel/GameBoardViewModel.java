@@ -37,7 +37,8 @@ public class GameBoardViewModel {
     public void payTaxes(Player player, Field field) {
         boolean result = game.payTaxes(player,field);
         if(result) {
-            actionController.moneyUpdate();
+            actionController.moneyUpdate(player);
+            actionController.moneyUpdate(field.getOwner());
         }
     }
 
@@ -115,7 +116,7 @@ public class GameBoardViewModel {
             game.setMoney(200);
         }
 
-        actionController.moneyUpdate();
+        actionController.moneyUpdate(player);
 
     }
 }
