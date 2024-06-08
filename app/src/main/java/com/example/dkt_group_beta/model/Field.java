@@ -18,7 +18,7 @@ public class Field implements Serializable {
     private Player owner;
     private boolean ownable;
     private transient Hotel hotel;
-    private transient List<Building> buildings = new ArrayList<>();
+    private transient List<Building> buildings;
 
     private FieldType fieldType;
 
@@ -28,18 +28,15 @@ public class Field implements Serializable {
         this.price = price;
         this.ownable = ownable;
         this.fieldType = fieldType;
+        this.buildings = new ArrayList<>();
+        this.buildings.add(new House(0, 10)); // add a house to the field (for testing)
     }
 
     public Field(int id, String name, boolean ownable) {
-        this.id = id;
-        this.name = name;
-        this.ownable = ownable;
+        this(id, name, -1,ownable, FieldType.NORMAL);
     }
     public Field(int id, String name, int price, boolean ownable) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.ownable = ownable;
+        this(id, name, price, ownable, FieldType.NORMAL);
     }
 
 
@@ -95,7 +92,7 @@ public class Field implements Serializable {
         return hotel;
     }
     public List<Building> getBuildings(){
-        return buildings;
+        return this.buildings;
     }
     public void addBuilding(Building building){
         buildings.add(building);
