@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameBoardViewModel {
     private ActionController actionController;
@@ -36,9 +35,11 @@ public class GameBoardViewModel {
         actionController.buyField(field);
 
     }
-    public void buyBuilding(Player player, House house){
-        boolean building = game.buyHouse(player, house);
-        actionController.buyBuilding(building);
+    public void buyBuilding(Player player, House house, Field field){
+        boolean building = game.buyHouse(player, house, field);
+        if (building) {
+            actionController.buyBuilding(field);
+        }
     }
 
 
@@ -86,6 +87,7 @@ public class GameBoardViewModel {
             game.updateField(fields.get(0));
             game.updatePlayer(fromPlayer);
             gameBoardAction.updatePlayerStats();
+            gameBoardAction.placeBuilding(fields.get(0).getId()-1, fields.get(0).getBuildings().get(0), fields.get(0).getBuildings().size());
         }
 }
 
