@@ -579,7 +579,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         int currentposition = playerInJail.getCurrentPosition();
         int jail = 24;
-        animation(player, jail - currentposition);
+
+        if(currentposition < 24){
+            animation(player, jail - currentposition);
+        }else{ //current position > 24
+            int jailFieldNumber = jail + (30 - currentposition); //goal: field 24, to reach this field he has to go till start + 24 fields
+            animation(player, jailFieldNumber);
+        }
+
+        //call stay inJail
 
     }
 
