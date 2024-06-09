@@ -326,7 +326,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
         }
-
         if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();
         }
@@ -574,6 +573,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         animation = new TranslateAnimation(0, xDelta, 0, yDelta);
 
         return animation;
+    }
+
+    public void gotToJail(Player playerInJail){
+
+        int currentposition = playerInJail.getCurrentPosition();
+        int jail = 24;
+        animation(player, jail - currentposition);
+
     }
 
 
