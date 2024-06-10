@@ -48,7 +48,7 @@ public class Game {
     public boolean payTaxes(Player currentPlayer, Field field) {
         Player owner = field.getOwner();
         if (owner != null && !owner.getId().equals(currentPlayer.getId())) {
-            int taxAmount = field.getPrice();
+            int taxAmount = field.getRent();
             if (currentPlayer.getMoney() > taxAmount) {
                 owner.setMoney(owner.getMoney() + taxAmount);
                 currentPlayer.setMoney(currentPlayer.getMoney()-taxAmount);
