@@ -123,6 +123,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         setPlayerAndFieldStatsOnLoaded(constraintLayout);
 
         Game game = new Game(players, fields);
+        this.players = game.getPlayers();
         gameBoardViewModel = new GameBoardViewModel(this, game);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
