@@ -1,9 +1,6 @@
 package com.example.dkt_group_beta.communication.controller;
 
-
-
 import com.example.dkt_group_beta.communication.ConnectJsonObject;
-import com.example.dkt_group_beta.communication.enums.ConnectType;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleConnect;
 
 public class ConnectController {

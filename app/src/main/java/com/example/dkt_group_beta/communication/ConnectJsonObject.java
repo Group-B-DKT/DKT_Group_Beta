@@ -4,9 +4,6 @@ import com.example.dkt_group_beta.communication.enums.ConnectType;
 import com.example.dkt_group_beta.model.GameInfo;
 import com.example.dkt_group_beta.model.Player;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 public class ConnectJsonObject {
     private ConnectType connectType;
 

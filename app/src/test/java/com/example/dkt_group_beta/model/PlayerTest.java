@@ -220,23 +220,23 @@ class PlayerTest {
 
     @Test
     void testCopyFrom() {
-        Player player = new Player("P1", "ID1");
+        Player player2 = new Player("P1", "ID1");
         Player playerCopy = new Player("P2", "ID2");
         playerCopy.setMoney(400);
 
-        assertEquals(Player.START_MONEY, player.getMoney());
+        assertEquals(Player.START_MONEY, player2.getMoney());
 
-        player.copyFrom(playerCopy);
+        player2.copyFrom(playerCopy);
 
         assertEquals(playerCopy.getMoney(), playerCopy.getMoney());
     }
 
     @Test
     void testSetDefaultValues() {
-        Player player = new Player("P1", "ID1");
-        player.setMoney(400);
-        player.setDefaulValues();
-        assertEquals(Player.START_MONEY, player.getMoney());
+        Player player2 = new Player("P1", "ID1");
+        player2.setMoney(400);
+        player2.setDefaulValues();
+        assertEquals(Player.START_MONEY, player2.getMoney());
     }
 
 }

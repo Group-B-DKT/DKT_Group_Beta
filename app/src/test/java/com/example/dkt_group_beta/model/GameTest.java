@@ -254,12 +254,12 @@ class GameTest {
         player1.setHost(true);
         Player player2 = new Player("P2", "ID2");
 
-        List<Player> players = new ArrayList<>();
-        players.add(player1);
-        players.add(player2);
+        List<Player> players2 = new ArrayList<>();
+        players2.add(player1);
+        players2.add(player2);
 
-        Game game = new Game(players, fields);
-        game.updateHostStatus(player2.getId());
+        Game game2 = new Game(players2, fields);
+        game2.updateHostStatus(player2.getId());
 
         assertFalse(player1.isHost());
         assertTrue(player2.isHost());
