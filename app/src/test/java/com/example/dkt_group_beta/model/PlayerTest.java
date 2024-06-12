@@ -4,8 +4,14 @@ import static org.junit.Assert.*;
 
 import android.widget.ImageView;
 
+import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +22,20 @@ class PlayerTest {
     House house;
     Hotel hotel;
     Field field;
+
+    private static MockedStatic<WebsocketClientController> websocketClientController;
+
+
+    @BeforeAll
+    static void setUpStatic() {
+        websocketClientController = Mockito.mockStatic(WebsocketClientController.class);
+        websocketClientController.when(WebsocketClientController::getPlayer).thenReturn(new Player("PX", "IDX"));
+    }
+
+    @AfterAll
+    public static void close() {
+        websocketClientController.close();
+    }
 
     @BeforeEach
     void setUp() {
@@ -198,5 +218,17 @@ class PlayerTest {
         assertEquals(5, player.getCurrentPosition());
     }
 
+    @Test
+    void testCopyFrom() {
+        Player player = new Player("P1", "ID1");
+        Player playerCopy = new Player("P2", "ID2");
+        playerCopy.setMoney(400);
+
+        assertEquals(Player.START_MONEY, player.getMoney());
+
+        player.copyFrom(playerCopy);
+
+        assertEquals(playerCopy.getMoney(), playerCopy.getMoney());
+    }
 
 }

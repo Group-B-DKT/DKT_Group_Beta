@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.model;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,11 @@ class GameTest {
 
         websocketClientController = Mockito.mockStatic(WebsocketClientController.class);
 
+    }
+
+    @AfterAll
+    public static void close() {
+        websocketClientController.close();
     }
 
     @BeforeEach
@@ -240,6 +246,23 @@ class GameTest {
         game.setPlayerTurn(players.get(0).getId());
         assertTrue(players.get(0).isOnTurn());
         assertFalse(players.get(1).isOnTurn());
+    }
+
+    @Test
+    void testUpdateHost(){
+        Player player1 = new Player("P1", "ID1");
+        player1.setHost(true);
+        Player player2 = new Player("P2", "ID2");
+
+        List<Player> players = new ArrayList<>();
+        players.add(player1);
+        players.add(player2);
+
+        Game game = new Game(players, fields);
+        game.updateHostStatus(player2.getId());
+
+        assertFalse(player1.isHost());
+        assertTrue(player2.isHost());
     }
 
 
