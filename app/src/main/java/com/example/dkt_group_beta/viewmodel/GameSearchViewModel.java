@@ -125,6 +125,8 @@ public class GameSearchViewModel extends ViewModel {
     }
 
     public void discardReconnect(int gameId) {
+        Player myPlayer = WebsocketClientController.getPlayer();
+        myPlayer.setDefaulValues();
         actionController.discardReconnect(gameId);
     }
 }

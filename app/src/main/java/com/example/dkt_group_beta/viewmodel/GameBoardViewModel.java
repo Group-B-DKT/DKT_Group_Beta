@@ -148,6 +148,7 @@ public class GameBoardViewModel {
     }
 
     public void removePlayer(int gameId, Player player) {
+        player.setDefaulValues();
         actionController.removePlayer(gameId, player);
     }
 }

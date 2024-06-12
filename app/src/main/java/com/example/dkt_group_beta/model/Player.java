@@ -158,4 +158,14 @@ public class Player implements Serializable {
         this.color = serverPlayer.color;
         this.isHost = serverPlayer.isHost;
     }
+
+    public void setDefaulValues() {
+        this.gameId = -1;
+        this.isConnected = false;
+        this.money = START_MONEY;
+        this.currentPosition = 0;
+        this.isOnTurn = false;
+        this.color = -1;
+        this.isHost = false;
+    }
 }
