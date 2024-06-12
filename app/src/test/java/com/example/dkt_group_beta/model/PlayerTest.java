@@ -231,4 +231,12 @@ class PlayerTest {
         assertEquals(playerCopy.getMoney(), playerCopy.getMoney());
     }
 
+    @Test
+    void testSetDefaultValues() {
+        Player player = new Player("P1", "ID1");
+        player.setMoney(400);
+        player.setDefaulValues();
+        assertEquals(Player.START_MONEY, player.getMoney());
+    }
+
 }
