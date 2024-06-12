@@ -29,7 +29,6 @@ public class Field implements Serializable {
         this.ownable = ownable;
         this.fieldType = fieldType;
         this.buildings = new ArrayList<>();
-        this.buildings.add(new House(0, 10)); // add a house to the field (for testing)
     }
 
     public Field(int id, String name, boolean ownable) {
@@ -92,6 +91,9 @@ public class Field implements Serializable {
         return hotel;
     }
     public List<Building> getBuildings(){
+        if (this.buildings == null){
+            this.buildings = new ArrayList<>();
+    }
         return this.buildings;
     }
     public void addBuilding(Building building){

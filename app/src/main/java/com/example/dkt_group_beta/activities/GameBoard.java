@@ -389,8 +389,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
     private void getOwnedFields(Player player) {
         for (Field field : fields) {
+            int fieldIndex = fields.indexOf(field);
             if (field.getOwner() != null && field.getOwner().getId().equals(player.getId())) {
-                int fieldIndex = fields.indexOf(field);
                 enableFieldClick(fieldIndex, player);
             }
         }
