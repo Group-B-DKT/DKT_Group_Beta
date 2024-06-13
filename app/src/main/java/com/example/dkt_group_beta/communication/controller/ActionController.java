@@ -105,6 +105,12 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
+    public void payTaxes(Player player){
+
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.PAY_TAXES, null, player, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
 
     public void endTurn(){
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.END_TURN, null);

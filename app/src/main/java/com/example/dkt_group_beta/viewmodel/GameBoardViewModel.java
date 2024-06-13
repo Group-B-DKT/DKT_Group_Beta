@@ -19,6 +19,7 @@ public class GameBoardViewModel {
     private GameBoardAction gameBoardAction;
     private Game game;
     private Player player;
+    private Player payerServer;
 
 
     public GameBoardViewModel(GameBoardAction gameBoardAction, Game game) {
@@ -36,8 +37,8 @@ public class GameBoardViewModel {
     public void payTaxes(Player player, Field field) {
         boolean result = game.payTaxes(player,field);
         if(result) {
-            actionController.moneyUpdate(player);
-            actionController.moneyUpdate(field.getOwner());
+            actionController.payTaxes(player);
+            actionController.payTaxes(field.getOwner());
         }
     }
 
@@ -63,6 +64,17 @@ public class GameBoardViewModel {
         if(action == Action.UPDATE_MONEY){
             game.updatePlayer(fromPlayer);
             gameBoardAction.updatePlayerStats();
+        }
+        if(action == Action.PAY_TAXES){
+            if(payerServer == null) {
+                payerServer = fromPlayer;
+            }else {
+                gameBoardAction.showTaxes(payerServer, fromPlayer, Integer.parseInt(param));
+                payerServer = null;
+            }
+            game.updatePlayer(fromPlayer);
+            gameBoardAction.updatePlayerStats();
+
         }
 
         if (action == Action.HOST_CHANGED){

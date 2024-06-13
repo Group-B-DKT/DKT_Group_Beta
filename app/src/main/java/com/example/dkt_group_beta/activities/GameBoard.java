@@ -376,6 +376,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();
+            this.passedStart = false;
         }
 
     }
@@ -570,6 +571,24 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             gameBoardViewModel.buyField(player.getCurrentPosition());
             popupWindow.dismiss();
         });
+    }
+    @Override
+     public void showTaxes(Player payer, Player payee, int amount) {
+        runOnUiThread(()->{
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_paytaxes, null);
+            int width = WRAP_CONTENT;
+            int height = WRAP_CONTENT;
+            boolean focusable = true;
+
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+            TextView playerTaxesTextView = popupView.findViewById(R.id.txt_playerTaxes);
+            String taxesMessage = payer.getUsername() + " pay " + amount + " $ Taxes to " + payee.getUsername();
+            playerTaxesTextView.setText(taxesMessage);
+        });
+
+
     }
 
     @Override

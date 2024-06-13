@@ -20,7 +20,7 @@ class FieldTest {
 
     @BeforeEach
     void setUp() {
-        field = new Field(1, "Test Field", 100, true, FieldType.NORMAL);
+        field = new Field(1, "Test Field", 100, true, FieldType.NORMAL, 50);
     }
 
     @Test
@@ -105,5 +105,14 @@ class FieldTest {
         field.copyFrom(copiedField);
         assertEquals(3, field.getId());
         assertEquals("Copied Field", field.getName());
+    }
+    @Test
+    void testSetRent() {
+        field.setRent(150);
+        assertEquals(150, field.getRent());
+    }
+    @Test
+    void testGetRent() {
+        assertEquals(field.getRent(), 50);
     }
 }
