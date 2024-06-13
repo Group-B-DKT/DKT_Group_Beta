@@ -153,6 +153,15 @@ class GameTest {
     }
 
     @Test
+    void testUpdateFieldOwnerNotNull(){
+        Field updateField = new Field(1, "Updated Field", true);
+        Player player = new Player("Player1", "1");
+        updateField.setOwner(player);
+        game.updateField(updateField);
+        assertEquals(player, game.getFields().get(0).getOwner());
+    }
+
+    @Test
     void testUpdatePlayer() {
         Player updatedPlayer = new Player("New Player","1");
         game.updatePlayer(updatedPlayer);
