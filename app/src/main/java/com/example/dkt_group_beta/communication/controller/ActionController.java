@@ -113,6 +113,13 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
+    public void submitCheat(int money) {
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.SUBMIT_CHEAT, String.valueOf(money), WebsocketClientController.getPlayer());
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+  
     public void reconnectToGame() {
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_OK, null);
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);

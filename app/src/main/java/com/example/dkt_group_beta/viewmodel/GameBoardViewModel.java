@@ -133,6 +133,9 @@ public class GameBoardViewModel {
         actionController.endTurn();
     }
 
+    public void submitCheat(int money) {
+        actionController.submitCheat(money);
+    }
     public void passStartOrMoneyField(){
 
         if(player.getCurrentPosition() == 0){
@@ -144,7 +147,6 @@ public class GameBoardViewModel {
         }
 
         actionController.moneyUpdate();
-
     }
 
     public void removePlayer(int gameId, Player player) {
