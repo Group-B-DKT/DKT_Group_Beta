@@ -221,14 +221,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
 
 
-        testButton.setOnClickListener(v -> dicePopUp());
-        btnEndTurn.setOnClickListener(v -> {
-            if (player.isOnTurn()){
-                gameBoardViewModel.endTurn();
-                disableView(testButton);
-                diceRolling = false;
-            }
-        });
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
@@ -527,7 +519,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         imageView.startAnimation(rotateAnimation);
     }
     private void rollDice(ImageView imageView) {
-        int diceResult = gameBoardViewModel.getRandomNumber(1,1);
+        int diceResult = gameBoardViewModel.getRandomNumber(1,6);
 
         diceResults[rollCounter-1] = diceResult;
         Log.d("Debug",rollCounter + ", " +diceResult);
