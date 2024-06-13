@@ -327,7 +327,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
         }
         if(field.getFieldType() != FieldType.ASSET &&
-                field.getOwner() != null && player.getMoney() >= field.getPrice()) {
+                field.getOwner() != null && player.getMoney() >= field.getRent()) {
             gameBoardViewModel.payTaxes(player, field);
         }
 
@@ -448,7 +448,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         imageView.startAnimation(rotateAnimation);
     }
     private void rollDice(ImageView imageView) {
-        int diceResult = gameBoardViewModel.getRandomNumber(1,6);
+        int diceResult = gameBoardViewModel.getRandomNumber(1,1);
 
         diceResults[rollCounter-1] = diceResult;
         Log.d("Debug",rollCounter + ", " +diceResult);

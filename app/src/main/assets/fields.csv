@@ -1,29 +1,29 @@
 ID;Name;Price;isBuyable;FieldType;Rent
-1;Los!;;false;ASSET;
+1;Los!;;false;ASSET;0
 2;Hafnersee;120;true;NORMAL;8
-3;Ereignisfeld;;false;ASSET
+3;Ereignisfeld;;false;ASSET;0
 4;Pyramidenkogel;150;true;SPECIAL;40
 5;Reifnitz;220;true;NORMAL;20
 6;Dellach;220;true;NORMAL;20
 7;Wörtherseeschifffahrt;150;true;SPECIAL;40
-8;Gemeinschaftsfeld;;false;ASSET
+8;Gemeinschaftsfeld;;false;ASSET;0
 9;Kathreinkogel;100;true;NORMAL;6
-10;Gesetzesverletzung;;false;ASSET
+10;Gesetzesverletzung;;false;ASSET;0
 11;Auen;200;true;NORMAL;16
 12;Kraftwerk Forstsee;160;true;SPECIAL;0
 13;Tierpark Rosegg;160;true;SPECIAL;0
 14;Casinoplatz;250;true;NORMAL;24
 15;Seecorso;300;true;NORMAL;30
-16;Gemeinschaftsfeld;;false;ASSET
+16;Gemeinschaftsfeld;;false;ASSET;0
 17;Töschling;180;true;NORMAL;14
-18;Urlaubsgeld;;false;ASSET
+18;Urlaubsgeld;;false;ASSET;0
 19;St. Martin;200;true;NORMAL;16
-20;Ereignisfeld;;false;ASSET
+20;Ereignisfeld;;false;ASSET;0
 21;Seeuferstraße;250;true;NORMAL;24
 22;Annastraße;300;true;NORMAL;30
-23;Gemeinschaftsfeld;;false;ASSET
+23;Gemeinschaftsfeld;;false;ASSET;0
 24;Koschatweg;300;true;NORMAL;30
-25;Knast;;false;ASSET
+25;Knast;;false;ASSET;0
 26;Römerweg;180;true;NORMAL;14
 27;Reptilienzoo;160;true;SPECIAL;0
 28;Lorettoweg;220;true;NORMAL;24
