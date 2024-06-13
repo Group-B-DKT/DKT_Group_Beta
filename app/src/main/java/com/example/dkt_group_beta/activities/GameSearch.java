@@ -7,11 +7,13 @@ import android.provider.Settings;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -23,29 +25,34 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameSearchAction;
+import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.model.GameInfo;
+import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.GameSearchViewModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import static android.view.ViewGroup.LayoutParams;
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class GameSearch extends AppCompatActivity implements GameSearchAction {
     private static final int MAX_PLAYER = 6;
+    private static final String DEBUG_TAG = "DEBUG";
     private LinearLayout scrollviewLayout;
     private GameSearchViewModel gameSearchViewModel;
     private List<LinearLayout> gameFields;
-    private Button btnRefresh;
-    private Button btnConnect;
-    private Button btnCreateNew;
     private int selectedGameId = -1;
+
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game_search);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_searchMain), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -53,16 +60,16 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         String deviceUniqueId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         this.gameSearchViewModel = new GameSearchViewModel(getString(R.string.ip_address), getIntent().getStringExtra("username"), deviceUniqueId, this);
 
-        this.scrollviewLayout = (LinearLayout) findViewById(R.id.scrollview_layout);
-        this.btnRefresh = findViewById(R.id.btn_refresh);
-        this.btnRefresh.setOnClickListener(v -> gameSearchViewModel.receiveGames());
+        this.scrollviewLayout = findViewById(R.id.scrollview_layout);
+        Button btnRefresh = findViewById(R.id.btn_refresh);
+        btnRefresh.setOnClickListener(v -> gameSearchViewModel.receiveGames());
         this.gameFields = new ArrayList<>();
 
-        this.btnCreateNew = findViewById(R.id.btn_createNew);
-        this.btnCreateNew.setOnClickListener(this::assertInputDialog);
+        Button btnCreateNew = findViewById(R.id.btn_createNew);
+        btnCreateNew.setOnClickListener(this::assertInputDialog);
 
-        this.btnConnect = findViewById(R.id.btn_connect);
-        this.btnConnect.setOnClickListener(v -> gameSearchViewModel.connectToGame(this.selectedGameId));
+        Button btnConnect = findViewById(R.id.btn_connect);
+        btnConnect.setOnClickListener(v -> gameSearchViewModel.connectToGame(this.selectedGameId));
 
         this.selectedGameId = -1;
     }
@@ -71,7 +78,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
     public void refreshGameListItems() {
         runOnUiThread(() -> {
             this.gameFields.forEach(layout -> {
-                Log.d("DEBUG", "GameSearch::refreshGameList/ " + layout.getId());
+                Log.d(DEBUG_TAG, "GameSearch::refreshGameList/ " + layout.getId());
                 this.scrollviewLayout.removeView(layout);
             });
             this.gameFields.clear();
@@ -86,10 +93,57 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         finish();
     }
 
+    @Override
+    public void reconnectToGame(GameInfo gameInfo) {
+        showPopup(gameInfo.getName(), gameInfo.getId());
+    }
+
+    @Override
+    public void switchToGameBoard(List<Player> connectedPlayers, List<Field> fields) {
+        Intent intent = new Intent(this, GameBoard.class);
+        intent.putExtra("players", (Serializable) connectedPlayers);
+        intent.putExtra("fields", (Serializable) fields);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void removeReconnectPopUp() {
+        runOnUiThread(() -> {
+            if (popupWindow != null && popupWindow.isShowing()){
+                popupWindow.dismiss();
+            }
+        });
+    }
+
+    private void showPopup(String gameName, int gameId) {
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_reconnect, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
+            boolean focusable = true;
+
+            popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(findViewById(R.id.layout_searchMain), Gravity.CENTER, 0, 0);
+
+            TextView txtGameInfo = popupView.findViewById(R.id.txt_gameInfo);
+            txtGameInfo.setText(String.format(Locale.GERMAN, getString(R.string.reconnect_text), gameName));
+
+            Button btnReconnect = popupView.findViewById(R.id.btn_reconnect);
+            btnReconnect.setOnClickListener(v -> gameSearchViewModel.reconnectToGame(gameId));
+
+            Button btnDiscard = popupView.findViewById(R.id.btn_discardReconnect);
+            btnDiscard.setOnClickListener(v ->
+                gameSearchViewModel.discardReconnect(gameId)
+            );
+        });
+    }
+
 
     @Override
     public void addGameToScrollView(int gameId, String gameName, int amountOfPLayer, boolean isStarted){
-        Log.d("DEBUG", "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);
+        Log.d(DEBUG_TAG, "GameSearch::addGameToScrollView/ " + gameId + ", " + amountOfPLayer);
         runOnUiThread(() -> {
             LinearLayout linearLayout = getLinearLayout(gameId, amountOfPLayer);
 
@@ -191,7 +245,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
 
     @Override
     public void onConnectionEstablished(){
-        Log.d("DEBUG", "GameSearch::onConnectionEstablished/ ");
+        Log.d(DEBUG_TAG, "GameSearch::onConnectionEstablished/ ");
         this.gameSearchViewModel.receiveGames();
     }
 

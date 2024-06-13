@@ -27,4 +27,11 @@
     <string name="choose_character">Wähle deine Spielfigur!</string>
     <string name="end_turn">End Turn</string>
     <string name="buy_field">Buy Field</string>
+    <string name="btn_kick_player">Kick Player</string>
+    <string name="disconnected_player">disconnected!</string>
+    <string name="remaining_time">Remaining Time:</string>
+    <string name="rejoin_game">Join</string>
+    <string name="reconnect_discard">Discard</string>
+    <string name="reconnect_header">It seems you disconnected from a running game!</string>
+    <string name="reconnect_text">Game Name: %s</string>
 </resources>
