@@ -39,4 +39,8 @@ public class WebsocketClientController {
     }
 
     public static Player getPlayer(){return networkHandler.getPlayer();}
+
+    public static void removeMessageHandler(WebSocketMessageHandler<Object> onMessageReceived) {
+        networkHandler.removeMessageHandler(onMessageReceived);
+    }
 }

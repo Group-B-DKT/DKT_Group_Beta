@@ -22,6 +22,11 @@ public class ActionController {
         this.handleAction = handleAction;
         WebsocketClientController.addMessageHandler(this::onMessageReceived);
     }
+
+    public void removeMessageHandler() {
+        WebsocketClientController.removeMessageHandler(this::onMessageReceived);
+    }
+
     public void createGame(String gameName){
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.CREATE_GAME, gameName);
         String msg = WrapperHelper.toJsonFromObject(Request.ACTION, actionJsonObject);
@@ -114,6 +119,26 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
+  
+    public void reconnectToGame() {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_OK, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void discardReconnect(int gameId) {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_DISCARD, Integer.toString(gameId), WebsocketClientController.getPlayer(), null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void removePlayer(int gameId, Player player) {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_DISCARD, Integer.toString(gameId), player, null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
 
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))
