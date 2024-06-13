@@ -13,6 +13,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.enums.FieldType;
 
 class GameTest {
 
@@ -247,12 +248,12 @@ class GameTest {
         currentPlayer.setMoney(1000);
         Player fieldOwner = new Player("FieldOwner", "4");
         fieldOwner.setMoney(500);
-        Field field = new Field(1, "Field1", 200, true);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 30);
         field.setOwner(fieldOwner);
         boolean result = game.payTaxes(currentPlayer, field);
         assertTrue(result);
-        assertEquals(currentPlayer.getMoney(), 800);
-        assertEquals(fieldOwner.getMoney(), 700);
+        assertEquals(currentPlayer.getMoney(), 970);
+        assertEquals(fieldOwner.getMoney(), 530);
 
     }
 
@@ -263,7 +264,7 @@ class GameTest {
         currentPlayer.setMoney(100);
         Player fieldOwner = new Player("FieldOwner", "4");
         fieldOwner.setMoney(500);
-        Field field = new Field(1, "Field1", 200, true);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 150);
         field.setOwner(fieldOwner);
         boolean result = game.payTaxes(currentPlayer, field);
         assertFalse(result);
@@ -276,7 +277,7 @@ class GameTest {
         currentPlayer.setMoney(700);
         Player fieldOwner = new Player("FieldOwner", "4");
         fieldOwner.setMoney(500);
-        Field field = new Field(1, "Field1", 200, true);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 150);
         boolean result = game.payTaxes(currentPlayer, field);
         assertFalse(result);
 
@@ -288,7 +289,7 @@ class GameTest {
         currentPlayer.setMoney(700);
         Player fieldOwner = new Player("FieldOwner", "4");
         fieldOwner.setMoney(500);
-        Field field = new Field(1, "Field1", 200, true);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 150);
         field.setOwner(fieldOwner);
         boolean result = game.payTaxes(currentPlayer, field);
         assertFalse(result);
