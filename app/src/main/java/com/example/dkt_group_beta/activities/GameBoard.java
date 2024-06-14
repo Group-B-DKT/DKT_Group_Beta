@@ -39,6 +39,7 @@ import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.model.Building;
 import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.Hotel;
 import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.model.enums.FieldType;
@@ -412,25 +413,38 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void placeBuilding(int fieldIndex, Building building, int numberOfBuildings) {
         runOnUiThread(() -> {
-            ImageView houseView = new ImageView(this);
+            ImageView buildingView = new ImageView(this);
             int resourceId = building instanceof House ? R.drawable.house : R.drawable.hotel;
-            houseView.setImageResource(resourceId);
+            buildingView.setImageResource(resourceId);
+
 
             int houseWidth = 50;
             int houseHeight = 50;
             ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(houseWidth, houseHeight);
-            houseView.setLayoutParams(params);
+            buildingView.setLayoutParams(params);
 
             ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
-            constraintLayout.addView(houseView);
+            constraintLayout.addView(buildingView);
 
             int[] position = getPositionFromView(imageViews.get(fieldIndex));
 
 
             int xOffset = 10;
             int yOffset = 10;
-            houseView.setX(position[0] + xOffset);
-            houseView.setY(position[1] + yOffset);
+            int xMult = 1;
+            int yMult = 1;
+            if (numberOfBuildings == 2){
+                xMult = 5;
+            }
+            else if (numberOfBuildings == 3){
+                yMult = 5;
+            }
+            else if(numberOfBuildings == 4){
+                xMult = 5;
+                yMult = 5;
+            }
+            buildingView.setX(position[0] + xOffset*xMult);
+            buildingView.setY(position[1] + yOffset*yMult);
         });
 
     }
