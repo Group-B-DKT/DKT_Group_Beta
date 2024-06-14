@@ -87,7 +87,11 @@ public class GameBoardViewModel {
             game.updateField(fields.get(0));
             game.updatePlayer(fromPlayer);
             gameBoardAction.updatePlayerStats();
-            gameBoardAction.placeBuilding(fields.get(0).getId()-1, fields.get(0).getBuildings().get(0), fields.get(0).getBuildings().size());
+            if(fields.get(0).getHotel() != null){
+                gameBoardAction.placeBuilding(fields.get(0).getId()-1, fields.get(0).getHotel(), 1);
+            }else {
+                gameBoardAction.placeBuilding(fields.get(0).getId() - 1, fields.get(0).getHouses().get(0), fields.get(0).getHouses().size());
+            }
         }
 }
 
