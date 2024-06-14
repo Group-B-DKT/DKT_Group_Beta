@@ -3,7 +3,7 @@ package com.example.dkt_group_beta.model;
 
 
 
-public abstract class Building {
+public class Building {
     private int price;
     private int position;
 
