@@ -138,6 +138,12 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
+    public void reportCheat(Player player, Player fromPlayer) {
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.REPORT_CHEAT, player.getId(), fromPlayer, null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
 
 
     private void onMessageReceived(Object actionObject) {
@@ -149,4 +155,6 @@ public class ActionController {
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
         handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer(), actionJsonObject.getFields());
     }
+
+
 }

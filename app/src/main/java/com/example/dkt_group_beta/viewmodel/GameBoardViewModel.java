@@ -153,4 +153,8 @@ public class GameBoardViewModel {
         player.setDefaulValues();
         actionController.removePlayer(gameId, player);
     }
+
+    public void reportCheat(Player player, Player fromPlayer) {
+        actionController.reportCheat(player, fromPlayer);
+    }
 }
