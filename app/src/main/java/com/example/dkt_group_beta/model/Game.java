@@ -49,7 +49,7 @@ public class Game {
         if (field.getOwner().getId().equals(player.getId())  && player.getMoney() >= House.getHousePrice()) {
             if (field.hasHotel()) {
                 return false;
-            } else if (getNumberOfHouses() == house.getMaxAmount()) {
+            } else if (getNumberOfHouses(field) == house.getMaxAmount()) {
                 return buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, 10), field);
             } else {
                 field.addHouse(house);
@@ -72,16 +72,8 @@ public class Game {
         }
         return false;
     }
-    public int getNumberOfHouses(){
-        int count = 0;
-        for (Field field : fields) {
-            for (Building building : field.getHouses()) {
-                if (building instanceof House) {
-                    count++;
-                }
-            }
-        }
-        return count;
+    public int getNumberOfHouses(Field field){
+        return field.getHouses().size();
     }
     /*public boolean sellBuilding(Player player, Building building) {
         Field field = building.getField();
