@@ -46,13 +46,14 @@ public class Game {
         return false;
     }
     public boolean buyHouse(Player player, House house, Field field) {
-        if (field.getOwner().getId().equals(player.getId())  && pay(player, house.getHousePrice())) {
+        if (field.getOwner().getId().equals(player.getId())  && player.getMoney() >= House.getHousePrice()) {
             if (field.hasHotel()) {
                 return false;
             } else if (getNumberOfHouses() == house.getMaxAmount()) {
                 return buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, 10), field);
             } else {
-                field.addBuilding(house);
+                field.addHouse(house);
+                pay(player, House.getHousePrice());
                 return true;
             }
         }
@@ -60,11 +61,12 @@ public class Game {
     }
 
     public boolean buyHotel(Player player, Hotel hotel, Field field) {
-        if (field.getOwner() == player && pay(player, hotel.getPrice())) {
+        if (field.getOwner().getId().equals(player.getId()) && player.getMoney() >= hotel.getPrice()){
             if (field.hasHotel()) {
                 return false;
             } else {
-                field.addBuilding(hotel);
+                field.setHotel(hotel);
+                pay(player, hotel.getPrice());
                 return true;
             }
         }
@@ -73,7 +75,7 @@ public class Game {
     public int getNumberOfHouses(){
         int count = 0;
         for (Field field : fields) {
-            for (Building building : field.getBuildings()) {
+            for (Building building : field.getHouses()) {
                 if (building instanceof House) {
                     count++;
                 }
