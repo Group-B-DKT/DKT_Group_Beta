@@ -426,6 +426,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
             constraintLayout.addView(buildingView);
 
+            if(building instanceof Hotel){
+                //TODO: delete the houses if a hotel gets placed
+            }
+
             int[] position = getPositionFromView(imageViews.get(fieldIndex));
 
 
