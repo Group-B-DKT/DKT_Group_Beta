@@ -101,6 +101,16 @@ public class Field implements Serializable {
         buildings.add(building);
     }
 
+    public void copyFrom(Field field) {
+        this.id = field.id;
+        this.name = field.name;
+        this.price = field.price;
+        this.ownable = field.ownable;
+        this.fieldType = field.fieldType;
+        this.hotel = field.hotel;
+        this.buildings = field.buildings;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

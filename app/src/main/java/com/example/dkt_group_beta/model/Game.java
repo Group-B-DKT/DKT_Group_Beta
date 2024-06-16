@@ -114,12 +114,20 @@ public class Game {
         Field savedField = this.fields.stream()
                 .filter(f -> f.getId() == field.getId())
                 .findAny().orElse(null);
+
+        Player savedPlayer = null;
+        if (field.getOwner()!= null){
+            savedPlayer =this.players.stream()
+                    .filter(f -> f.getId().equals(field.getOwner().getId()))
+                    .findAny().orElse(null);
+        }
+
         if (savedField == null){
             this.fields.add(field);
-        }else{
-            int index = this.fields.indexOf(savedField);
-            this.fields.set(index, field);
+            return;
         }
+        savedField.copyFrom(field);
+        savedField.setOwner(savedPlayer);
     }
     public void updatePlayer(Player player) {
         Player savedPlayer = this.players.stream()
@@ -128,9 +136,8 @@ public class Game {
         if (savedPlayer == null){
             this.players.add(player);
         }else{
-            int index = this.players.indexOf(savedPlayer);
-            player.setCharacterView(savedPlayer.getCharacterView());
-            this.players.set(index, player);
+            savedPlayer.copyFrom(player);
+
         }
     }
 
@@ -165,4 +172,12 @@ public class Game {
     }
 
 
+    public void updateHostStatus(String playerId) {
+        this.players.forEach(p -> {
+            p.setHost(false);
+            if (p.getId().equals(playerId)){
+                p.setHost(true);
+            }
+        });
+    }
 }
