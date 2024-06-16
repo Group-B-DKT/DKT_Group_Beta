@@ -149,6 +149,10 @@ public class GameBoardViewModel {
         actionController.moneyUpdate();
     }
 
+    public void skipRound(){
+        actionController.skipField();
+    }
+
     public void removePlayer(int gameId, Player player) {
         player.setDefaulValues();
         actionController.removePlayer(gameId, player);
