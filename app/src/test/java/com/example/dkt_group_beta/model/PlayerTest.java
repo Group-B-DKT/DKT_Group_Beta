@@ -60,6 +60,17 @@ class PlayerTest {
         field.setHotel(hotel);
         assertFalse(game.buyHouse(player, house, field));
     }
+    @Test
+    void testBuyHouseFieldHasMaxHouses() {
+        field.setOwner(player);
+        for (int i = 0; i < house.getMaxAmount(); i++) {
+            field.addHouse(house);
+        }
+        boolean result = game.buyHouse(player, house, field);
+        assertFalse(result);
+        assertNotNull(field.getHotel());
+        assertEquals(0, field.getHouses().size());
+    }
 
     @Test
     void testBuyHotel() {

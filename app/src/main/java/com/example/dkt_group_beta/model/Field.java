@@ -97,6 +97,11 @@ public class Field implements Serializable {
     public void addHouse(House house){
         houses.add(house);
     }
+    public void removeHouse(House house, int numberOfHousesToRemove){
+        for (int i = 0; i < numberOfHousesToRemove; i++){
+            houses.remove(house);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

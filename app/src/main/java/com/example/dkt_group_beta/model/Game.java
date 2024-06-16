@@ -50,7 +50,9 @@ public class Game {
             if (field.hasHotel()) {
                 return false;
             } else if (getNumberOfHouses(field) == house.getMaxAmount()) {
-                return buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, 10), field);
+                field.removeHouse(house, 4);
+                buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, 10), field);
+                return false;
             } else {
                 field.addHouse(house);
                 pay(player, House.getHousePrice());

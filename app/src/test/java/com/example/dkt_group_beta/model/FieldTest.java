@@ -104,4 +104,11 @@ class FieldTest {
         field.addHouse(house);
         assertTrue(field.getHouses().contains(house));
     }
+    @Test
+    void testRemoveHouse(){
+        House house = mock(House.class);
+        field.addHouse(house);
+        field.getHouses().remove(house);
+        assertTrue(field.getHouses().isEmpty());
+    }
 }
