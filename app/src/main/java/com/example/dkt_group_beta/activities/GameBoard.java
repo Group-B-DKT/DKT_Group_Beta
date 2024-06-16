@@ -35,6 +35,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +44,7 @@ import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
+import com.example.dkt_group_beta.dialogues.ReportCheaterDialog;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
@@ -755,5 +757,22 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
     public void reportCheat(Player player, Player fromPlayer) {
         gameBoardViewModel.reportCheat(player, fromPlayer);
+    }
+
+    public void reportCheater(View view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ReportCheaterDialog dialogFragment = new ReportCheaterDialog(players, new ReportCheaterDialog.OnPlayerSelectedListener() {
+            @Override
+            public void onPlayerSelected(Player player) {
+
+            }
+
+            @Override
+            public void onPlayerConfirmed(Player player) {
+                // Handle the selection
+                reportCheat(player, GameBoard.this.player);
+            }
+        });
+        dialogFragment.show(fragmentManager, "player_selection");
     }
 }
