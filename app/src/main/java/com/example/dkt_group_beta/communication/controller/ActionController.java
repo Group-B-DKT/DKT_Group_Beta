@@ -100,9 +100,15 @@ public class ActionController {
     }
 
     public void moneyUpdate(){
-
         Player player = WebsocketClientController.getPlayer();
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.UPDATE_MONEY, null, player, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void skipField(){
+        Player player = WebsocketClientController.getPlayer();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.SKIP_FIELD, null, player, null);
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
