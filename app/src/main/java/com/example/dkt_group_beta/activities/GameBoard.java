@@ -117,6 +117,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             return insets;
         });
 
+        testButton = findViewById(R.id.popUpCards);
 
         initializeVariables();
 
@@ -134,7 +135,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
         createPlayerItems(game.getPlayers());
 
-        testButton = findViewById(R.id.popUpCards);
         if (!player.isOnTurn()) {
             disableView(testButton);
             disableView(btnEndTurn);
