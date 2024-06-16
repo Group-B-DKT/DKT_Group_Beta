@@ -34,6 +34,8 @@ public class Player implements Serializable {
 
     private int color;
 
+    private int roundsToSkip;
+
 
     public Player(String username, String id) {
         this.username = username;
@@ -43,6 +45,7 @@ public class Player implements Serializable {
         this.money = START_MONEY;
         this.currentPosition = 0;
         this.isOnTurn = false;
+        this.roundsToSkip = 0;
     }
 
 
@@ -167,5 +170,13 @@ public class Player implements Serializable {
         this.isOnTurn = false;
         this.color = -1;
         this.isHost = false;
+    }
+
+    public int getRoundsToSkip() {
+        return roundsToSkip;
+    }
+
+    public void setRoundsToSkip(int roundsToSkip) {
+        this.roundsToSkip = roundsToSkip;
     }
 }
