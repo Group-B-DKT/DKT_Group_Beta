@@ -1,8 +1,10 @@
 package com.example.dkt_group_beta.model;
 
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Objects;
 
 
@@ -33,7 +35,7 @@ public class Player implements Serializable {
     private int currentPosition;
 
     private int color;
-
+    private ArrayList<JokerCard> jokerCards;
 
     public Player(String username, String id) {
         this.username = username;
@@ -43,6 +45,7 @@ public class Player implements Serializable {
         this.money = START_MONEY;
         this.currentPosition = 0;
         this.isOnTurn = false;
+        this.jokerCards = new ArrayList<>();
     }
 
 
@@ -134,6 +137,29 @@ public class Player implements Serializable {
         this.color = color;
     }
 
+    public ArrayList<JokerCard> getJokerCards() {
+        return jokerCards;
+    }
+
+    public void setJokerCards(ArrayList<JokerCard> jokerCards) {
+        this.jokerCards = jokerCards;
+    }
+    public boolean hasJokerCard(){
+        return !this.jokerCards.isEmpty();
+    }
+    public int getJokerAmount(){
+        return this.jokerCards.size();
+    }
+    public void addJokerCard(JokerCard joker){
+        this.jokerCards.add(joker);
+    }
+    public void removeJokerCard(){
+        if(this.hasJokerCard()){
+            this.jokerCards.remove(0);
+        }else{
+            Log.d("Player", "found no joker");
+        }
+    }
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
