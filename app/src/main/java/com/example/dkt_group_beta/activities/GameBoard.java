@@ -549,8 +549,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 xMult = 5;
                 yMult = 5;
             }
-            buildingView.setX(position[0] + xOffset*xMult);
-            buildingView.setY(position[1] + yOffset*yMult);
+            buildingView.setX(position[0] + (float) (xOffset*xMult));
+            buildingView.setY(position[1] + (float) (yOffset*yMult));
         });
 
     }
