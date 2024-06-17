@@ -3,7 +3,9 @@ package com.example.dkt_group_beta.model;
 import com.example.dkt_group_beta.model.enums.CardType;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 
-public abstract class Card {
+import java.io.Serializable;
+
+public abstract class Card implements Serializable {
     private int id;
     private int amount;
     private String imageResource;
