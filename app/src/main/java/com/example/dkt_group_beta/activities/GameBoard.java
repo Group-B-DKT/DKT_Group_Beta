@@ -41,6 +41,7 @@ import com.example.dkt_group_beta.communication.controller.WebsocketClientContro
 import com.example.dkt_group_beta.io.CardCSVReader;
 import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.JokerCard;
 import com.example.dkt_group_beta.model.MoveCard;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.model.enums.FieldType;
@@ -603,8 +604,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
         return animation;
     }
-    public void showCardRisiko(int indexCard, boolean showBtn) {
+    public void showCardRisiko(int indexCard, boolean showBtn, Player fromPlayer) {
         Card currentCard = risikoCards.get(indexCard);
+        if(currentCard instanceof JokerCard){
+            JokerCard joker = (JokerCard)currentCard;
+            gameBoardViewModel.addJokerCard(joker, fromPlayer);
+        }
         showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(),"Ok",showBtn,() -> {
             Log.d("DEBUG", "showCardRisiko" + (currentCard instanceof MoveCard ? "moveCard":"payCard"));
             currentCard.setGameBoardViewModel(this.gameBoardViewModel);

@@ -1,14 +1,18 @@
 package com.example.dkt_group_beta.viewmodel;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
+
 import android.util.Log;
 
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.communication.enums.Action;
+import com.example.dkt_group_beta.io.CardCSVReader;
 import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.JokerCard;
 import com.example.dkt_group_beta.model.Player;
 import com.google.gson.Gson;
 
@@ -21,7 +25,6 @@ public class GameBoardViewModel {
     private GameBoardAction gameBoardAction;
     private Game game;
     private Player player;
-
 
     public GameBoardViewModel(GameBoardAction gameBoardAction, Game game) {
         this.actionController = new ActionController(this::handleAction);
@@ -85,7 +88,7 @@ public class GameBoardViewModel {
             if (fromPlayer.getId().equals(player.getId())) {
                 showBtn = true;
             }
-            gameBoardAction.showCardRisiko(cardIndex, showBtn);
+            gameBoardAction.showCardRisiko(cardIndex, showBtn, fromPlayer);
         }
         if (action == Action.BANK_CARD_SHOW){
             Log.d("DEBUG", fromPlayer.getUsername());
@@ -160,4 +163,15 @@ public class GameBoardViewModel {
         }
         actionController.movePlayer(moveAmount);
     }
-}
+
+    public void addJokerCard(JokerCard joker){
+        //player.addJokerCard(joker);
+        gameBoardAction.updatePlayerStats();    // update the joker amount before endTurn
+    }
+    public void addJokerCard(JokerCard joker, Player fromPlayer){
+        game.getPlayers().stream()
+                .filter(p -> p.getId().equals(fromPlayer.getId()))
+                .findAny()
+                .orElse(null).addJokerCard(joker);
+        gameBoardAction.updatePlayerStats();    // update the joker amount before endTurn
+    }}
