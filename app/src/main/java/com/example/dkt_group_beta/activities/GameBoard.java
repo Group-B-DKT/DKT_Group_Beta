@@ -49,7 +49,9 @@ import com.example.dkt_group_beta.model.Field;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
@@ -410,6 +412,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         House house = new House(House.getHousePrice(), fieldIndex);
         gameBoardViewModel.buyBuilding(player, house, field);
     }
+
+    private Map<Integer, List<ImageView>> fieldHousesMap = new HashMap<>();
     @Override
     public void placeBuilding(int fieldIndex, Building building, int numberOfBuildings) {
         runOnUiThread(() -> {
@@ -427,7 +431,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             constraintLayout.addView(buildingView);
 
             if(building instanceof Hotel){
-                //TODO: delete the houses if a hotel gets placed
+                removeHousesFromField(fieldIndex, 4);
+            } else if (building instanceof House) {
+                addHouse(fieldIndex, buildingView);
             }
 
             int[] position = getPositionFromView(imageViews.get(fieldIndex));
@@ -451,6 +457,29 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             buildingView.setY(position[1] + yOffset*yMult);
         });
 
+    }
+
+    private void addHouse (int fieldIndex, ImageView houseView){
+        List<ImageView> houseViews = fieldHousesMap.get(fieldIndex);
+        if (houseViews == null){
+            houseViews = new ArrayList<>();
+            fieldHousesMap.put(fieldIndex, houseViews);
+        }
+        houseViews.add(houseView);
+    }
+    private void removeHousesFromField(int fieldIndex, int numberOfHouses) {
+        List<ImageView> houseViews = fieldHousesMap.get(fieldIndex);
+        if (houseViews != null && houseViews.size() >= numberOfHouses) {
+            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+            for (int i = 0; i < numberOfHouses; i++) {
+                ImageView houseView = houseViews.get(i);
+                constraintLayout.removeView(houseView);
+            }
+            houseViews.subList(0, numberOfHouses).clear();
+            if (houseViews.isEmpty()) {
+                fieldHousesMap.remove(fieldIndex);
+            }
+        }
     }
 
 
