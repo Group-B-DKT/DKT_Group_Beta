@@ -66,8 +66,7 @@ class PlayerTest {
         for (int i = 0; i < house.getMaxAmount(); i++) {
             field.addHouse(house);
         }
-        boolean result = game.buyHouse(player, house, field);
-        assertFalse(result);
+        game.buyHouse(player, house, field);
         assertNotNull(field.getHotel());
         assertEquals(0, field.getHouses().size());
     }

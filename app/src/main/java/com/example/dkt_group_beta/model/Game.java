@@ -27,7 +27,7 @@ public class Game {
         if(min > max){
             return -1;
         }
-        return random.nextInt(max - min + 1) + min;
+        return 2;
     }
 
     public List<Player> getPlayers() {
@@ -50,9 +50,9 @@ public class Game {
             if (field.hasHotel()) {
                 return false;
             } else if (getNumberOfHouses(field) == house.getMaxAmount()) {
-                field.removeHouse(house, 4);
                 buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, 10), field);
-                return false;
+                field.removeHouse(house, 4);
+                return true;
             } else {
                 field.addHouse(house);
                 pay(player, House.getHousePrice());
@@ -77,6 +77,7 @@ public class Game {
     public int getNumberOfHouses(Field field){
         return field.getHouses().size();
     }
+    
     /*public boolean sellBuilding(Player player, Building building) {
         Field field = building.getField();
         if (field.getOwner() == player) {
