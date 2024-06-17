@@ -12,7 +12,7 @@ import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.google.gson.Gson;
 
-import java.util.Arrays;
+import java.time.LocalTime;
 import java.util.List;
 
 public class GameBoardViewModel {
@@ -45,17 +45,7 @@ public class GameBoardViewModel {
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
-            Log.d("DEBUG", fromPlayer.getUsername());
-            // array zurücksetzten, popup öffnen, showbothdice
-            if (fromPlayer.getId().equals(player.getId())) {
-                return;
-            }
-            Log.d("game",""+action);
-            Gson gson = new Gson();
-            int[] diceResult = gson.fromJson(param,int[].class);
-            Log.d("game",""+ Arrays.toString(diceResult));
-            gameBoardAction.dicePopUp();
-            gameBoardAction.showBothDice(diceResult);
+            handleRollDice(param, fromPlayer);
         }
 
         if(action == Action.MOVE_PLAYER){
@@ -65,38 +55,92 @@ public class GameBoardViewModel {
         }
 
         if (action == Action.END_TURN){
-            if (player.isOnTurn()){
-                gameBoardAction.disableEndTurnButton();
-                player.setOnTurn(false);
-            }else if (player.getId().equals(fromPlayer.getId())){
-                gameBoardAction.enableDiceButton();
-                gameBoardAction.enableEndTurnButton();
-            }
-            game.setPlayerTurn(fromPlayer.getId());
-            gameBoardAction.updatePlayerStats();
+            handleEndTurn(fromPlayer);
         }
 
         if (action == Action.BUY_FIELD) {
-            game.updateField(fields.get(0));
-            if (!fromPlayer.getId().equals(player.getId()))
-                game.updatePlayer(fromPlayer);
-            gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
-            gameBoardAction.updatePlayerStats();
+            handleBuyField(fromPlayer, fields);
         }
         if (action == Action.BUY_BUILDING) {
-            game.updateField(fields.get(0));
+            handleBuyBuilding(fields, fromPlayer);
+        }
+
+        if(action == Action.UPDATE_MONEY){
             game.updatePlayer(fromPlayer);
             gameBoardAction.updatePlayerStats();
-            if(fields.get(0).getHotel() != null){
-                gameBoardAction.placeBuilding(fields.get(0).getId()-1, fields.get(0).getHotel(), 1);
-            }else {
-                gameBoardAction.placeBuilding(fields.get(0).getId() - 1, fields.get(0).getHouses().get(0), fields.get(0).getHouses().size());
-            }
         }
-}
+
+        if (action == Action.HOST_CHANGED){
+            if (fromPlayer.getId().equals(player.getId()) && !player.isHost()) {
+                player.setHost(fromPlayer.isHost());
+            }
+            game.updateHostStatus(fromPlayer.getId());
+        }
+
+        if (action == Action.CONNECTION_LOST){
+            handleConnectionLost(fromPlayer, LocalTime.parse(param));
+        }
+
+        if (action == Action.RECONNECT_OK){
+            gameBoardAction.removeReconnectPopUp();
+        }
+
+        if (action == Action.RECONNECT_DISCARD){
+            gameBoardAction.removePlayerFromGame(fromPlayer);
+            gameBoardAction.removeReconnectPopUp();
+        }
+    }
+
+    private void handleConnectionLost(Player disconnectedPlayer, LocalTime serverTime) {
+        gameBoardAction.setPlayerDisconnected(disconnectedPlayer);
+        gameBoardAction.showDisconnectPopUp(disconnectedPlayer, serverTime);
+    }
+
+    private void handleBuyField(Player fromPlayer, List<Field> fields) {
+        game.updateField(fields.get(0));
+        if (!fromPlayer.getId().equals(player.getId()))
+            game.updatePlayer(fromPlayer);
+        gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
+        gameBoardAction.updatePlayerStats();
+    }
+    private void handleBuyBuilding(List<Field> fields, Player fromPlayer){
+        game.updateField(fields.get(0));
+        game.updatePlayer(fromPlayer);
+        gameBoardAction.updatePlayerStats();
+        if(fields.get(0).getHotel() != null){
+            gameBoardAction.placeBuilding(fields.get(0).getId()-1, fields.get(0).getHotel(), 1);
+        }else {
+            gameBoardAction.placeBuilding(fields.get(0).getId() - 1, fields.get(0).getHouses().get(0), fields.get(0).getHouses().size());
+        }
+    }
+
+    private void handleEndTurn(Player fromPlayer) {
+        if (player.isOnTurn()){
+            gameBoardAction.disableEndTurnButton();
+            player.setOnTurn(false);
+        }else if (player.getId().equals(fromPlayer.getId())){
+            gameBoardAction.enableDiceButton();
+            gameBoardAction.enableEndTurnButton();
+        }
+        game.setPlayerTurn(fromPlayer.getId());
+        gameBoardAction.updatePlayerStats();
+    }
+
+    private void handleRollDice(String param, Player fromPlayer) {
+        Log.d("DEBUG", fromPlayer.getUsername());
+        // array zurücksetzten, popup öffnen, showbothdice
+        if (fromPlayer.getId().equals(player.getId())) {
+            return;
+        }
+        Gson gson = new Gson();
+        int[] diceResult = gson.fromJson(param,int[].class);
+        gameBoardAction.dicePopUp();
+        gameBoardAction.showBothDice(diceResult);
+    }
 
 
-public int getRandomNumber(int min, int max){
+
+    public int getRandomNumber(int min, int max){
         return game.getRandomNumber(min,max);
     }
 
@@ -112,4 +156,26 @@ public int getRandomNumber(int min, int max){
     public void endTurn() {
         actionController.endTurn();
     }
+
+    public void submitCheat(int money) {
+        actionController.submitCheat(money);
+    }
+    public void passStartOrMoneyField(){
+
+        if(player.getCurrentPosition() == 0){
+            game.setMoney(400);
+        }else if(player.getCurrentPosition() == 17){
+            game.setMoney(100);
+        }else{
+            game.setMoney(200);
+        }
+
+        actionController.moneyUpdate();
+    }
+
+    public void removePlayer(int gameId, Player player) {
+        player.setDefaulValues();
+        actionController.removePlayer(gameId, player);
+    }
+
 }

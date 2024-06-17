@@ -7,6 +7,7 @@ import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
 import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
 import com.google.gson.Gson;
 
@@ -21,6 +22,11 @@ public class ActionController {
         this.handleAction = handleAction;
         WebsocketClientController.addMessageHandler(this::onMessageReceived);
     }
+
+    public void removeMessageHandler() {
+        WebsocketClientController.removeMessageHandler(this::onMessageReceived);
+    }
+
     public void createGame(String gameName){
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.CREATE_GAME, gameName);
         String msg = WrapperHelper.toJsonFromObject(Request.ACTION, actionJsonObject);
@@ -99,13 +105,45 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
 
+    }
 
+    public void moneyUpdate(){
 
+        Player player = WebsocketClientController.getPlayer();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.UPDATE_MONEY, null, player, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
     }
 
     public void endTurn(){
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.END_TURN, null);
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void submitCheat(int money) {
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.SUBMIT_CHEAT, String.valueOf(money), WebsocketClientController.getPlayer());
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+  
+    public void reconnectToGame() {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_OK, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void discardReconnect(int gameId) {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_DISCARD, Integer.toString(gameId), WebsocketClientController.getPlayer(), null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void removePlayer(int gameId, Player player) {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_DISCARD, Integer.toString(gameId), player, null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
 

@@ -98,6 +98,14 @@ class FieldTest {
         field.setPrice(200);
         assertEquals(200, field.getPrice());
     }
+
+    @Test
+    void testCopyFrom() {
+        Field copiedField = new Field(3, "Copied Field", 300, true, FieldType.SPECIAL);
+        field.copyFrom(copiedField);
+        assertEquals(3, field.getId());
+        assertEquals("Copied Field", field.getName());
+    }
     @Test
     void testAddHouse(){
         House house = mock(House.class);

@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.model;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,11 @@ class GameTest {
 
     }
 
+    @AfterAll
+    public static void close() {
+        websocketClientController.close();
+    }
+
     @BeforeEach
     void setUp() {
         players = new ArrayList<>();
@@ -41,6 +47,15 @@ class GameTest {
         fields.add(new Field(2, "Field2", true));
 
         game = new Game(players, fields);
+    }
+
+    @Test
+    void testSetMoney(){
+        Player player = new Player("player", "100");
+        websocketClientController.when(WebsocketClientController::getPlayer).thenReturn(player);
+        Game mygame = new Game(null, null);
+        mygame.setMoney(200);
+        assertEquals(Player.START_MONEY + 200, player.getMoney());
     }
 
     @Test
@@ -138,6 +153,15 @@ class GameTest {
     }
 
     @Test
+    void testUpdateFieldOwnerNotNull(){
+        Field updateField = new Field(1, "Updated Field", true);
+        Player player = new Player("Player1", "1");
+        updateField.setOwner(player);
+        game.updateField(updateField);
+        assertEquals(player, game.getFields().get(0).getOwner());
+    }
+
+    @Test
     void testUpdatePlayer() {
         Player updatedPlayer = new Player("New Player","1");
         game.updatePlayer(updatedPlayer);
@@ -231,6 +255,23 @@ class GameTest {
         game.setPlayerTurn(players.get(0).getId());
         assertTrue(players.get(0).isOnTurn());
         assertFalse(players.get(1).isOnTurn());
+    }
+
+    @Test
+    void testUpdateHost(){
+        Player player1 = new Player("P1", "ID1");
+        player1.setHost(true);
+        Player player2 = new Player("P2", "ID2");
+
+        List<Player> players2 = new ArrayList<>();
+        players2.add(player1);
+        players2.add(player2);
+
+        Game game2 = new Game(players2, fields);
+        game2.updateHostStatus(player2.getId());
+
+        assertFalse(player1.isHost());
+        assertTrue(player2.isHost());
     }
 
 

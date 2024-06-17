@@ -1,9 +1,6 @@
 package com.example.dkt_group_beta.communication.controller;
 
-
-
 import com.example.dkt_group_beta.communication.ConnectJsonObject;
-import com.example.dkt_group_beta.communication.enums.ConnectType;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleConnect;
 
 public class ConnectController {
@@ -15,12 +12,16 @@ public class ConnectController {
 
     }
 
+    public void removeMessageHandler() {
+        WebsocketClientController.removeMessageHandler(this::onMessageReceived);
+    }
+
     private void onMessageReceived(Object connectObject) {
         if (!(connectObject instanceof ConnectJsonObject))
             return;
 
-        if (((ConnectJsonObject)connectObject).getConnectType() == ConnectType.CONNECTION_ESTABLISHED)
-            handleConnect.onConnectionEstablished();
+        ConnectJsonObject connectJsonObject = (ConnectJsonObject) connectObject;
+        handleConnect.handleConnect(connectJsonObject.getConnectType(), connectJsonObject.getGameInfo());
     }
 
 
