@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.model;
 
+import android.util.Log;
+
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 
 import java.security.SecureRandom;
@@ -42,6 +44,18 @@ public class Game {
         if (player.getMoney() > amount) {
             player.setMoney(player.getMoney() - amount);
             return true;
+        }
+        return false;
+    }
+    public boolean payTaxes(Player currentPlayer, Field field) {
+        Player owner = field.getOwner();
+        if (owner != null && !owner.getId().equals(currentPlayer.getId())) {
+            int taxAmount = field.getRent();
+            if (currentPlayer.getMoney() > taxAmount) {
+                owner.setMoney(owner.getMoney() + taxAmount);
+                currentPlayer.setMoney(currentPlayer.getMoney()-taxAmount);
+                return true;
+            }
         }
         return false;
     }
@@ -114,12 +128,20 @@ public class Game {
         Field savedField = this.fields.stream()
                 .filter(f -> f.getId() == field.getId())
                 .findAny().orElse(null);
+
+        Player savedPlayer = null;
+        if (field.getOwner()!= null){
+            savedPlayer =this.players.stream()
+                    .filter(f -> f.getId().equals(field.getOwner().getId()))
+                    .findAny().orElse(null);
+        }
+
         if (savedField == null){
             this.fields.add(field);
-        }else{
-            int index = this.fields.indexOf(savedField);
-            this.fields.set(index, field);
+            return;
         }
+        savedField.copyFrom(field);
+        savedField.setOwner(savedPlayer);
     }
     public void updatePlayer(Player player) {
         Player savedPlayer = this.players.stream()
@@ -128,10 +150,8 @@ public class Game {
         if (savedPlayer == null){
             this.players.add(player);
         }else{
-            int index = this.players.indexOf(savedPlayer);
-            player.setOnTurn(savedPlayer.isOnTurn());
-            player.setCharacterView(savedPlayer.getCharacterView());
-            this.players.set(index, player);
+            savedPlayer.copyFrom(player);
+
         }
     }
 
@@ -163,6 +183,16 @@ public class Game {
 
     public void setMoney(int money){
         player.setMoney(player.getMoney() + money);
+    }
+
+
+    public void updateHostStatus(String playerId) {
+        this.players.forEach(p -> {
+            p.setHost(false);
+            if (p.getId().equals(playerId)){
+                p.setHost(true);
+            }
+        });
     }
     public int getFieldListSize(){
         return fields.size();

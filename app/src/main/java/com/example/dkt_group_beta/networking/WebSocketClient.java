@@ -106,4 +106,8 @@ public class WebSocketClient {
     public Player getPlayer() {
         return this.player;
     }
+
+    public void removeMessageHandler(WebSocketMessageHandler<Object> onMessageReceived) {
+        this.messageHandler.remove(onMessageReceived);
+    }
 }

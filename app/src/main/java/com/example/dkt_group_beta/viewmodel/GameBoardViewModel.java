@@ -17,6 +17,7 @@ import com.example.dkt_group_beta.model.Player;
 import com.google.gson.Gson;
 
 import java.util.Arrays;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +26,8 @@ public class GameBoardViewModel {
     private GameBoardAction gameBoardAction;
     private Game game;
     private Player player;
+    private Player payerServer;
+
 
     public GameBoardViewModel(GameBoardAction gameBoardAction, Game game) {
         this.actionController = new ActionController(this::handleAction);
@@ -35,25 +38,20 @@ public class GameBoardViewModel {
 
     public void buyField(int index) {
         Field field = game.buyField(index);
-//        gameBoardAction.markBoughtField(index);
         actionController.buyField(field);
 
     }
+    public void payTaxes(Player player, Field field) {
+        boolean result = game.payTaxes(player,field);
+        if(result) {
+            actionController.payTaxes(player);
+            actionController.payTaxes(field.getOwner());
+        }
+    }
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
-        Log.d("game-card","handleAction: " + action.toString());
         if(action == Action.ROLL_DICE) {
-            Log.d("DEBUG", fromPlayer.getUsername());
-            // array zurücksetzten, popup öffnen, showbothdice
-            if (fromPlayer.getId().equals(player.getId())) {
-                return;
-            }
-            Log.d("game",""+action);
-            Gson gson = new Gson();
-            int[] diceResult = gson.fromJson(param,int[].class);
-            Log.d("game",""+ Arrays.toString(diceResult));
-            gameBoardAction.dicePopUp();
-            gameBoardAction.showBothDice(diceResult);
+            handleRollDice(param, fromPlayer);
         }
 
         if(action == Action.MOVE_PLAYER){
@@ -63,24 +61,49 @@ public class GameBoardViewModel {
         }
 
         if (action == Action.END_TURN){
-            if (player.isOnTurn()){
-                gameBoardAction.disableEndTurnButton();
-                player.setOnTurn(false);
-            }else if (player.getId().equals(fromPlayer.getId())){
-                gameBoardAction.enableDiceButton();
-                gameBoardAction.enableEndTurnButton();
-            }
-            game.setPlayerTurn(fromPlayer.getId());
-            gameBoardAction.updatePlayerStats();
+            handleEndTurn(fromPlayer);
         }
 
         if (action == Action.BUY_FIELD) {
-            game.updateField(fields.get(0));
-            if (!fromPlayer.getId().equals(player.getId()))
-                game.updatePlayer(fromPlayer);
-            gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
+            handleBuyField(fromPlayer, fields);
+        }
+
+        if(action == Action.UPDATE_MONEY){
+            game.updatePlayer(fromPlayer);
             gameBoardAction.updatePlayerStats();
         }
+        if(action == Action.PAY_TAXES){
+            if(payerServer == null) {
+                payerServer = fromPlayer;
+            }else {
+                gameBoardAction.showTaxes(payerServer, fromPlayer, Integer.parseInt(param));
+                payerServer = null;
+            }
+            game.updatePlayer(fromPlayer);
+            gameBoardAction.updatePlayerStats();
+
+        }
+
+        if (action == Action.HOST_CHANGED){
+            if (fromPlayer.getId().equals(player.getId()) && !player.isHost()) {
+                player.setHost(fromPlayer.isHost());
+            }
+            game.updateHostStatus(fromPlayer.getId());
+        }
+
+        if (action == Action.CONNECTION_LOST){
+            handleConnectionLost(fromPlayer, LocalTime.parse(param));
+        }
+
+        if (action == Action.RECONNECT_OK){
+            gameBoardAction.removeReconnectPopUp();
+        }
+
+        if (action == Action.RECONNECT_DISCARD){
+            gameBoardAction.removePlayerFromGame(fromPlayer);
+            gameBoardAction.removeReconnectPopUp();
+        }
+
         if (action == Action.RISIKO_CARD_SHOW){
             Log.d("DEBUG", fromPlayer.getUsername());
             int cardIndex = Integer.parseInt(param);
@@ -99,14 +122,43 @@ public class GameBoardViewModel {
             }
             gameBoardAction.showCardBank(cardIndex, showBtn);
         }
-        if(action == Action.UPDATE_MONEY){
-            game.getPlayers().stream()
-                    .filter(p -> p.getId().equals(fromPlayer.getId()))
-                    .findAny()
-                    .orElse(null)
-                    .setMoney(fromPlayer.getMoney());
-            gameBoardAction.updatePlayerStats();
+    }
+
+    private void handleConnectionLost(Player disconnectedPlayer, LocalTime serverTime) {
+        gameBoardAction.setPlayerDisconnected(disconnectedPlayer);
+        gameBoardAction.showDisconnectPopUp(disconnectedPlayer, serverTime);
+    }
+
+    private void handleBuyField(Player fromPlayer, List<Field> fields) {
+        game.updateField(fields.get(0));
+        if (!fromPlayer.getId().equals(player.getId()))
+            game.updatePlayer(fromPlayer);
+        gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
+        gameBoardAction.updatePlayerStats();
+    }
+
+    private void handleEndTurn(Player fromPlayer) {
+        if (player.isOnTurn()){
+            gameBoardAction.disableEndTurnButton();
+            player.setOnTurn(false);
+        }else if (player.getId().equals(fromPlayer.getId())){
+            gameBoardAction.enableDiceButton();
+            gameBoardAction.enableEndTurnButton();
         }
+        game.setPlayerTurn(fromPlayer.getId());
+        gameBoardAction.updatePlayerStats();
+    }
+
+    private void handleRollDice(String param, Player fromPlayer) {
+        Log.d("DEBUG", fromPlayer.getUsername());
+        // array zurücksetzten, popup öffnen, showbothdice
+        if (fromPlayer.getId().equals(player.getId())) {
+            return;
+        }
+        Gson gson = new Gson();
+        int[] diceResult = gson.fromJson(param,int[].class);
+        gameBoardAction.dicePopUp();
+        gameBoardAction.showBothDice(diceResult);
     }
     public void landOnRisikoCard(int cardAmount){
         int randomNumber = getRandomNumber(0,cardAmount-1);
@@ -134,21 +186,25 @@ public class GameBoardViewModel {
         actionController.endTurn();
     }
 
-    public void passStartOrMoneyField(){
+    public void submitCheat(int money) {
+        actionController.submitCheat(money);
+    }
+    public void passStartOrMoneyField() {
 
-        if(player.getCurrentPosition() == 0){
+        if (player.getCurrentPosition() == 0) {
             game.setMoney(400);
-        }else if(player.getCurrentPosition() == 17){
+        } else if (player.getCurrentPosition() == 17) {
             game.setMoney(100);
-        }else{
+        } else {
             game.setMoney(200);
         }
-        actionController.moneyUpdate();
+
+        actionController.moneyUpdate(player);
     }
 
     public void payForCard(int amount){
         game.setMoney(amount);
-        actionController.moneyUpdate();
+        actionController.moneyUpdate(player);
     }
     public void moveForCard(int fieldID, int amount){
         int fieldAmount = game.getFieldListSize();
@@ -164,6 +220,11 @@ public class GameBoardViewModel {
         actionController.movePlayer(moveAmount);
     }
 
+    public void removePlayer(int gameId, Player player) {
+        player.setDefaulValues();
+        actionController.removePlayer(gameId, player);
+    }
+
     public void addJokerCard(JokerCard joker){
         //player.addJokerCard(joker);
         gameBoardAction.updatePlayerStats();    // update the joker amount before endTurn
@@ -174,4 +235,5 @@ public class GameBoardViewModel {
                 .findAny()
                 .orElse(null).addJokerCard(joker);
         gameBoardAction.updatePlayerStats();    // update the joker amount before endTurn
-    }}
+    }
+}

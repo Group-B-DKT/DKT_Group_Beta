@@ -172,4 +172,26 @@ public class Player implements Serializable {
     public int hashCode() {
         return Objects.hash(username, id, isConnected, gameId, isReady, isHost);
     }
+
+    public void copyFrom(Player serverPlayer) {
+        this.username = serverPlayer.username;
+        this.id = serverPlayer.id;
+        this.gameId = serverPlayer.gameId;
+        this.isConnected = serverPlayer.isConnected;
+        this.money = serverPlayer.money;
+        this.currentPosition = serverPlayer.currentPosition;
+        this.isOnTurn = serverPlayer.isOnTurn;
+        this.color = serverPlayer.color;
+        this.isHost = serverPlayer.isHost;
+    }
+
+    public void setDefaulValues() {
+        this.gameId = -1;
+        this.isConnected = false;
+        this.money = START_MONEY;
+        this.currentPosition = 0;
+        this.isOnTurn = false;
+        this.color = -1;
+        this.isHost = false;
+    }
 }

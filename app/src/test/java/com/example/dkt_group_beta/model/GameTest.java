@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.model;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.enums.FieldType;
 
 class GameTest {
 
@@ -28,6 +30,11 @@ class GameTest {
 
         websocketClientController = Mockito.mockStatic(WebsocketClientController.class);
 
+    }
+
+    @AfterAll
+    public static void close() {
+        websocketClientController.close();
     }
 
     @BeforeEach
@@ -147,6 +154,15 @@ class GameTest {
     }
 
     @Test
+    void testUpdateFieldOwnerNotNull(){
+        Field updateField = new Field(1, "Updated Field", true);
+        Player player = new Player("Player1", "1");
+        updateField.setOwner(player);
+        game.updateField(updateField);
+        assertEquals(player, game.getFields().get(0).getOwner());
+    }
+
+    @Test
     void testUpdatePlayer() {
         Player updatedPlayer = new Player("New Player","1");
         game.updatePlayer(updatedPlayer);
@@ -241,6 +257,76 @@ class GameTest {
         assertTrue(players.get(0).isOnTurn());
         assertFalse(players.get(1).isOnTurn());
     }
+    @Test
+    void testPayTaxes() {
+        Player currentPlayer = new Player("CurrentPlayer", "3");
+        currentPlayer.setMoney(1000);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 30);
+        field.setOwner(fieldOwner);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertTrue(result);
+        assertEquals(currentPlayer.getMoney(), 970);
+        assertEquals(fieldOwner.getMoney(), 530);
+
+    }
+
+    @Test
+    void testPayTaxesNotEnoughMoney() {
+
+        Player currentPlayer = new Player("CurrentPlayer", "3");
+        currentPlayer.setMoney(100);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 150);
+        field.setOwner(fieldOwner);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertFalse(result);
+
+    }
 
 
+    @Test
+    void testUpdateHost(){
+        Player player1 = new Player("P1", "ID1");
+        player1.setHost(true);
+        Player player2 = new Player("P2", "ID2");
+
+        List<Player> players2 = new ArrayList<>();
+        players2.add(player1);
+        players2.add(player2);
+
+        Game game2 = new Game(players2, fields);
+        game2.updateHostStatus(player2.getId());
+
+        assertFalse(player1.isHost());
+        assertTrue(player2.isHost());
+    }
+
+    @Test
+    void testPayTaxesOwnerIsNull() {
+
+        Player currentPlayer = new Player("CurrentPlayer", "3");
+        currentPlayer.setMoney(700);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 150);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertFalse(result);
+
+    }
+    @Test
+    void testPayTaxesIdIsIdentically() {
+
+        Player currentPlayer = new Player("CurrentPlayer", "4");
+        currentPlayer.setMoney(700);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 150);
+        field.setOwner(fieldOwner);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertFalse(result);
+
+    }
  }

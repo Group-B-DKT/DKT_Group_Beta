@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +36,7 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.activities.interfaces.PopupBtnAction;
@@ -49,13 +52,15 @@ import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.model.Field;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
-public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction {
+public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction, CheatDialogFragment.OnInputListener{
     private static final String TAG = "DEBUG";
     private static final String DEF_TYPE = "drawable";
     private static final String FIELD_NAME = "field";
@@ -95,12 +100,18 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     List<Player> players;
     List<Field> fields;
+    private Sensor proximitySensor;
+    private SensorEventListener proximitySensorListener;
 
     private boolean passedStart;
 
     List<Card> cards;
     List<Card> risikoCards;
     List<Card> bankCards;
+    private PopupWindow popupReconnect;
+
+    private boolean isCountdownThreadToCancel = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,27 +125,80 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
 
 
-        character = findViewById(R.id.character);
-        btnEndTurn = findViewById(R.id.btn_endTurn);
-        rvPlayerStats = findViewById(R.id.rv_playerStats);
-
-
-        player = WebsocketClientController.getPlayer();
-
-        diceResults = new int[2];
-        endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
-
-
-        players = (List<Player>) getIntent().getSerializableExtra("players");
-        players.removeIf(p -> p.getId().equals(player.getId()));
-        players.add(player);
-        fields = (List<Field>) getIntent().getSerializableExtra("fields");
-        players.sort(Comparator.comparing(Player::getId));
-//        cards = CardCSVReader.readCards(getApplicationContext(),"risiko.csv");
+        initializeVariables();
 
         initializeFieldsImageViews();
 
         ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+        initializeCharacterModels(constraintLayout);
+
+        setPlayerAndFieldStatsOnLoaded(constraintLayout);
+
+        Game game = new Game(players, fields);
+        this.players = game.getPlayers();
+        gameBoardViewModel = new GameBoardViewModel(this, game);
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
+        createPlayerItems(game.getPlayers());
+
+        testButton = findViewById(R.id.popUpCards);
+        if (!player.isOnTurn()) {
+            disableView(testButton);
+            disableView(btnEndTurn);
+        }
+        initializeFieldImages();
+
+        testButton.setOnClickListener(v -> dicePopUp());
+        initializeEndTurnButton();
+
+        risikoCards = CardCSVReader.readCards(getApplicationContext(), "risiko.csv");
+        bankCards = CardCSVReader.readCards(getApplicationContext(), "bank.csv");
+        Log.d("DEBUG", ""+risikoCards);
+    }
+
+    private void initializeFieldImages() {
+        for (int i = 1; i <= NUMBER_OF_FIELDS; i++) {
+            int resourceId = this.getResources().getIdentifier(FIELD_NAME + i, "id", this.getPackageName());
+            ImageView imageView = findViewById(resourceId);
+            if (imageView != null) {
+                imageViews.add(imageView);
+            }
+        }
+    }
+
+    private void initializeEndTurnButton() {
+        btnEndTurn.setOnClickListener(v -> {
+            if (player.isOnTurn()){
+                gameBoardViewModel.endTurn();
+                disableView(testButton);
+                diceRolling = false;
+            }
+        });
+    }
+
+    private void setPlayerAndFieldStatsOnLoaded(ConstraintLayout constraintLayout) {
+        constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
+                                                    int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
+            for (Player p: players) {
+                setPosition(p.getCurrentPosition(), p);
+
+                ViewGroup.LayoutParams params = p.getCharacterView().getLayoutParams();
+                int size = findViewById(R.id.field1).getWidth() / 2;
+                params.width = size;
+                params.height = size;
+                p.getCharacterView().setLayoutParams(params);
+            }
+
+            for (Field f: fields) {
+                if (f.getOwner() == null)
+                    continue;
+
+                markBoughtField(f.getId() - 1, f.getOwner().getColor());
+            }
+        });
+    }
+
+    private void initializeCharacterModels(ConstraintLayout constraintLayout) {
         for (int i = 0; i < players.size(); i++) {
             final ImageView x;
             if(i == 0){
@@ -156,51 +220,48 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             x.setImageBitmap(decodeSampledBitmapFromResource(getResources(), resourceId, 200, 200));
             players.get(i).setCharacterView(x);
         }
-        constraintLayout.addOnLayoutChangeListener((View v, int left, int top, int right, int bottom,
-                                                    int oldLeft, int oldTop, int oldRight, int oldBottom)-> {
-            for (Player p: players) {
-                setPosition(p.getCurrentPosition(), p);
+    }
 
-                ViewGroup.LayoutParams params = p.getCharacterView().getLayoutParams();
-                int size = findViewById(R.id.field1).getWidth() / 2;
-                params.width = size;
-                params.height = size;
-                p.getCharacterView().setLayoutParams(params);
-            }
-        });
+    private void initializeVariables() {
+        character = findViewById(R.id.character);
+        btnEndTurn = findViewById(R.id.btn_endTurn);
+        rvPlayerStats = findViewById(R.id.rv_playerStats);
 
-        Game game = new Game(players, fields);
-        gameBoardViewModel = new GameBoardViewModel(this, game);
+        player = WebsocketClientController.getPlayer();
 
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
-        createPlayerItems(game.getPlayers());
+        diceResults = new int[2];
+        endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
 
-        testButton = findViewById(R.id.popUpCards);
-        Log.d(TAG, "IST: " + player.getUsername());
-        if (!player.isOnTurn()) {
-            disableView(testButton);
-            disableView(btnEndTurn);
-        }
-        for (int i = 1; i <= NUMBER_OF_FIELDS; i++) {
-            int resourceId = this.getResources().getIdentifier(FIELD_NAME + i, "id", this.getPackageName());
-            ImageView imageView = findViewById(resourceId);
-            if (imageView != null) {
-                imageViews.add(imageView);
-            }
+
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        if (proximitySensor == null) {
+            Toast.makeText(this, "Proximity sensor not available", Toast.LENGTH_SHORT).show();
         }
 
-        testButton.setOnClickListener(v -> dicePopUp());
-        btnEndTurn.setOnClickListener(v -> {
-            if (player.isOnTurn()){
-                gameBoardViewModel.endTurn();
-                disableView(testButton);
-                diceRolling = false;
+        proximitySensorListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                if (event.values[0] < proximitySensor.getMaximumRange()) {
+                    // Hand is near the display
+                    Toast.makeText(getApplicationContext(), "Cheat Mode Activated", Toast.LENGTH_SHORT).show();
+                    CheatDialogFragment dialog = new CheatDialogFragment();
+                    dialog.inputListener = GameBoard.this;
+                    dialog.show(getSupportFragmentManager(), "InputDialogFragment");
+                }
             }
-        });
 
-        risikoCards = CardCSVReader.readCards(getApplicationContext(), "risiko.csv");
-        bankCards = CardCSVReader.readCards(getApplicationContext(), "bank.csv");
-        Log.d("DEBUG", ""+risikoCards);
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+                // We can ignore this for now
+            }
+        };
+        players = (List<Player>) getIntent().getSerializableExtra("players");
+        players.removeIf(p -> p.getId().equals(player.getId()));
+        players.add(player);
+        fields = (List<Field>) getIntent().getSerializableExtra("fields");
+        players.sort(Comparator.comparing(Player::getId));
     }
 
     private void initializeFieldsImageViews() {
@@ -242,6 +303,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     public void markBoughtField(int index){
         markBoughtField(index, Color.rgb(255,70,0));
+    }
+
+    public void unMarkBoughtField(int index){
+        runOnUiThread(() -> {
+            ImageView imageView = imageViews.get(index);
+            if (imageView != null) {
+                imageView.setPadding(0,0 ,0,0);
+            }
+        });
     }
 
     private void createPlayerItems(List<Player> players) {
@@ -321,6 +391,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 }
                 setPosition(movePlayer.getCurrentPosition(), movePlayer);
                 animation(movePlayer, repetition - 1);
+
             }
 
             @Override
@@ -342,6 +413,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }else if (field.getFieldType() == FieldType.BANK){
             gameBoardViewModel.landOnBankCard(bankCards.size());
         }
+        if(field.getFieldType() != FieldType.ASSET &&
+                field.getOwner() != null && player.getMoney() >= field.getRent()) {
+            gameBoardViewModel.payTaxes(player, field);
+        }
+
 
         if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();
@@ -488,8 +564,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-//        if (!player.isOnTurn())
-//            return;
         // only of the pop-up window is open, it is possible to shake the phone to roll the dice
         if (isPopupWindowOpen && event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             // acceleration along x-, y- and z-axis
@@ -514,13 +588,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     protected void onResume() {
         super.onResume();
-//        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
-//                SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_NORMAL);
     }
     @Override
     protected void onPause() {
         super.onPause();
-//        sensorManager.unregisterListener(this);
+        sensorManager.unregisterListener(this);
     }
 
     public void showCard(View view, String viewID, String btnText, boolean showBtn, PopupBtnAction btnAction) {
@@ -533,10 +607,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                     boolean focusable = true;
 
                     PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-
-                    popupWindow.setTouchable(true);
-                    popupWindow.setFocusable(false);
-                    popupWindow.setOutsideTouchable(false);
+                    // disables possibility to close popup by clicking outside
+//                    popupWindow.setTouchable(true);
+//                    popupWindow.setFocusable(false);
+//                    popupWindow.setOutsideTouchable(false);
 
                     popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
@@ -554,6 +628,123 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                         disableView(btnBuy);
                     }
         });
+    }
+    @Override
+     public void showTaxes(Player payer, Player payee, int amount) {
+        runOnUiThread(()->{
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_paytaxes, null);
+            int width = WRAP_CONTENT;
+            int height = WRAP_CONTENT;
+            boolean focusable = true;
+
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+            TextView playerTaxesTextView = popupView.findViewById(R.id.txt_playerTaxes);
+            String taxesMessage = payer.getUsername() + " pay " + amount + " $ Taxes to " + payee.getUsername();
+            playerTaxesTextView.setText(taxesMessage);
+        });
+
+
+    }
+
+    @Override
+    public void showDisconnectPopUp(Player disconnectedPlayer, LocalTime serverTime){
+        final int RECONNECT_DURATION = 1 * 60; // in seconds
+
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_connection_lost, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
+
+            popupReconnect = new PopupWindow(popupView, width, height, true);
+            popupReconnect.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+
+            Button btnKickPlayer = popupView.findViewById(R.id.btn_kickPlayer);
+            if (!this.player.isHost()) {
+                disableView(btnKickPlayer);
+            }
+            btnKickPlayer.setOnClickListener(v ->
+                this.players.forEach(p -> {
+                    if (!p.isConnected()) {
+                        gameBoardViewModel.removePlayer(player.getGameId(), p);
+                    }
+                }));
+
+            TextView playerDisconnected = popupView.findViewById(R.id.txt_playerDisconnected);
+            TextView remainingTime = popupView.findViewById(R.id.txt_remainingTime);
+
+            playerDisconnected.setText(disconnectedPlayer.getUsername() + " " + getText(R.string.disconnected_player));
+            remainingTime.setText(getText(R.string.remaining_time));
+
+            int diff = LocalTime.now().toSecondOfDay() - serverTime.toSecondOfDay();
+            countdown(RECONNECT_DURATION - diff, remainingTime);
+        });
+
+    }
+
+    @Override
+    public void removeReconnectPopUp() {
+        runOnUiThread(() -> popupReconnect.dismiss());
+        isCountdownThreadToCancel = true;
+    }
+
+    @Override
+    public void removePlayerFromGame(Player fromPlayer) {
+        runOnUiThread(() -> {
+            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+
+            Player clientPlayer = this.players.stream().filter(p -> p.getId().equals(fromPlayer.getId())).findFirst().orElse(null);
+            if (clientPlayer == null)
+                return;
+
+            constraintLayout.removeView(clientPlayer.getCharacterView());
+
+            for (Field f: this.fields) {
+                if (f.getOwner() == null || !f.getOwner().getId().equals(fromPlayer.getId())) {
+                    continue;
+                }
+                f.setOwner(null);
+                unMarkBoughtField(f.getId() - 1);
+            }
+            this.players.removeIf(p -> p.getId().equals(fromPlayer.getId()));
+            this.rvPlayerStats.getAdapter().notifyDataSetChanged();
+        });
+    }
+
+    @Override
+    public void setPlayerDisconnected(Player disconnectedPlayer) {
+        this.players.forEach(p -> {
+            if (p.getId().equals(disconnectedPlayer.getId())){
+                p.setConnected(false);
+            }
+        });
+    }
+
+    private void countdown(final int startTime, TextView remainingTime) {
+        new Thread(() -> {
+            long lastTime = System.currentTimeMillis();
+            int time = startTime;
+            while (time >= 0){
+                if (System.currentTimeMillis() - lastTime >= 1000) {
+                    int min = time / 60;
+                    int sec = time % 60;
+                    String timeStr = String.format("%02d:%02d", min, sec);
+                    runOnUiThread(() -> remainingTime.setText(getText(R.string.remaining_time) + " " + timeStr));
+                    time--;
+                    lastTime = System.currentTimeMillis();
+                }
+            }
+            if (!isCountdownThreadToCancel) {
+                this.players.forEach(p -> {
+                    if (!p.isConnected()) {
+                        gameBoardViewModel.removePlayer(player.getGameId(), p);
+                    }
+                });
+            }
+            isCountdownThreadToCancel = false;
+        }).start();
     }
 
     public void setPosition(int start, Player player) {
@@ -603,6 +794,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         animation = new TranslateAnimation(0, xDelta, 0, yDelta);
 
         return animation;
+    }
+    @Override
+    public void sendCheatValue(int input) {
+        gameBoardViewModel.submitCheat(input);
     }
     public void showCardRisiko(int indexCard, boolean showBtn, Player fromPlayer) {
         Card currentCard = risikoCards.get(indexCard);

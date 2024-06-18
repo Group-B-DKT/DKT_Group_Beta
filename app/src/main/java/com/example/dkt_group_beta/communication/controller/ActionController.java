@@ -23,6 +23,11 @@ public class ActionController {
         this.handleAction = handleAction;
         WebsocketClientController.addMessageHandler(this::onMessageReceived);
     }
+
+    public void removeMessageHandler() {
+        WebsocketClientController.removeMessageHandler(this::onMessageReceived);
+    }
+
     public void createGame(String gameName){
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.CREATE_GAME, gameName);
         String msg = WrapperHelper.toJsonFromObject(Request.ACTION, actionJsonObject);
@@ -95,10 +100,15 @@ public class ActionController {
 
     }
 
-    public void moneyUpdate(){
+    public void moneyUpdate(Player player){
 
-        Player player = WebsocketClientController.getPlayer();
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.UPDATE_MONEY, null, player, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+    public void payTaxes(Player player){
+
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.PAY_TAXES, null, player, null);
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
@@ -108,6 +118,33 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
+
+    public void submitCheat(int money) {
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.SUBMIT_CHEAT, String.valueOf(money), WebsocketClientController.getPlayer());
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void reconnectToGame() {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_OK, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void discardReconnect(int gameId) {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_DISCARD, Integer.toString(gameId), WebsocketClientController.getPlayer(), null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+    public void removePlayer(int gameId, Player player) {
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_DISCARD, Integer.toString(gameId), player, null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
     public void showRisikoCard(int cardIndex){
         int gameId = WebsocketClientController.getConnectedGameId();
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RISIKO_CARD_SHOW, Integer.toString(cardIndex), WebsocketClientController.getPlayer()); // Action, card, and player send to server
