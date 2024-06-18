@@ -1,6 +1,7 @@
 package com.example.dkt_group_beta.model;
 
 import com.example.dkt_group_beta.model.enums.CardType;
+import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 
 import java.io.Serializable;
 
@@ -10,7 +11,7 @@ public class JokerCard extends Card implements Serializable {
     }
 
     @Override
-    public void doActionOfCard() {
-        getGameBoardViewModel().addJokerCard(this);
+    public void doActionOfCard(GameBoardViewModel gameBoardViewModel) {
+        gameBoardViewModel.addJokerCard(this);
     }
 }

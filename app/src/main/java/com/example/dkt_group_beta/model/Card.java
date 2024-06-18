@@ -10,8 +10,6 @@ public abstract class Card implements Serializable {
     private int amount;
     private String imageResource;
     private CardType type;
-    private GameBoardViewModel gameBoardViewModel;
-
     public Card(int id, int amount, CardType type,String imageResource) {
         this.id = id;
         this.amount = amount;
@@ -19,13 +17,7 @@ public abstract class Card implements Serializable {
         this.type = type;
     }
 
-    public void setGameBoardViewModel(GameBoardViewModel gameBoardViewModel) {
-        this.gameBoardViewModel = gameBoardViewModel;
-    }
 
-    public GameBoardViewModel getGameBoardViewModel() {
-        return gameBoardViewModel;
-    }
 
     public void setAmount(int amount) {
         this.amount = amount;
@@ -59,5 +51,5 @@ public abstract class Card implements Serializable {
         return imageResource;
     }
 
-     public abstract void doActionOfCard();
+    public abstract void doActionOfCard(GameBoardViewModel gameBoardViewModel);
 }

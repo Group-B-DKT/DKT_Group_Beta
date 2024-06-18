@@ -807,16 +807,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }
         showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(),"Ok",showBtn,() -> {
             Log.d("DEBUG", "showCardRisiko" + (currentCard instanceof MoveCard ? "moveCard":"payCard"));
-            currentCard.setGameBoardViewModel(this.gameBoardViewModel);
-            currentCard.doActionOfCard();
+            currentCard.doActionOfCard(this.gameBoardViewModel);
         });
     }
     public void showCardBank(int indexCard, boolean showBtn) {
         Card currentCard = bankCards.get(indexCard);
         showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(), "Ok",showBtn, () -> {
             Log.d("DEBUG", "showCardBank");
-            currentCard.setGameBoardViewModel(this.gameBoardViewModel);
-            currentCard.doActionOfCard();
+            currentCard.doActionOfCard(this.gameBoardViewModel);
         });
     }
 }

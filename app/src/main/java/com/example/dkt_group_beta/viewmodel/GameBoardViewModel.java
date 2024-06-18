@@ -1,9 +1,6 @@
 package com.example.dkt_group_beta.viewmodel;
 
-import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
-
 import android.util.Log;
-
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
@@ -16,10 +13,8 @@ import com.example.dkt_group_beta.model.JokerCard;
 import com.example.dkt_group_beta.model.Player;
 import com.google.gson.Gson;
 
-import java.util.Arrays;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class GameBoardViewModel {
     private ActionController actionController;
