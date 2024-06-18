@@ -32,16 +32,20 @@ public class CSVReader {
                 Log.d("DEBUG", Arrays.toString(values));
 
                 int price;
+                int rent;
                 try {
                     price = Integer.parseInt(values[2]);
+                    rent = Integer.parseInt(values[5]);
                 }catch (Exception e){
                     price = -1;
+                    rent = -1;
                 }
                 list.add(new Field(Integer.parseInt(values[0]),
                                    values[1],
                                    price,
                                    Boolean.parseBoolean(values[3]),
-                                   FieldType.valueOf(values[4])));
+                                   FieldType.valueOf(values[4]),
+                                   rent));
             }
         } catch (IOException e) {
             return list;
