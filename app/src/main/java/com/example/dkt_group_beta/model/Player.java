@@ -33,6 +33,8 @@ public class Player implements Serializable {
     private int currentPosition;
 
     private int color;
+    private boolean hasCheated;
+
 
 
     public Player(String username, String id) {
@@ -43,6 +45,7 @@ public class Player implements Serializable {
         this.money = START_MONEY;
         this.currentPosition = 0;
         this.isOnTurn = false;
+        this.hasCheated = false;
     }
 
 
@@ -134,6 +137,14 @@ public class Player implements Serializable {
         this.color = color;
     }
 
+    public boolean isHasCheated() {
+        return hasCheated;
+    }
+
+    public void setHasCheated(boolean hasCheated) {
+        this.hasCheated = hasCheated;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
@@ -157,6 +168,7 @@ public class Player implements Serializable {
         this.isOnTurn = serverPlayer.isOnTurn;
         this.color = serverPlayer.color;
         this.isHost = serverPlayer.isHost;
+        this.hasCheated = serverPlayer.hasCheated;
     }
 
     public void setDefaulValues() {
