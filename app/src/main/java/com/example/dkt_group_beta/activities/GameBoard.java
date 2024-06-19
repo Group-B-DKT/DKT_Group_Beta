@@ -1,30 +1,32 @@
 package com.example.dkt_group_beta.activities;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.ViewGroup;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
-
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,27 +35,26 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
+import com.example.dkt_group_beta.dialogues.ReportCheaterDialog;
+import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.model.enums.FieldType;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
-import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
-import com.example.dkt_group_beta.model.Field;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction, CheatDialogFragment.OnInputListener{
     private static final String TAG = "DEBUG";
@@ -116,6 +117,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             return insets;
         });
 
+        testButton = findViewById(R.id.popUpCards);
 
         initializeVariables();
 
@@ -133,7 +135,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
         createPlayerItems(game.getPlayers());
 
-        testButton = findViewById(R.id.popUpCards);
         if (!player.isOnTurn()) {
             disableView(testButton);
             disableView(btnEndTurn);
@@ -769,5 +770,25 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void sendCheatValue(int input) {
         gameBoardViewModel.submitCheat(input);
+    }
+    public void reportCheat(Player player, Player fromPlayer) {
+        gameBoardViewModel.reportCheat(player, fromPlayer);
+    }
+
+    public void reportCheater(View view) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ReportCheaterDialog dialogFragment = new ReportCheaterDialog(players, new ReportCheaterDialog.OnPlayerSelectedListener() {
+            @Override
+            public void onPlayerSelected(Player player) {
+
+            }
+
+            @Override
+            public void onPlayerConfirmed(Player player) {
+                // Handle the selection
+                reportCheat(player, GameBoard.this.player);
+            }
+        });
+        dialogFragment.show(fragmentManager, "player_selection");
     }
 }
