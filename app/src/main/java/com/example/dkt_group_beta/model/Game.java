@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.model;
 
+import android.util.Log;
+
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 
 import java.security.SecureRandom;
@@ -42,6 +44,18 @@ public class Game {
         if (player.getMoney() > amount) {
             player.setMoney(player.getMoney() - amount);
             return true;
+        }
+        return false;
+    }
+    public boolean payTaxes(Player currentPlayer, Field field) {
+        Player owner = field.getOwner();
+        if (owner != null && !owner.getId().equals(currentPlayer.getId())) {
+            int taxAmount = field.getRent();
+            if (currentPlayer.getMoney() > taxAmount) {
+                owner.setMoney(owner.getMoney() + taxAmount);
+                currentPlayer.setMoney(currentPlayer.getMoney()-taxAmount);
+                return true;
+            }
         }
         return false;
     }

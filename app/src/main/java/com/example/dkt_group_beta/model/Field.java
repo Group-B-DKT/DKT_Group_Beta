@@ -21,6 +21,7 @@ public class Field implements Serializable {
     private transient List<Building> buildings = new ArrayList<>();
 
     private FieldType fieldType;
+    private int rent;
 
     public Field(int id, String name, int price, boolean ownable, FieldType fieldType) {
         this.id = id;
@@ -28,6 +29,14 @@ public class Field implements Serializable {
         this.price = price;
         this.ownable = ownable;
         this.fieldType = fieldType;
+    }
+    public Field(int id, String name, int price, boolean ownable, FieldType fieldType, int rent) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.ownable = ownable;
+        this.fieldType = fieldType;
+        this.rent = rent;
     }
 
     public Field(int id, String name, boolean ownable) {
@@ -99,6 +108,12 @@ public class Field implements Serializable {
     }
     public void addBuilding(Building building){
         buildings.add(building);
+    }
+    public int getRent() {
+        return rent;
+    }
+    public void setRent(int rent) {
+        this.rent = rent;
     }
 
     public void copyFrom(Field field) {
