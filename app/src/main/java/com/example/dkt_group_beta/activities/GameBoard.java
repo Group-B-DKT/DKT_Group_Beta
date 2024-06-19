@@ -1,5 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
+import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
@@ -232,6 +233,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         proximitySensorListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
+                Log.d("SE", event.values + "");
                 if (event.values[0] < proximitySensor.getMaximumRange()) {
                     // Hand is near the display
                     Toast.makeText(getApplicationContext(), "Cheat Mode Activated", Toast.LENGTH_SHORT).show();
@@ -246,6 +248,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 // We can ignore this for now
             }
         };
+        sensorManager.registerListener(proximitySensorListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         players = (List<Player>) getIntent().getSerializableExtra("players");
         players.removeIf(p -> p.getId().equals(player.getId()));
         players.add(player);
@@ -371,11 +375,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             @Override
             public void onAnimationEnd(Animation animation) {
+                Log.d(TAG, "GameBoard::onAnimationEnd/ " + movePlayer.getCurrentPosition());
                 animation.cancel();
-                movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
-                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS) {
+                if (movePlayer.getCurrentPosition() + 1 >= NUMBER_OF_FIELDS) {
                     movePlayer.setCurrentPosition(0);
                     passedStart = true;
+                }else{
+                    movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
                 }
                 setPosition(movePlayer.getCurrentPosition(), movePlayer);
                 animation(movePlayer, repetition - 1);
@@ -605,7 +611,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
      public void showTaxes(Player payer, Player payee, int amount) {
         runOnUiThread(()->{
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = inflater.inflate(R.layout.popup_paytaxes, null);
+            View popupView = inflater.inflate(R.layout.popup_info_text, null);
             int width = WRAP_CONTENT;
             int height = WRAP_CONTENT;
             boolean focusable = true;
@@ -615,9 +621,31 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             TextView playerTaxesTextView = popupView.findViewById(R.id.txt_playerTaxes);
             String taxesMessage = payer.getUsername() + " pay " + amount + " $ Taxes to " + payee.getUsername();
             playerTaxesTextView.setText(taxesMessage);
+
+            popupView.findViewById(R.id.btn_closeInfoPopup).setOnClickListener(v -> popupWindow.dismiss());
         });
 
 
+    }
+
+    @Override
+    public void showCheaterDetectedPopUp(Player cheater, Player detective) {
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_info_text, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
+            boolean focusable = true;
+
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+
+            TextView playerTaxesTextView = popupView.findViewById(R.id.txt_playerTaxes);
+            String taxesMessage = String.format(getString(R.string.txt_cheater_detected), cheater.getUsername(), detective.getUsername());
+            playerTaxesTextView.setText(taxesMessage);
+
+            popupView.findViewById(R.id.btn_closeInfoPopup).setOnClickListener(v -> popupWindow.dismiss());
+        });
     }
 
     @Override
@@ -775,18 +803,19 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         gameBoardViewModel.reportCheat(player, fromPlayer);
     }
 
-    public void reportCheater(View view) {
+    public void reportCheater() {
         FragmentManager fragmentManager = getSupportFragmentManager();
         ReportCheaterDialog dialogFragment = new ReportCheaterDialog(players, new ReportCheaterDialog.OnPlayerSelectedListener() {
             @Override
             public void onPlayerSelected(Player player) {
-
+                if (player.isHasCheated()) {
+                    reportCheat(player, GameBoard.this.player);
+                }
             }
 
             @Override
             public void onPlayerConfirmed(Player player) {
-                // Handle the selection
-                reportCheat(player, GameBoard.this.player);
+                // Not used
             }
         });
         dialogFragment.show(fragmentManager, "player_selection");
