@@ -39,4 +39,5 @@
     <string name="report_cheater">Report Cheater</string>
     <string name="submit">Submit</string>
     <string name="choose_the_cheating_player">Choose the cheating player</string>
+    <string name="txt_cheater_detected">"Cheater: %s Detected by %s"</string>
 </resources>
