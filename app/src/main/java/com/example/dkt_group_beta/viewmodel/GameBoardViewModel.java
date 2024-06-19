@@ -96,6 +96,11 @@ public class GameBoardViewModel {
             gameBoardAction.removePlayerFromGame(fromPlayer);
             gameBoardAction.removeReconnectPopUp();
         }
+
+        if (action == Action.REPORT_CHEAT){
+            Player cheater = game.getPlayerById(param);
+            gameBoardAction.showCheaterDetectedPopUp(cheater, fromPlayer);
+        }
     }
 
     private void handleConnectionLost(Player disconnectedPlayer, LocalTime serverTime) {
