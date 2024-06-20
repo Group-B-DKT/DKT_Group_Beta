@@ -18,4 +18,5 @@ public interface GameBoardAction {
     void removeReconnectPopUp();
     void removePlayerFromGame(Player fromPlayer);
     void setPlayerDisconnected(Player disconnectedPlayer);
+    void disableDiceButton();
 }
