@@ -1,9 +1,9 @@
 package com.example.dkt_group_beta.model;
 
 
+import java.io.Serializable;
 
-
-public class Building {
+public class Building implements Serializable {
     private int price;
     private int position;
 
