@@ -106,11 +106,8 @@ public class ActionController {
         WebsocketClientController.sendToServer(msg);
     }
 
-    public void skipField(){
-        Player player = WebsocketClientController.getPlayer();
-        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.SKIP_FIELD, null, player, null);
-        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
-        WebsocketClientController.sendToServer(msg);
+    public void updatePlayer(){
+      moneyUpdate();
     }
 
     public void endTurn(){
@@ -154,5 +151,12 @@ public class ActionController {
 
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
         handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer(), actionJsonObject.getFields());
+    }
+
+    public void updateRoundsToSkip(int round) {
+        Player player = WebsocketClientController.getPlayer();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.UPDATE_ROUNDS_TO_SKIP, Integer.toString(round), player, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
     }
 }
