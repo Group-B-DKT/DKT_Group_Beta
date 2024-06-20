@@ -2,7 +2,8 @@ package com.example.dkt_group_beta.model;
 
 
 
-public class House extends Building{
+
+public class House extends Building {
     private static final int HOUSE_PRICE = 200;
     private static final int MAX_AMOUNT = 4;
 

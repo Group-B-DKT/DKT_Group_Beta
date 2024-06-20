@@ -1,6 +1,6 @@
 package com.example.dkt_group_beta.model;
 
-import android.util.Log;
+
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 
