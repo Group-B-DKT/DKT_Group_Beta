@@ -77,6 +77,13 @@ public class GameBoardViewModel {
             gameBoardAction.removePlayerFromGame(fromPlayer);
             gameBoardAction.removeReconnectPopUp();
         }
+
+        if(action == Action.UPDATE_ROUNDS_TO_SKIP){
+            if(player.getId().equals(fromPlayer.getId())){
+                player.setRoundsToSkip(fromPlayer.getRoundsToSkip());
+                movePlayer(Integer.parseInt(param));
+            }
+        }
     }
 
     private void handleConnectionLost(Player disconnectedPlayer, LocalTime serverTime) {
@@ -93,10 +100,20 @@ public class GameBoardViewModel {
     }
 
     private void handleEndTurn(Player fromPlayer) {
+        if(player.getId().equals(fromPlayer.getId()) && player.getRoundsToSkip() > 0 ){
+            player.setRoundsToSkip(player.getRoundsToSkip()-1);
+            endTurn();
+            gameBoardAction.disableEndTurnButton();
+            gameBoardAction.disableDiceButton();
+            actionController.updatePlayer();
+            return;
+        }
+        boolean skipRound = false;
         if (player.isOnTurn()){
             gameBoardAction.disableEndTurnButton();
             player.setOnTurn(false);
         }else if (player.getId().equals(fromPlayer.getId())){
+
             gameBoardAction.enableDiceButton();
             gameBoardAction.enableEndTurnButton();
         }
@@ -120,15 +137,9 @@ public class GameBoardViewModel {
         return game.getRandomNumber(min,max);
     }
 
-    public void rollDice(int[] diceResults){
-        actionController.diceRolled(diceResults);
-    }
+    public void rollDice(int[] diceResults){actionController.diceRolled(diceResults);}
 
-    public void movePlayer(int dice){
-
-        actionController.movePlayer(dice);
-
-    }
+    public void movePlayer(int dice){ actionController.movePlayer(dice);}
     public void endTurn() {
         actionController.endTurn();
     }
@@ -149,8 +160,10 @@ public class GameBoardViewModel {
         actionController.moneyUpdate();
     }
 
-    public void skipRound(){
-        actionController.skipField();
+   public void setRoundsToSkip(int round){
+        player.setRoundsToSkip(3);
+        actionController.updateRoundsToSkip(round);
+       // actionController.updatePlayer();
     }
 
     public void removePlayer(int gameId, Player player) {
