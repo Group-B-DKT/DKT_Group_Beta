@@ -2,6 +2,7 @@ package com.example.dkt_group_beta.activities.interfaces;
 
 import android.view.View;
 
+import com.example.dkt_group_beta.model.Building;
 import com.example.dkt_group_beta.model.Player;
 
 import java.time.LocalTime;
@@ -21,4 +22,5 @@ public interface GameBoardAction {
     void removePlayerFromGame(Player fromPlayer);
     void setPlayerDisconnected(Player disconnectedPlayer);
     void showTaxes(Player payer, Player payee, int amount);
+    void placeBuilding(int fieldIndex, Building building, int numberOfBuildings);
 }

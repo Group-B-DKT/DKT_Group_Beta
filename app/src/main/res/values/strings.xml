@@ -7,7 +7,7 @@
     <string name="connection">Search Games</string>
     <string name="lobby_header">Game Lobby</string>
     <string name="Login">Login</string>
-    <string name="ip_address">ws://10.0.0.191:8080/websocket-example-handler</string>
+    <string name="ip_address">ws://143.205.196.128:8080/websocket-example-handler</string>
 <!--    <string name="ip_address">ws://143.205.184.114:8080/websocket-example-handler</string>-->
     <string name="search_for_games">Search for Games</string>
     <string name="games">Games</string>

@@ -46,7 +46,10 @@ import com.example.dkt_group_beta.communication.controller.WebsocketClientContro
 import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
 import com.example.dkt_group_beta.dialogues.ReportCheaterDialog;
 import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.model.Building;
 import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.Hotel;
+import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.model.enums.FieldType;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
@@ -54,7 +57,9 @@ import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction, CheatDialogFragment.OnInputListener{
     private static final String TAG = "DEBUG";
@@ -104,6 +109,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private PopupWindow popupReconnect;
 
     private boolean isCountdownThreadToCancel = false;
+    Button build;
 
 
     @Override
@@ -118,6 +124,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
 
         testButton = findViewById(R.id.popUpCards);
+        character = findViewById(R.id.character);
+        btnEndTurn = findViewById(R.id.btn_endTurn);
+        rvPlayerStats = findViewById(R.id.rv_playerStats);
+        build = findViewById(R.id.build_button);
+
+        player = WebsocketClientController.getPlayer();
 
         initializeVariables();
 
@@ -142,6 +154,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         initializeFieldImages();
 
         testButton.setOnClickListener(v -> dicePopUp());
+        build.setOnClickListener(v -> {
+            if (player.isOnTurn()) {
+                buildPopUp(player);
+            }
+        });
         initializeEndTurnButton();
     }
 
@@ -445,6 +462,120 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             testButton.setLayoutParams(params);
         });
     }
+    public void buildPopUp(Player player) {
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.activity_build, null);
+
+
+            int width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            int height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            boolean focusable = true;
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+
+
+            Button buildButton = popupView.findViewById(R.id.buildButton);
+            buildButton.setOnClickListener(v -> {
+                getOwnedFields(player);
+                popupWindow.dismiss();
+            });
+        });
+    }
+    private void getOwnedFields(Player player) {
+        for (Field field : fields) {
+            int fieldIndex = fields.indexOf(field);
+            if (field.getOwner() != null && field.getOwner().getId().equals(player.getId()) && field.getFieldType() == FieldType.NORMAL) {
+                enableFieldClick(fieldIndex, player);
+            }
+        }
+    }
+
+    private void enableFieldClick(int index, Player player) {
+        ImageView imageView = imageViews.get(index);
+        if (imageView != null) {
+            imageView.setOnClickListener(v -> {
+                buildHouse(player, index);
+            });
+        }
+    }
+    private void buildHouse(Player player, int fieldIndex) {
+        Field field = fields.get(fieldIndex);
+        House house = new House(House.getHousePrice(), fieldIndex);
+        gameBoardViewModel.buyBuilding(player, house, field);
+    }
+
+    private Map<Integer, List<ImageView>> fieldHousesMap = new HashMap<>();
+    @Override
+    public void placeBuilding(int fieldIndex, Building building, int numberOfBuildings) {
+        runOnUiThread(() -> {
+            ImageView buildingView = new ImageView(this);
+            int resourceId = building instanceof House ? R.drawable.house : R.drawable.hotel;
+            buildingView.setImageResource(resourceId);
+
+
+            int houseWidth = 50;
+            int houseHeight = 50;
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(houseWidth, houseHeight);
+            buildingView.setLayoutParams(params);
+
+            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+            constraintLayout.addView(buildingView);
+
+            if(building instanceof Hotel){
+                removeHousesFromField(fieldIndex, 4);
+            } else if (building instanceof House) {
+                addHouse(fieldIndex, buildingView);
+            }
+
+            int[] position = getPositionFromView(imageViews.get(fieldIndex));
+
+
+            int xOffset = 10;
+            int yOffset = 10;
+            int xMult = 1;
+            int yMult = 1;
+            if (numberOfBuildings == 2){
+                xMult = 5;
+            }
+            else if (numberOfBuildings == 3){
+                yMult = 5;
+            }
+            else if(numberOfBuildings == 4){
+                xMult = 5;
+                yMult = 5;
+            }
+            buildingView.setX(position[0] + (float) (xOffset*xMult));
+            buildingView.setY(position[1] + (float) (yOffset*yMult));
+        });
+
+    }
+
+    private void addHouse (int fieldIndex, ImageView houseView){
+        List<ImageView> houseViews = fieldHousesMap.get(fieldIndex);
+        if (houseViews == null){
+            houseViews = new ArrayList<>();
+            fieldHousesMap.put(fieldIndex, houseViews);
+        }
+        houseViews.add(houseView);
+    }
+    private void removeHousesFromField(int fieldIndex, int numberOfHouses) {
+        List<ImageView> houseViews = fieldHousesMap.get(fieldIndex);
+        if (houseViews != null && houseViews.size() >= numberOfHouses) {
+            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+            for (int i = 0; i < numberOfHouses; i++) {
+                ImageView houseView = houseViews.get(i);
+                constraintLayout.removeView(houseView);
+            }
+            houseViews.subList(0, numberOfHouses).clear();
+            if (houseViews.isEmpty()) {
+                fieldHousesMap.remove(fieldIndex);
+            }
+        }
+    }
+
 
     public void dicePopUp() {
         runOnUiThread(() -> {
