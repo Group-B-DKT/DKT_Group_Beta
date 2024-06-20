@@ -221,7 +221,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
 
 
-        testButton.setOnClickListener(v -> dicePopUp());
+        //testButton.setOnClickListener(v -> dicePopUp());
         btnEndTurn.setOnClickListener(v -> {
             if (player.isOnTurn()){
                 gameBoardViewModel.endTurn();
@@ -358,17 +358,18 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void animation(Player movePlayer, int repetition) {
 
-
         ImageView characterImageView = movePlayer.getCharacterView();
 
         if (repetition == 0) {
-            if (movePlayer.getId().equals(player.getId()))
+            if (movePlayer.getId().equals(player.getId())) {
                 checkEndFieldPosition(passedStart);
+                passedStart = false;
+            }
             return;
         }
 
         Animation animation = getAnimation(movePlayer);
-        animation.setDuration(500); // Dauer basierend auf Anzahl der Schritte
+        animation.setDuration(1000); // Dauer basierend auf Anzahl der Schritte
         animation.setRepeatCount(0); // Keine Wiederholung, da die Position manuell aktualisiert wird
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -404,8 +405,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
         }
-        if(passedStart) {
+       if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();
+       }
+        if(player.getCurrentPosition() == 8){
+            gotToJail(player);
         }
 
     }
@@ -676,6 +680,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
     }
 
+    @Override
+    public void disableDiceButton() {
+        runOnUiThread(()-> disableView(testButton));
+    }
+
     private void countdown(final int startTime, TextView remainingTime) {
         new Thread(() -> {
             long lastTime = System.currentTimeMillis();
@@ -756,15 +765,18 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     public void gotToJail(Player playerInJail){
 
+
+        //player.setRoundsToSkip(3);
         int currentposition = playerInJail.getCurrentPosition();
         int jail = 24;
+        int round = 0;
         if(currentposition < 24){
-            animation(player, jail - currentposition);
+            round = jail-currentposition;
         }else{ //current position > 24
-            int jailFieldNumber = jail + (30 - currentposition); //goal: field 24, to reach this field he has to go till start + 24 fields
-            animation(player, jailFieldNumber);
+            round= jail + (30 - currentposition); //goal: field 24, to reach this field he has to go till start + 24 fields
         }
-        player.setRoundsToSkip(3);
+
+        gameBoardViewModel.setRoundsToSkip(round);
     }
 
 
