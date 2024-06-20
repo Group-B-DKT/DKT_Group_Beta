@@ -153,6 +153,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         initializeFieldImages();
 
         testButton.setOnClickListener(v -> dicePopUp());
+        build.setOnClickListener(v -> {
+            if (player.isOnTurn()) {
+                buildPopUp(player);
+            }
+        });
         initializeEndTurnButton();
     }
 
@@ -233,20 +238,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
 
 
-        testButton.setOnClickListener(v -> dicePopUp());
-
-        build.setOnClickListener(v -> {
-            if (player.isOnTurn()) {
-                buildPopUp(player);
-            }
-        });
-        btnEndTurn.setOnClickListener(v -> {
-            if (player.isOnTurn()){
-                gameBoardViewModel.endTurn();
-                disableView(testButton);
-                diceRolling = false;
-            }
-        });
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
@@ -422,9 +413,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
         }
+        if(field.getFieldType() != FieldType.ASSET &&
+                field.getOwner() != null && player.getMoney() >= field.getRent()) {
+            gameBoardViewModel.payTaxes(player, field);
+        }
+
 
         if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();
+            this.passedStart = false;
         }
 
     }
@@ -733,6 +730,24 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             gameBoardViewModel.buyField(player.getCurrentPosition());
             popupWindow.dismiss();
         });
+    }
+    @Override
+     public void showTaxes(Player payer, Player payee, int amount) {
+        runOnUiThread(()->{
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_paytaxes, null);
+            int width = WRAP_CONTENT;
+            int height = WRAP_CONTENT;
+            boolean focusable = true;
+
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+            TextView playerTaxesTextView = popupView.findViewById(R.id.txt_playerTaxes);
+            String taxesMessage = payer.getUsername() + " pay " + amount + " $ Taxes to " + payee.getUsername();
+            playerTaxesTextView.setText(taxesMessage);
+        });
+
+
     }
 
     @Override

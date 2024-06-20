@@ -20,6 +20,7 @@ public class GameBoardViewModel {
     private GameBoardAction gameBoardAction;
     private Game game;
     private Player player;
+    private Player payerServer;
 
 
     public GameBoardViewModel(GameBoardAction gameBoardAction, Game game) {
@@ -31,9 +32,15 @@ public class GameBoardViewModel {
 
     public void buyField(int index) {
         Field field = game.buyField(index);
-//        gameBoardAction.markBoughtField(index);
         actionController.buyField(field);
 
+    }
+    public void payTaxes(Player player, Field field) {
+        boolean result = game.payTaxes(player,field);
+        if(result) {
+            actionController.payTaxes(player);
+            actionController.payTaxes(field.getOwner());
+        }
     }
     public void buyBuilding(Player player, House house, Field field){
         boolean building = game.buyHouse(player, house, field);
@@ -68,6 +75,17 @@ public class GameBoardViewModel {
         if(action == Action.UPDATE_MONEY){
             game.updatePlayer(fromPlayer);
             gameBoardAction.updatePlayerStats();
+        }
+        if(action == Action.PAY_TAXES){
+            if(payerServer == null) {
+                payerServer = fromPlayer;
+            }else {
+                gameBoardAction.showTaxes(payerServer, fromPlayer, Integer.parseInt(param));
+                payerServer = null;
+            }
+            game.updatePlayer(fromPlayer);
+            gameBoardAction.updatePlayerStats();
+
         }
 
         if (action == Action.HOST_CHANGED){
@@ -138,8 +156,6 @@ public class GameBoardViewModel {
         gameBoardAction.showBothDice(diceResult);
     }
 
-
-
     public int getRandomNumber(int min, int max){
         return game.getRandomNumber(min,max);
     }
@@ -170,12 +186,12 @@ public class GameBoardViewModel {
             game.setMoney(200);
         }
 
-        actionController.moneyUpdate();
+        actionController.moneyUpdate(player);
+
     }
 
     public void removePlayer(int gameId, Player player) {
         player.setDefaulValues();
         actionController.removePlayer(gameId, player);
     }
-
 }

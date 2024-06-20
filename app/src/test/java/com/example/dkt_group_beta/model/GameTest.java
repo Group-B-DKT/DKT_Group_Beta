@@ -14,6 +14,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.enums.FieldType;
 
 class GameTest {
 
@@ -256,6 +257,35 @@ class GameTest {
         assertTrue(players.get(0).isOnTurn());
         assertFalse(players.get(1).isOnTurn());
     }
+    @Test
+    void testPayTaxes() {
+        Player currentPlayer = new Player("CurrentPlayer", "3");
+        currentPlayer.setMoney(1000);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 30);
+        field.setOwner(fieldOwner);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertTrue(result);
+        assertEquals(currentPlayer.getMoney(), 970);
+        assertEquals(fieldOwner.getMoney(), 530);
+
+    }
+
+    @Test
+    void testPayTaxesNotEnoughMoney() {
+
+        Player currentPlayer = new Player("CurrentPlayer", "3");
+        currentPlayer.setMoney(100);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 150);
+        field.setOwner(fieldOwner);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertFalse(result);
+
+    }
+
 
     @Test
     void testUpdateHost(){
@@ -274,5 +304,29 @@ class GameTest {
         assertTrue(player2.isHost());
     }
 
+    @Test
+    void testPayTaxesOwnerIsNull() {
 
+        Player currentPlayer = new Player("CurrentPlayer", "3");
+        currentPlayer.setMoney(700);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 150);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertFalse(result);
+
+    }
+    @Test
+    void testPayTaxesIdIsIdentically() {
+
+        Player currentPlayer = new Player("CurrentPlayer", "4");
+        currentPlayer.setMoney(700);
+        Player fieldOwner = new Player("FieldOwner", "4");
+        fieldOwner.setMoney(500);
+        Field field = new Field(1, "Field1", 200, true, FieldType.NORMAL, 150);
+        field.setOwner(fieldOwner);
+        boolean result = game.payTaxes(currentPlayer, field);
+        assertFalse(result);
+
+    }
  }

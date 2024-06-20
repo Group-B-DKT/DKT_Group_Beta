@@ -22,6 +22,7 @@ public class Field implements Serializable {
     private List<House> houses;
 
     private FieldType fieldType;
+    private int rent;
 
     public Field(int id, String name, int price, boolean ownable, FieldType fieldType) {
         this.id = id;
@@ -30,6 +31,14 @@ public class Field implements Serializable {
         this.ownable = ownable;
         this.fieldType = fieldType;
         this.houses = new ArrayList<>();
+    }
+    public Field(int id, String name, int price, boolean ownable, FieldType fieldType, int rent) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.ownable = ownable;
+        this.fieldType = fieldType;
+        this.rent = rent;
     }
 
     public Field(int id, String name, boolean ownable) {
@@ -101,6 +110,12 @@ public class Field implements Serializable {
         for (int i = 0; i < numberOfHousesToRemove; i++){
             houses.remove(house);
         }
+    }
+    public int getRent() {
+        return rent;
+    }
+    public void setRent(int rent) {
+        this.rent = rent;
     }
 
     public void copyFrom(Field field) {
