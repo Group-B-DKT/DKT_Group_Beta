@@ -157,6 +157,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         build.setOnClickListener(v -> {
             if (player.isOnTurn()) {
                 buildPopUp(player);
+                updatePlayerStats();
             }
         });
         initializeEndTurnButton();
@@ -263,6 +264,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 // We can ignore this for now
             }
         };
+        sensorManager.registerListener(proximitySensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_NORMAL);
         players = (List<Player>) getIntent().getSerializableExtra("players");
         players.removeIf(p -> p.getId().equals(player.getId()));
         players.add(player);
@@ -705,6 +707,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         super.onResume();
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+
+        sensorManager.registerListener(proximitySensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_NORMAL);
     }
     @Override
     protected void onPause() {
@@ -901,6 +905,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void sendCheatValue(int input) {
         gameBoardViewModel.submitCheat(input);
+        player.setMoney(input + player.getMoney());
+        updatePlayerStats();
     }
     public void reportCheat(Player player, Player fromPlayer) {
         gameBoardViewModel.reportCheat(player, fromPlayer);
@@ -913,7 +919,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             public void onPlayerSelected(Player player) {
 
             }
-
             @Override
             public void onPlayerConfirmed(Player player) {
                 // Handle the selection
