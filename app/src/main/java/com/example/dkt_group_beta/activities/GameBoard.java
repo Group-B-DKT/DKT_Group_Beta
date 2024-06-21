@@ -919,7 +919,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             public void onPlayerSelected(Player player) {
 
             }
-
             @Override
             public void onPlayerConfirmed(Player player) {
                 // Handle the selection
