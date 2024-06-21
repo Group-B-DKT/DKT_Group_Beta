@@ -905,7 +905,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void sendCheatValue(int input) {
         gameBoardViewModel.submitCheat(input);
-        player.setMoney(input + player.getMoney());
         updatePlayerStats();
     }
     public void reportCheat(Player player, Player fromPlayer) {
