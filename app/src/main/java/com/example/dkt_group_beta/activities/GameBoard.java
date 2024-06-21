@@ -408,7 +408,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
        if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();
        }
-        if(player.getCurrentPosition() == 8){
+        if(player.getCurrentPosition() == 9){
             gotToJail(player);
         }
 
