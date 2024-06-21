@@ -61,7 +61,7 @@ public class ReportCheaterDialog extends DialogFragment {
 
         confirmButton.setOnClickListener(v -> {
             if (listener != null && selectedPlayer != null) {
-                listener.onPlayerSelected(selectedPlayer);
+                listener.onPlayerConfirmed(selectedPlayer);
             }
             dismiss();
         });
