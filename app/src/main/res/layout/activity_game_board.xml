@@ -470,12 +470,12 @@
             android:layout_centerHorizontal="true"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="96dp"
+            android:layout_marginBottom="64dp"
             android:text="Um zu BAUEN klicken Sie auf die hervorgehobenen Felder"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -485,12 +485,13 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="5dp"
             app:layout_constraintBottom_toTopOf="@+id/build_text_view"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/build_button" />
+            app:layout_constraintTop_toBottomOf="@id/sell_button"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/build_button"
@@ -503,8 +504,26 @@
             android:backgroundTint="@android:color/holo_green_dark"
             android:text="BAUEN"
             app:cornerRadius="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/sell_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/sell_button"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="44dp"
+            android:layout_marginEnd="20dp"
+            android:backgroundTint="#F44336"
+            android:text="VERKAUFEN"
+            app:cornerRadius="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/rv_playerStats"
+            app:layout_constraintEnd_toEndOf="@id/build_button"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
