@@ -6,7 +6,7 @@
     android:background="@color/layout_info">
 
     <LinearLayout
-        android:layout_width="180dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:orientation="vertical"
@@ -51,7 +51,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
-            android:text="Roll"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:text="ROLL"
             android:textColor="@color/white" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

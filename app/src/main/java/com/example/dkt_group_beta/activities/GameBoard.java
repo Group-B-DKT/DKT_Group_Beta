@@ -61,6 +61,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction, CheatDialogFragment.OnInputListener{
     private static final String TAG = "DEBUG";
@@ -618,7 +619,18 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             if (!player.isOnTurn()) {
                 rollButton.setText("CLOSE");
                 rollButton.setOnClickListener(v -> popupWindow.dismiss());
-                new ThreadTimer(4000, () -> runOnUiThread(() -> popupWindow.dismiss())).start();
+                new ThreadTimer(4000, new TimerElapsedEvent() {
+                    @Override
+                    public void onTimerElapsed() {
+                        runOnUiThread(() -> popupWindow.dismiss());
+                    }
+                    @Override
+                    public void onSecondElapsed(int secondsRemaining) {
+                        runOnUiThread(() ->
+                            rollButton.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                        );
+                    }
+                }).start();
             }
         });
     }
@@ -754,9 +766,22 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             String taxesMessage = payer.getUsername() + " pay " + amount + " $ Taxes to " + payee.getUsername();
             playerTaxesTextView.setText(taxesMessage);
 
-            popupView.findViewById(R.id.btn_closeInfoPopup).setOnClickListener(v -> popupWindow.dismiss());
+            Button btn_close = popupView.findViewById(R.id.btn_closeInfoPopup);
+            btn_close.setOnClickListener(v -> popupWindow.dismiss());
 
-            new ThreadTimer(5000, () -> runOnUiThread(() -> popupWindow.dismiss())).start();
+            new ThreadTimer(5000, new TimerElapsedEvent() {
+                @Override
+                public void onTimerElapsed() {
+                    runOnUiThread(() -> popupWindow.dismiss());
+                }
+
+                @Override
+                public void onSecondElapsed(int secondsRemaining) {
+                    runOnUiThread(() ->
+                        btn_close.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                    );
+                }
+            }).start();
         });
 
 
@@ -778,8 +803,21 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             String taxesMessage = String.format(getString(R.string.txt_cheater_detected), cheater.getUsername(), detective.getUsername());
             playerTaxesTextView.setText(taxesMessage);
 
-            popupView.findViewById(R.id.btn_closeInfoPopup).setOnClickListener(v -> popupWindow.dismiss());
-            new ThreadTimer(5000, () -> runOnUiThread(() -> popupWindow.dismiss())).start();
+            Button btnClose = popupView.findViewById(R.id.btn_closeInfoPopup);
+            btnClose.setOnClickListener(v -> popupWindow.dismiss());
+            new ThreadTimer(5000, new TimerElapsedEvent() {
+                @Override
+                public void onTimerElapsed() {
+                    runOnUiThread(() -> popupWindow.dismiss());
+                }
+
+                @Override
+                public void onSecondElapsed(int secondsRemaining) {
+                    runOnUiThread(() ->
+                        btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                    );
+                }
+            }).start();
         });
     }
 
@@ -940,7 +978,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     public void reportCheater(View v) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ReportCheaterDialog dialogFragment = new ReportCheaterDialog(players, new ReportCheaterDialog.OnPlayerSelectedListener() {
+
+        List playersWithoutMe = this.players.stream()
+                .filter(p -> !p.getId().equals(player.getId()))
+                .collect(Collectors.toList());
+        ReportCheaterDialog dialogFragment = new ReportCheaterDialog(playersWithoutMe, new ReportCheaterDialog.OnPlayerSelectedListener() {
             @Override
             public void onPlayerSelected(Player player) {
                 // not used
@@ -948,9 +990,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
             @Override
             public void onPlayerConfirmed(Player player) {
-                if (player.isHasCheated()) {
-                    reportCheat(player, GameBoard.this.player);
-                }
+                reportCheat(player, GameBoard.this.player);
             }
         });
         dialogFragment.show(fragmentManager, "player_selection");
