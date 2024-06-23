@@ -110,6 +110,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     private boolean isCountdownThreadToCancel = false;
     Button build;
+    Button sell;
 
 
     @Override
@@ -128,6 +129,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         btnEndTurn = findViewById(R.id.btn_endTurn);
         rvPlayerStats = findViewById(R.id.rv_playerStats);
         build = findViewById(R.id.build_button);
+        sell = findViewById(R.id.sell_button);
 
         player = WebsocketClientController.getPlayer();
 
@@ -157,6 +159,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         build.setOnClickListener(v -> {
             if (player.isOnTurn()) {
                 buildPopUp(player);
+                updatePlayerStats();
+            }
+        });
+        sell.setOnClickListener(v -> {
+            if (player.isOnTurn()) {
+                sellPopUp(player);
                 updatePlayerStats();
             }
         });
@@ -508,6 +516,27 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         House house = new House(House.getHousePrice(), fieldIndex);
         gameBoardViewModel.buyBuilding(player, house, field);
     }
+    private void getOwnedFieldsWithHouses(Player player) {
+        for (Field field : fields) {
+            int fieldIndex = fields.indexOf(field);
+            if (field.getOwner() != null && field.getOwner().getId().equals(player.getId()) && field.getFieldType() == FieldType.NORMAL && !field.getHouses().isEmpty()) {
+                enableFieldClickForSelling(fieldIndex, player);
+            }
+        }
+    }
+    private void enableFieldClickForSelling(int index, Player player) {
+        ImageView imageView = imageViews.get(index);
+        if (imageView != null) {
+            imageView.setOnClickListener(v -> {
+                sellHouse(player, index);
+            });
+        }
+    }
+    private void sellHouse(Player player, int fieldIndex) {
+        Field field = fields.get(fieldIndex);
+        House house = field.getHouses().get(0); // Get the first house from the list
+        gameBoardViewModel.sellBuilding(player, house, field);
+    }
 
     private Map<Integer, List<ImageView>> fieldHousesMap = new HashMap<>();
     @Override
@@ -554,6 +583,19 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
 
     }
+    @Override
+    public void deleteBuilding(int fieldIndex, Building building, int numberOfBuildings) {
+        runOnUiThread(() -> {
+            if (building instanceof House) {
+                removeHousesFromField(fieldIndex, 1);
+            } else if (building instanceof Hotel) {
+                // Remove the hotel view from the UI
+                ImageView hotelView = fieldHousesMap.get(fieldIndex).get(0);
+                ((ViewGroup) hotelView.getParent()).removeView(hotelView);
+                fieldHousesMap.get(fieldIndex).remove(hotelView);
+            }
+        });
+    }
 
     private void addHouse (int fieldIndex, ImageView houseView){
         List<ImageView> houseViews = fieldHousesMap.get(fieldIndex);
@@ -576,6 +618,25 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 fieldHousesMap.remove(fieldIndex);
             }
         }
+    }
+    public void sellPopUp(Player player) {
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.activity_sell_building, null);
+
+            int width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            int height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            boolean focusable = true;
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+
+            Button sellButton = popupView.findViewById(R.id.sellButton);
+            sellButton.setOnClickListener(v -> {
+                getOwnedFieldsWithHouses(player);
+                popupWindow.dismiss();
+            });
+        });
     }
 
 
