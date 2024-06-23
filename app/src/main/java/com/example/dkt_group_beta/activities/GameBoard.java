@@ -1,8 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
-import static android.view.ViewGroup.LayoutParams.FILL_PARENT;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -585,8 +583,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             diceImageView1 = popupView.findViewById(R.id.diceImageView1);
             diceImageView2 = popupView.findViewById(R.id.diceImageView2);
 
-            int width = WRAP_CONTENT;
-            int height = WRAP_CONTENT;
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
             boolean focusable = true;
             PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
@@ -717,8 +715,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private void showCard(View view, String viewID) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
-        int width = WRAP_CONTENT;
-        int height = WRAP_CONTENT;
+        int width = MATCH_PARENT;
+        int height = MATCH_PARENT;
         boolean focusable = true;
 
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
@@ -739,8 +737,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         runOnUiThread(()->{
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.popup_info_text, null);
-            int width = WRAP_CONTENT;
-            int height = WRAP_CONTENT;
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
             boolean focusable = true;
 
             PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);

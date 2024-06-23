@@ -22,20 +22,19 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
             android:layout_marginBottom="9dp"
-            android:background="#4CAF50"
             android:text="Klicken Sie auf BAUEN und dann auf ein hervorgehobenes Feld."
             android:textColor="#263238" />
     </LinearLayout>
 
     <Button
         android:id="@+id/buildButton"
+        style="@style/MyButton.Attention"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:backgroundTint="#FF0000"
         android:text="Bauen"
-        android:textColor="@color/black" />
+        android:textColor="@color/white" />
 
 
 </LinearLayout>

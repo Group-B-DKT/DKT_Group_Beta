@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyButton" parent="android:Widget.Button">
+        <item name="android:textStyle">bold</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:backgroundTint">#616161</item>
+        <item name="textAllCaps">true</item>
+    </style>
+    <style name="MyButton.Info" parent="MyButton">
+        <item name="android:backgroundTint">#2677CD</item>
+    </style>
+    <style name="MyButton.Attention" parent="MyButton">
+        <item name="android:backgroundTint">#CD3F26</item>
+    </style>
+</resources>
