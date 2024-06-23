@@ -2,6 +2,8 @@ package com.example.dkt_group_beta.model;
 
 
 
+import android.util.Log;
+
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 
 import java.security.SecureRandom;
@@ -90,6 +92,30 @@ public class Game {
     }
     public int getNumberOfHouses(Field field){
         return field.getHouses().size();
+    }
+
+    public boolean sellHouse(Player player, House house, Field field) {
+        if (field.getOwner().getId().equals(player.getId())) {
+            if (field.hasHotel()) {
+                return sellHotel(player, field);
+            } else if (!field.getHouses().isEmpty()) {
+                field.removeHouse(house, 1);
+                player.setMoney(player.getMoney() + House.getHousePrice() / 2);
+                Log.d("Game", "House sold");
+                return true;
+            }
+        }
+        Log.d("Game", "House not sold");
+        return false;
+    }
+
+    public boolean sellHotel(Player player, Field field) {
+        if (field.getOwner().getId().equals(player.getId()) && field.hasHotel()) {
+            field.setHotel(null);
+            player.setMoney(player.getMoney() + Hotel.HOTEL_PRICE / 2);
+            return true;
+        }
+        return false;
     }
 
     public List<Field> getOwnedFields(Player player) {
