@@ -17,38 +17,31 @@ public class Field implements Serializable {
     private int price = 0;
     private Player owner;
     private boolean ownable;
-    private transient Hotel hotel;
-    private transient List<Building> buildings = new ArrayList<>();
+    private Hotel hotel;
+
+    private List<House> houses;
 
     private FieldType fieldType;
     private int rent;
 
-    public Field(int id, String name, int price, boolean ownable, FieldType fieldType) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.ownable = ownable;
-        this.fieldType = fieldType;
-    }
     public Field(int id, String name, int price, boolean ownable, FieldType fieldType, int rent) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.ownable = ownable;
         this.fieldType = fieldType;
+        this.houses = new ArrayList<>();
         this.rent = rent;
+    }
+    public Field(int id, String name, int price, boolean ownable, FieldType fieldType) {
+        this(id, name, price, ownable, fieldType, -1);
     }
 
     public Field(int id, String name, boolean ownable) {
-        this.id = id;
-        this.name = name;
-        this.ownable = ownable;
+        this(id, name, -1,ownable, FieldType.NORMAL, -1);
     }
     public Field(int id, String name, int price, boolean ownable) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.ownable = ownable;
+        this(id, name, price, ownable, FieldType.NORMAL, -1);
     }
 
 
@@ -103,11 +96,16 @@ public class Field implements Serializable {
     public Hotel getHotel(){
         return hotel;
     }
-    public List<Building> getBuildings(){
-        return buildings;
+    public List<House> getHouses(){
+       return this.houses;
     }
-    public void addBuilding(Building building){
-        buildings.add(building);
+    public void addHouse(House house){
+        houses.add(house);
+    }
+    public void removeHouse(House house, int numberOfHousesToRemove){
+        for (int i = 0; i < numberOfHousesToRemove; i++){
+            houses.remove(house);
+        }
     }
     public int getRent() {
         return rent;
@@ -123,7 +121,7 @@ public class Field implements Serializable {
         this.ownable = field.ownable;
         this.fieldType = field.fieldType;
         this.hotel = field.hotel;
-        this.buildings = field.buildings;
+        this.houses = field.houses;
     }
 
     @Override

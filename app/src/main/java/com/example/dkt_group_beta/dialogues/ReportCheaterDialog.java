@@ -59,7 +59,7 @@ public class ReportCheaterDialog extends DialogFragment {
         builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
         builder.setPositiveButton(getString(R.string.submit), (dialog, which) -> {
             if (listener != null && selectedPlayer != null) {
-                listener.onPlayerSelected(selectedPlayer);
+                listener.onPlayerConfirmed(selectedPlayer);
             }
             dismiss();
         });

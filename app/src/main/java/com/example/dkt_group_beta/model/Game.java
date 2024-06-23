@@ -1,6 +1,6 @@
 package com.example.dkt_group_beta.model;
 
-import android.util.Log;
+
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 
@@ -59,47 +59,37 @@ public class Game {
         }
         return false;
     }
-    public boolean buyHouse(Player player, House house) {
-        Field field = house.getField();
-        if (field.getOwner() == player && pay(player, house.getHousePrice())) {
+    public boolean buyHouse(Player player, House house, Field field) {
+        if (field.getOwner().getId().equals(player.getId())  && player.getMoney() >= House.getHousePrice()) {
             if (field.hasHotel()) {
                 return false;
-            } else if (getNumberOfHouses() == house.getMaxAmount()) {
-                return buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, player, house.getPosition(), field));
+            } else if (getNumberOfHouses(field) == house.getMaxAmount()) {
+                buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, 10), field);
+                field.removeHouse(house, 4);
+                return true;
             } else {
-                field.addBuilding(house);
-                house.setOwner(player);
-                house.setField(field);
+                field.addHouse(house);
+                pay(player, House.getHousePrice());
                 return true;
             }
         }
         return false;
     }
 
-    public boolean buyHotel(Player player, Hotel hotel) {
-        Field field = hotel.getField();
-        if (field.getOwner() == player && pay(player, hotel.getPrice())) {
+    public boolean buyHotel(Player player, Hotel hotel, Field field) {
+        if (field.getOwner().getId().equals(player.getId()) && player.getMoney() >= hotel.getPrice()){
             if (field.hasHotel()) {
                 return false;
             } else {
-                field.addBuilding(hotel);
-                hotel.setOwner(player);
-                hotel.setField(field);
+                field.setHotel(hotel);
+                pay(player, hotel.getPrice());
                 return true;
             }
         }
         return false;
     }
-    public int getNumberOfHouses(){
-        int count = 0;
-        for (Field field : fields) {
-            for (Building building : field.getBuildings()) {
-                if (building instanceof House) {
-                    count++;
-                }
-            }
-        }
-        return count;
+    public int getNumberOfHouses(Field field){
+        return field.getHouses().size();
     }
 
     public List<Field> getOwnedFields(Player player) {

@@ -8,6 +8,7 @@ import com.example.dkt_group_beta.communication.controller.WebsocketClientContro
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.google.gson.Gson;
 
@@ -41,6 +42,13 @@ public class GameBoardViewModel {
             actionController.payTaxes(field.getOwner());
         }
     }
+    public void buyBuilding(Player player, House house, Field field){
+        boolean building = game.buyHouse(player, house, field);
+        if (building) {
+            actionController.buyBuilding(field);
+        }
+    }
+
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
@@ -59,6 +67,9 @@ public class GameBoardViewModel {
 
         if (action == Action.BUY_FIELD) {
             handleBuyField(fromPlayer, fields);
+        }
+        if (action == Action.BUY_BUILDING) {
+            handleBuyBuilding(fields, fromPlayer);
         }
 
         if(action == Action.UPDATE_MONEY){
@@ -114,6 +125,16 @@ public class GameBoardViewModel {
             game.updatePlayer(fromPlayer);
         gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
         gameBoardAction.updatePlayerStats();
+    }
+    private void handleBuyBuilding(List<Field> fields, Player fromPlayer){
+        game.updateField(fields.get(0));
+        game.updatePlayer(fromPlayer);
+        gameBoardAction.updatePlayerStats();
+        if(fields.get(0).getHotel() != null){
+            gameBoardAction.placeBuilding(fields.get(0).getId()-1, fields.get(0).getHotel(), 1);
+        }else {
+            gameBoardAction.placeBuilding(fields.get(0).getId() - 1, fields.get(0).getHouses().get(0), fields.get(0).getHouses().size());
+        }
     }
 
     private void handleEndTurn(Player fromPlayer) {
