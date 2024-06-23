@@ -48,6 +48,13 @@ public class GameBoardViewModel {
             actionController.buyBuilding(field);
         }
     }
+    public void sellBuilding(Player player, House house, Field field){
+        boolean building = game.sellHouse(player, house, field);
+        if (building) {
+            actionController.sellBuilding(field);
+        }
+    }
+
 
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
@@ -70,6 +77,9 @@ public class GameBoardViewModel {
         }
         if (action == Action.BUY_BUILDING) {
             handleBuyBuilding(fields, fromPlayer);
+        }
+        if(action == Action.SELL_BUILDING){
+            handleSellBuilding(fields, fromPlayer);
         }
 
         if(action == Action.UPDATE_MONEY){
@@ -139,6 +149,16 @@ public class GameBoardViewModel {
             gameBoardAction.placeBuilding(fields.get(0).getId()-1, fields.get(0).getHotel(), 1);
         }else {
             gameBoardAction.placeBuilding(fields.get(0).getId() - 1, fields.get(0).getHouses().get(0), fields.get(0).getHouses().size());
+        }
+    }
+    private void handleSellBuilding(List<Field> fields, Player fromPlayer){
+        game.updateField(fields.get(0));
+        game.updatePlayer(fromPlayer);
+        gameBoardAction.updatePlayerStats();
+        if(fields.get(0).getHotel() != null){
+            gameBoardAction.deleteBuilding(fields.get(0).getId()-1,  fields.get(0).getHotel(), 1);
+        }else {
+            gameBoardAction.deleteBuilding(fields.get(0).getId() - 1, fields.get(0).getHouses().get(0), 1);
         }
     }
 
