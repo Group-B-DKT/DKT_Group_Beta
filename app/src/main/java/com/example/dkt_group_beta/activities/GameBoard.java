@@ -51,6 +51,8 @@ import com.example.dkt_group_beta.model.Hotel;
 import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.model.enums.FieldType;
+import com.example.dkt_group_beta.model.interfaces.TimerElapsedEvent;
+import com.example.dkt_group_beta.model.utilities.ThreadTimer;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 
 import java.time.LocalTime;
@@ -614,7 +616,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             Log.d(TAG, "IsOnTurn: "+player.isOnTurn());
 
             if (!player.isOnTurn()) {
-                disableView(rollButton);
+                rollButton.setText("CLOSE");
+                rollButton.setOnClickListener(v -> popupWindow.dismiss());
+                new ThreadTimer(4000, () -> runOnUiThread(() -> popupWindow.dismiss())).start();
             }
         });
     }
@@ -731,6 +735,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             gameBoardViewModel.buyField(player.getCurrentPosition());
             popupWindow.dismiss();
         });
+
+        Button btnDiscard = popupView.findViewById(R.id.btn_cardDiscard);
+        btnDiscard.setOnClickListener(v -> popupWindow.dismiss());
     }
     @Override
      public void showTaxes(Player payer, Player payee, int amount) {
@@ -748,6 +755,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             playerTaxesTextView.setText(taxesMessage);
 
             popupView.findViewById(R.id.btn_closeInfoPopup).setOnClickListener(v -> popupWindow.dismiss());
+
+            new ThreadTimer(5000, () -> runOnUiThread(() -> popupWindow.dismiss())).start();
         });
 
 
@@ -770,6 +779,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             playerTaxesTextView.setText(taxesMessage);
 
             popupView.findViewById(R.id.btn_closeInfoPopup).setOnClickListener(v -> popupWindow.dismiss());
+            new ThreadTimer(5000, () -> runOnUiThread(() -> popupWindow.dismiss())).start();
         });
     }
 
