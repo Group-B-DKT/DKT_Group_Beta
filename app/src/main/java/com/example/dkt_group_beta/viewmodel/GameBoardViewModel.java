@@ -107,15 +107,10 @@ public class GameBoardViewModel {
             gameBoardAction.removePlayerFromGame(fromPlayer);
             gameBoardAction.removeReconnectPopUp();
         }
-        if (action == Action.SUBMIT_CHEAT) {
-            if(param.length()!=0) {
-                fromPlayer.setMoney(fromPlayer.getMoney() + Integer.parseInt(param));
-            }
-        }
-        if(action == Action.REPORT_CHEAT) {
-            if(param.length()!=0) {
-                game.getPlayerById(param).setMoney(200);
-            }
+
+        if (action == Action.REPORT_CHEAT){
+            Player cheater = game.getPlayerById(param);
+            gameBoardAction.showCheaterDetectedPopUp(cheater, fromPlayer);
         }
     }
 

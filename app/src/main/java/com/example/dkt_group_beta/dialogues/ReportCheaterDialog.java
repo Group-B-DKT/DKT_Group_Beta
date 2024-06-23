@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -44,7 +43,6 @@ public class ReportCheaterDialog extends DialogFragment {
         builder.setView(view);
 
         ListView listView = view.findViewById(R.id.player_list_view);
-        Button confirmButton = view.findViewById(R.id.button_confirm);
 
         String[] playerNames = new String[players.size()];
         for (int i = 0; i < players.size(); i++) {
@@ -56,17 +54,15 @@ public class ReportCheaterDialog extends DialogFragment {
 
         listView.setOnItemClickListener((parent, view1, position, id) -> {
             selectedPlayer = players.get(position);
-            confirmButton.setEnabled(true);
         });
 
-        confirmButton.setOnClickListener(v -> {
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+        builder.setPositiveButton(getString(R.string.submit), (dialog, which) -> {
             if (listener != null && selectedPlayer != null) {
                 listener.onPlayerConfirmed(selectedPlayer);
             }
             dismiss();
         });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
 
         return builder.create();
     }

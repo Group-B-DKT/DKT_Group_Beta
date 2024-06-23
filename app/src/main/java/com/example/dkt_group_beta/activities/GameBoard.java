@@ -1,7 +1,6 @@
 package com.example.dkt_group_beta.activities;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -52,6 +51,8 @@ import com.example.dkt_group_beta.model.Hotel;
 import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.model.enums.FieldType;
+import com.example.dkt_group_beta.model.interfaces.TimerElapsedEvent;
+import com.example.dkt_group_beta.model.utilities.ThreadTimer;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
 
 import java.time.LocalTime;
@@ -60,6 +61,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction, CheatDialogFragment.OnInputListener{
     private static final String TAG = "DEBUG";
@@ -124,12 +126,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
 
         testButton = findViewById(R.id.popUpCards);
-        character = findViewById(R.id.character);
-        btnEndTurn = findViewById(R.id.btn_endTurn);
-        rvPlayerStats = findViewById(R.id.rv_playerStats);
         build = findViewById(R.id.build_button);
-
-        player = WebsocketClientController.getPlayer();
 
         initializeVariables();
 
@@ -264,7 +261,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 // We can ignore this for now
             }
         };
-        sensorManager.registerListener(proximitySensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(proximitySensorListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         players = (List<Player>) getIntent().getSerializableExtra("players");
         players.removeIf(p -> p.getId().equals(player.getId()));
         players.add(player);
@@ -391,10 +389,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             @Override
             public void onAnimationEnd(Animation animation) {
                 animation.cancel();
-                movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
-                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS) {
+                if (movePlayer.getCurrentPosition() + 1 >= NUMBER_OF_FIELDS) {
                     movePlayer.setCurrentPosition(0);
                     passedStart = true;
+                }else{
+                    movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
                 }
                 setPosition(movePlayer.getCurrentPosition(), movePlayer);
                 animation(movePlayer, repetition - 1);
@@ -587,8 +586,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             diceImageView1 = popupView.findViewById(R.id.diceImageView1);
             diceImageView2 = popupView.findViewById(R.id.diceImageView2);
 
-            int width = WRAP_CONTENT;
-            int height = WRAP_CONTENT;
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
             boolean focusable = true;
             PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
@@ -618,7 +617,20 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             Log.d(TAG, "IsOnTurn: "+player.isOnTurn());
 
             if (!player.isOnTurn()) {
-                disableView(rollButton);
+                rollButton.setText("CLOSE");
+                rollButton.setOnClickListener(v -> popupWindow.dismiss());
+                new ThreadTimer(4000, new TimerElapsedEvent() {
+                    @Override
+                    public void onTimerElapsed() {
+                        runOnUiThread(() -> popupWindow.dismiss());
+                    }
+                    @Override
+                    public void onSecondElapsed(int secondsRemaining) {
+                        runOnUiThread(() ->
+                            rollButton.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                        );
+                    }
+                }).start();
             }
         });
     }
@@ -719,8 +731,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private void showCard(View view, String viewID) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
-        int width = WRAP_CONTENT;
-        int height = WRAP_CONTENT;
+        int width = MATCH_PARENT;
+        int height = MATCH_PARENT;
         boolean focusable = true;
 
         PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
@@ -735,14 +747,17 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             gameBoardViewModel.buyField(player.getCurrentPosition());
             popupWindow.dismiss();
         });
+
+        Button btnDiscard = popupView.findViewById(R.id.btn_cardDiscard);
+        btnDiscard.setOnClickListener(v -> popupWindow.dismiss());
     }
     @Override
      public void showTaxes(Player payer, Player payee, int amount) {
         runOnUiThread(()->{
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = inflater.inflate(R.layout.popup_paytaxes, null);
-            int width = WRAP_CONTENT;
-            int height = WRAP_CONTENT;
+            View popupView = inflater.inflate(R.layout.popup_info_text, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
             boolean focusable = true;
 
             PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
@@ -750,9 +765,60 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             TextView playerTaxesTextView = popupView.findViewById(R.id.txt_playerTaxes);
             String taxesMessage = payer.getUsername() + " pay " + amount + " $ Taxes to " + payee.getUsername();
             playerTaxesTextView.setText(taxesMessage);
+
+            Button btn_close = popupView.findViewById(R.id.btn_closeInfoPopup);
+            btn_close.setOnClickListener(v -> popupWindow.dismiss());
+
+            new ThreadTimer(5000, new TimerElapsedEvent() {
+                @Override
+                public void onTimerElapsed() {
+                    runOnUiThread(() -> popupWindow.dismiss());
+                }
+
+                @Override
+                public void onSecondElapsed(int secondsRemaining) {
+                    runOnUiThread(() ->
+                        btn_close.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                    );
+                }
+            }).start();
         });
 
 
+    }
+
+    @Override
+    public void showCheaterDetectedPopUp(Player cheater, Player detective) {
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_info_text, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
+            boolean focusable = true;
+
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+
+            TextView playerTaxesTextView = popupView.findViewById(R.id.txt_playerTaxes);
+            String taxesMessage = String.format(getString(R.string.txt_cheater_detected), cheater.getUsername(), detective.getUsername());
+            playerTaxesTextView.setText(taxesMessage);
+
+            Button btnClose = popupView.findViewById(R.id.btn_closeInfoPopup);
+            btnClose.setOnClickListener(v -> popupWindow.dismiss());
+            new ThreadTimer(5000, new TimerElapsedEvent() {
+                @Override
+                public void onTimerElapsed() {
+                    runOnUiThread(() -> popupWindow.dismiss());
+                }
+
+                @Override
+                public void onSecondElapsed(int secondsRemaining) {
+                    runOnUiThread(() ->
+                        btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                    );
+                }
+            }).start();
+        });
     }
 
     @Override
@@ -905,22 +971,25 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     @Override
     public void sendCheatValue(int input) {
         gameBoardViewModel.submitCheat(input);
-        updatePlayerStats();
     }
     public void reportCheat(Player player, Player fromPlayer) {
         gameBoardViewModel.reportCheat(player, fromPlayer);
     }
 
-    public void reportCheater(View view) {
+    public void reportCheater(View v) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        ReportCheaterDialog dialogFragment = new ReportCheaterDialog(players, new ReportCheaterDialog.OnPlayerSelectedListener() {
+
+        List playersWithoutMe = this.players.stream()
+                .filter(p -> !p.getId().equals(player.getId()))
+                .collect(Collectors.toList());
+        ReportCheaterDialog dialogFragment = new ReportCheaterDialog(playersWithoutMe, new ReportCheaterDialog.OnPlayerSelectedListener() {
             @Override
             public void onPlayerSelected(Player player) {
-
+                // not used
             }
+
             @Override
             public void onPlayerConfirmed(Player player) {
-                // Handle the selection
                 reportCheat(player, GameBoard.this.player);
             }
         });

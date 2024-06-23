@@ -370,6 +370,7 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="#669800"
                 android:text="Roll Dice"
+                android:textColor="@color/white"
                 app:cornerRadius="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -502,6 +503,7 @@
             android:layout_marginEnd="20dp"
             android:backgroundTint="@android:color/holo_green_dark"
             android:text="BAUEN"
+            android:textColor="@color/white"
             app:cornerRadius="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -516,6 +518,7 @@
             android:layout_marginBottom="20dp"
             android:backgroundTint="#C15F2A"
             android:text="@string/end_turn"
+            android:textColor="@color/white"
             android:textSize="12sp"
             app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -532,16 +535,17 @@
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:backgroundTint="#C15F2A"
-            android:textSize="12sp"
-            app:cornerRadius="0dp"
             android:onClick="reportCheater"
             android:text="@string/report_cheater"
+            android:textColor="@color/white"
+            android:textSize="12sp"
+            app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/build_text_view"
-            app:layout_constraintVertical_bias="1.0"/>
+            app:layout_constraintVertical_bias="1.0" />
         <!-- Die TextView wird zunächst unsichtbar gemacht -->
 
 
