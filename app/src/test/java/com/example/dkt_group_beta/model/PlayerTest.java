@@ -246,4 +246,12 @@ class PlayerTest {
         assertEquals(Player.START_MONEY, player2.getMoney());
     }
 
+    @Test
+    void testHasCheated(){
+        Player player = new Player("P1", "ID1");
+        assertFalse(player.isHasCheated());
+        player.setHasCheated(true);
+        assertTrue(player.isHasCheated());
+    }
+
 }
