@@ -25,10 +25,14 @@ public class CardCSVReader {
         AssetManager am = context.getAssets();
         try (InputStream is = am.open(path);
              BufferedReader br = new BufferedReader(new InputStreamReader(is))){
-            br.readLine();
+            //br.readLine();
 
             String line;
             while ((line = br.readLine()) != null) {
+                // Skip processing the first line (assuming it's the header)
+                if (line.startsWith("ID;VALUE;TYPE;PATHNAME")) {
+                    continue;
+                }
                 String[] values = line.split(";");
                 CardType cardType = CardType.valueOf(values[2]);
                 if(cardType == CardType.MOVE){

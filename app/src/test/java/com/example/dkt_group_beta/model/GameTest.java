@@ -329,4 +329,19 @@ class GameTest {
         assertFalse(result);
 
     }
+    @Test
+    void testGetFieldListSize() {
+        assertEquals(2, game.getFieldListSize());
+        game.getFields().add(new Field(3, "Field3", true));
+        assertEquals(3, game.getFieldListSize());
+    }
+    @Test
+    void testGetFieldPosition_FieldExists() {
+        assertEquals(0, game.getFieldPosition(1));
+        assertEquals(1, game.getFieldPosition(2));
+    }
+    @Test
+    void testGetFieldPosition_FieldDoesNotExist() {
+        assertEquals(-1, game.getFieldPosition(3));
+    }
  }

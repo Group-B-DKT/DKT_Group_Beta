@@ -464,10 +464,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             field.getOwner() == null &&
             player.getMoney() >= field.getPrice()){
 
-            showCard(findViewById(R.id.gameBoard), "card" + FIELD_NAME + (player.getCurrentPosition() + 1), "Buy Field", true, FieldType.NORMAL,  () -> gameBoardViewModel.buyField(player.getCurrentPosition()));
-        } else if (field.getFieldType() == FieldType.RISIKO){
+            showCard(findViewById(R.id.gameBoard), "card" + FIELD_NAME + (player.getCurrentPosition() + 1), "Buy Field", true, FieldType.NORMAL, () -> gameBoardViewModel.buyField(player.getCurrentPosition()));
+        }else if (field.getFieldType() == FieldType.RISIKO){
             gameBoardViewModel.landOnRisikoCard(risikoCards.size());
-        } else if (field.getFieldType() == FieldType.BANK){
+        }else if (field.getFieldType() == FieldType.BANK){
             gameBoardViewModel.landOnBankCard(bankCards.size());
         }
 

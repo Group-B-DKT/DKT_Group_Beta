@@ -33,7 +33,9 @@ public class Player implements Serializable {
     private int currentPosition;
 
     private int color;
+
     private ArrayList<JokerCard> jokerCards;
+
     private boolean hasCheated;
 
 

@@ -14,4 +14,12 @@ public class MoveCard extends Card {
     public void doActionOfCard(GameBoardViewModel gameBoardViewModel) {
         gameBoardViewModel.moveForCard(this.fieldID, this.getAmount());
     }
+
+    public int getFieldID() {
+        return fieldID;
+    }
+
+    public void setFieldID(int fieldID) {
+        this.fieldID = fieldID;
+    }
 }
