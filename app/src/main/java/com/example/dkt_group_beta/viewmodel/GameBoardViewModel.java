@@ -111,6 +111,10 @@ public class GameBoardViewModel {
             gameBoardAction.removeReconnectPopUp();
         }
 
+        if (action == Action.REPORT_CHEAT){
+            Player cheater = game.getPlayerById(param);
+            gameBoardAction.showCheaterDetectedPopUp(cheater, fromPlayer);
+        }
         if (action == Action.RISIKO_CARD_SHOW){
             Log.d("DEBUG", fromPlayer.getUsername());
             int cardIndex = Integer.parseInt(param);
@@ -128,16 +132,6 @@ public class GameBoardViewModel {
                 showBtn = true;
             }
             gameBoardAction.showCardBank(cardIndex, showBtn);
-        }
-        if (action == Action.SUBMIT_CHEAT) {
-            if(param.length()!=0) {
-                fromPlayer.setMoney(fromPlayer.getMoney() + Integer.parseInt(param));
-            }
-        }
-        if(action == Action.REPORT_CHEAT) {
-            if(param.length()!=0) {
-                game.getPlayerById(param).setMoney(200);
-            }
         }
     }
 

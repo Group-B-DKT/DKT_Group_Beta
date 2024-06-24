@@ -21,8 +21,10 @@
 
     <Button
         android:id="@+id/btnSubmit"
+        style="@style/MyButton.Attention"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Submit" />
+        android:text="Submit"
+        android:textColor="@color/white" />
 </LinearLayout>

@@ -36,6 +36,9 @@ public class Player implements Serializable {
 
     private int color;
     private ArrayList<JokerCard> jokerCards;
+    private boolean hasCheated;
+
+
 
     public Player(String username, String id) {
         this.username = username;
@@ -46,6 +49,7 @@ public class Player implements Serializable {
         this.currentPosition = 0;
         this.isOnTurn = false;
         this.jokerCards = new ArrayList<>();
+        this.hasCheated = false;
     }
 
 
@@ -160,6 +164,14 @@ public class Player implements Serializable {
             Log.d("Player", "found no joker");
         }
     }
+    public boolean isHasCheated() {
+        return hasCheated;
+    }
+
+    public void setHasCheated(boolean hasCheated) {
+        this.hasCheated = hasCheated;
+    }
+
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
@@ -183,6 +195,7 @@ public class Player implements Serializable {
         this.isOnTurn = serverPlayer.isOnTurn;
         this.color = serverPlayer.color;
         this.isHost = serverPlayer.isHost;
+        this.hasCheated = serverPlayer.hasCheated;
     }
 
     public void setDefaulValues() {

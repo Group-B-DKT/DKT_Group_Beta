@@ -7,7 +7,7 @@
     <string name="connection">Search Games</string>
     <string name="lobby_header">Game Lobby</string>
     <string name="Login">Login</string>
-    <string name="ip_address">ws://10.0.0.191:8080/websocket-example-handler</string>
+    <string name="ip_address">ws://143.205.196.128:8080/websocket-example-handler</string>
 <!--    <string name="ip_address">ws://143.205.184.114:8080/websocket-example-handler</string>-->
     <string name="search_for_games">Search for Games</string>
     <string name="games">Games</string>
@@ -39,4 +39,6 @@
     <string name="report_cheater">Report Cheater</string>
     <string name="submit">Submit</string>
     <string name="choose_the_cheating_player">Choose the cheating player</string>
+    <string name="txt_cheater_detected">"Cheater: %s Detected by %s"</string>
+    <string name="txt_general_close_msg">"CLOSE (%d remaining)"</string>
 </resources>

@@ -6,4 +6,6 @@
 
     <color name="highlight_color">#000000</color>
     <color name="player_item">#252525</color>
+    <color name="layout_attention">#46DF1313</color>
+    <color name="layout_info">#2A18FFFF</color>
 </resources>
