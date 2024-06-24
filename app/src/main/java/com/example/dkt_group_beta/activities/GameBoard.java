@@ -1,6 +1,7 @@
 package com.example.dkt_group_beta.activities;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
@@ -41,12 +43,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
+import com.example.dkt_group_beta.activities.interfaces.PopupBtnAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.io.CardCSVReader;
+import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
 import com.example.dkt_group_beta.dialogues.ReportCheaterDialog;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Building;
 import com.example.dkt_group_beta.model.Game;
+import com.example.dkt_group_beta.model.JokerCard;
+import com.example.dkt_group_beta.model.MoveCard;
 import com.example.dkt_group_beta.model.Hotel;
 import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
@@ -108,10 +115,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     private boolean passedStart;
 
+    List<Card> cards;
+    List<Card> risikoCards;
+    List<Card> bankCards;
     private PopupWindow popupReconnect;
 
     private boolean isCountdownThreadToCancel = false;
     Button build;
+
+    private boolean doAnimation = true;
 
 
     @Override
@@ -158,6 +170,9 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             }
         });
         initializeEndTurnButton();
+
+        risikoCards = CardCSVReader.readCards(getApplicationContext(), "risiko.csv");
+        bankCards = CardCSVReader.readCards(getApplicationContext(), "bank.csv");
     }
 
     private void initializeFieldImages() {
@@ -206,7 +221,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         for (int i = 0; i < players.size(); i++) {
             final ImageView x;
             if(i == 0){
-               x = character;
+                x = character;
             }else{
                 x = new ImageView(this);
                 constraintLayout.addView(x);
@@ -293,7 +308,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
     public void buyField(int index) {
-            gameBoardViewModel.buyField(index);
+        gameBoardViewModel.buyField(index);
     }
 
     public void markBoughtField(int index, int color){
@@ -367,59 +382,76 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     @Override
     public void animation(Player movePlayer, int repetition) {
+        if (!doAnimation){
 
-
-        ImageView characterImageView = movePlayer.getCharacterView();
-
-        if (repetition == 0) {
-            if (movePlayer.getId().equals(player.getId()))
+            if (movePlayer.getCurrentPosition() + repetition >= NUMBER_OF_FIELDS) {
+                movePlayer.setCurrentPosition((movePlayer.getCurrentPosition() + repetition) - NUMBER_OF_FIELDS);
+                passedStart = true;
+            }else{
+                movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+ repetition);
+            }
+            setPosition(movePlayer.getCurrentPosition(), movePlayer);
+            if (player.getId().equals(movePlayer.getId()))
                 checkEndFieldPosition(passedStart);
-            return;
         }
+        else {
+            ImageView characterImageView = movePlayer.getCharacterView();
 
-        Animation animation = getAnimation(movePlayer);
-        animation.setDuration(500); // Dauer basierend auf Anzahl der Schritte
-        animation.setRepeatCount(0); // Keine Wiederholung, da die Position manuell aktualisiert wird
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                Log.d(TAG, "Y3: " + characterImageView.getY());
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                animation.cancel();
-                if (movePlayer.getCurrentPosition() + 1 >= NUMBER_OF_FIELDS) {
-                    movePlayer.setCurrentPosition(0);
-                    passedStart = true;
-                }else{
-                    movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
+            if (repetition == 0) {
+                if (movePlayer.getId().equals(player.getId())) {
+                    checkEndFieldPosition(passedStart);
                 }
-                setPosition(movePlayer.getCurrentPosition(), movePlayer);
-                animation(movePlayer, repetition - 1);
-
+                return;
             }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) { // method not used
-            }
-        });
-        movePlayer.getCharacterView().startAnimation(animation);
+            Animation animation = getAnimation(movePlayer);
+            animation.setDuration(500); // Dauer basierend auf Anzahl der Schritte
+            animation.setRepeatCount(0); // Keine Wiederholung, da die Position manuell aktualisiert wird
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    Log.d(TAG, "Y3: " + characterImageView.getY());
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    animation.cancel();
+                    if (movePlayer.getCurrentPosition() + 1 >= NUMBER_OF_FIELDS) {
+                        movePlayer.setCurrentPosition(0);
+                        passedStart = true;
+                    } else {
+                        movePlayer.setCurrentPosition(movePlayer.getCurrentPosition() + 1);
+                    }
+                    setPosition(movePlayer.getCurrentPosition(), movePlayer);
+                    animation(movePlayer, repetition - 1);
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) { // method not used
+                }
+            });
+            movePlayer.getCharacterView().startAnimation(animation);
+        }
     }
 
     private void checkEndFieldPosition(boolean passedStart) {
         Field field = fields.get(player.getCurrentPosition());
-        if (field.getFieldType() != FieldType.ASSET &&
-            field.getOwner() == null &&
-            player.getMoney() >= field.getPrice()){
+        if ((field.getFieldType() == FieldType.NORMAL || field.getFieldType() == FieldType.SPECIAL) &&
+                field.getOwner() == null &&
+                player.getMoney() >= field.getPrice()){
 
-            showCard(findViewById(R.id.gameBoard), FIELD_NAME + (player.getCurrentPosition()+1));
+            showCard(findViewById(R.id.gameBoard), "card" + FIELD_NAME + (player.getCurrentPosition() + 1), "Buy Field", true, FieldType.NORMAL,  () -> gameBoardViewModel.buyField(player.getCurrentPosition()));
+        } else if (field.getFieldType() == FieldType.RISIKO){
+            gameBoardViewModel.landOnRisikoCard(risikoCards.size());
+        } else if (field.getFieldType() == FieldType.BANK){
+            gameBoardViewModel.landOnBankCard(bankCards.size());
         }
+
         if(field.getFieldType() != FieldType.ASSET &&
                 field.getOwner() != null && player.getMoney() >= field.getRent()) {
             gameBoardViewModel.payTaxes(player, field);
         }
-
 
         if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();
@@ -469,8 +501,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             View popupView = inflater.inflate(R.layout.activity_build, null);
 
 
-            int width = ConstraintLayout.LayoutParams.WRAP_CONTENT;
-            int height = ConstraintLayout.LayoutParams.WRAP_CONTENT;
+            int width = WRAP_CONTENT;
+            int height = WRAP_CONTENT;
             boolean focusable = true;
             final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
@@ -497,9 +529,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private void enableFieldClick(int index, Player player) {
         ImageView imageView = imageViews.get(index);
         if (imageView != null) {
-            imageView.setOnClickListener(v -> {
-                buildHouse(player, index);
-            });
+            imageView.setOnClickListener(v -> buildHouse(player, index));
         }
     }
     private void buildHouse(Player player, int fieldIndex) {
@@ -622,12 +652,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 new ThreadTimer(4000, new TimerElapsedEvent() {
                     @Override
                     public void onTimerElapsed() {
-                        runOnUiThread(() -> popupWindow.dismiss());
+                        runOnUiThread(popupWindow::dismiss);
                     }
                     @Override
                     public void onSecondElapsed(int secondsRemaining) {
                         runOnUiThread(() ->
-                            rollButton.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                                rollButton.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
                         );
                     }
                 }).start();
@@ -728,31 +758,69 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         sensorManager.unregisterListener(this);
     }
 
-    private void showCard(View view, String viewID) {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
-        int width = MATCH_PARENT;
-        int height = MATCH_PARENT;
-        boolean focusable = true;
+    public void showCard(View view, String viewID, String btnText, boolean showBtn, FieldType fieldType, PopupBtnAction btnAction) {
+        runOnUiThread(()->{
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
+            boolean focusable = true;
 
-        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-        ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
-        int imageResourceId = getResources().getIdentifier("card" + viewID, DEF_TYPE, getPackageName());
-        popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
+            ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
+            int imageResourceId = getResources().getIdentifier(viewID, DEF_TYPE, getPackageName());
+            popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
 
-        Button btnBuy = popupView.findViewById(R.id.btn_buy);
-        btnBuy.setOnClickListener(v -> {
-            gameBoardViewModel.buyField(player.getCurrentPosition());
-            popupWindow.dismiss();
+            Button btnDiscard = popupView.findViewById(R.id.btn_cardDiscard);
+            btnDiscard.setOnClickListener(v -> popupWindow.dismiss());
+
+            Button btnBuy = popupView.findViewById(R.id.btn_buy);
+            btnBuy.setText(btnText);
+            btnBuy.setOnClickListener(v -> {
+                btnAction.callAction();
+                popupWindow.dismiss();
+            });
+            if(!showBtn){
+                disableView(btnBuy);
+                new ThreadTimer(7000, new TimerElapsedEvent() {
+                    @Override
+                    public void onTimerElapsed() {
+                        runOnUiThread(popupWindow::dismiss);
+                    }
+
+                    @Override
+                    public void onSecondElapsed(int secondsRemaining) {
+                        runOnUiThread(() ->
+                                btnDiscard.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                        );
+                    }
+                }).start();
+            } else if (fieldType != FieldType.NORMAL) {
+                disableView(btnDiscard);
+                new ThreadTimer(7000, new TimerElapsedEvent() {
+                    @Override
+                    public void onTimerElapsed() {
+                        runOnUiThread(() -> {
+                            btnAction.callAction();
+                            popupWindow.dismiss();
+                        });
+                    }
+
+                    @Override
+                    public void onSecondElapsed(int secondsRemaining) {
+                        runOnUiThread(() ->
+                                btnBuy.setText(String.format(getString(R.string.txt_general_ok_msg), secondsRemaining))
+                        );
+                    }
+                }).start();
+            }
         });
 
-        Button btnDiscard = popupView.findViewById(R.id.btn_cardDiscard);
-        btnDiscard.setOnClickListener(v -> popupWindow.dismiss());
     }
     @Override
-     public void showTaxes(Player payer, Player payee, int amount) {
+    public void showTaxes(Player payer, Player payee, int amount) {
         runOnUiThread(()->{
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.popup_info_text, null);
@@ -766,19 +834,19 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             String taxesMessage = payer.getUsername() + " pay " + amount + " $ Taxes to " + payee.getUsername();
             playerTaxesTextView.setText(taxesMessage);
 
-            Button btn_close = popupView.findViewById(R.id.btn_closeInfoPopup);
-            btn_close.setOnClickListener(v -> popupWindow.dismiss());
+            Button btnClose = popupView.findViewById(R.id.btn_closeInfoPopup);
+            btnClose.setOnClickListener(v -> popupWindow.dismiss());
 
             new ThreadTimer(5000, new TimerElapsedEvent() {
                 @Override
                 public void onTimerElapsed() {
-                    runOnUiThread(() -> popupWindow.dismiss());
+                    runOnUiThread(popupWindow::dismiss);
                 }
 
                 @Override
                 public void onSecondElapsed(int secondsRemaining) {
                     runOnUiThread(() ->
-                        btn_close.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                            btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
                     );
                 }
             }).start();
@@ -808,13 +876,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             new ThreadTimer(5000, new TimerElapsedEvent() {
                 @Override
                 public void onTimerElapsed() {
-                    runOnUiThread(() -> popupWindow.dismiss());
+                    runOnUiThread(popupWindow::dismiss);
                 }
 
                 @Override
                 public void onSecondElapsed(int secondsRemaining) {
                     runOnUiThread(() ->
-                        btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                            btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
                     );
                 }
             }).start();
@@ -839,11 +907,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 disableView(btnKickPlayer);
             }
             btnKickPlayer.setOnClickListener(v ->
-                this.players.forEach(p -> {
-                    if (!p.isConnected()) {
-                        gameBoardViewModel.removePlayer(player.getGameId(), p);
-                    }
-                }));
+                    this.players.forEach(p -> {
+                        if (!p.isConnected()) {
+                            gameBoardViewModel.removePlayer(player.getGameId(), p);
+                        }
+                    }));
 
             TextView playerDisconnected = popupView.findViewById(R.id.txt_playerDisconnected);
             TextView remainingTime = popupView.findViewById(R.id.txt_remainingTime);
@@ -979,7 +1047,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     public void reportCheater(View v) {
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        List playersWithoutMe = this.players.stream()
+        List<Player> playersWithoutMe = this.players.stream()
                 .filter(p -> !p.getId().equals(player.getId()))
                 .collect(Collectors.toList());
         ReportCheaterDialog dialogFragment = new ReportCheaterDialog(playersWithoutMe, new ReportCheaterDialog.OnPlayerSelectedListener() {
@@ -994,5 +1062,23 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             }
         });
         dialogFragment.show(fragmentManager, "player_selection");
+    }
+    public void showCardRisiko(int indexCard, boolean showBtn, Player fromPlayer) {
+        Card currentCard = risikoCards.get(indexCard);
+        if(currentCard instanceof JokerCard){
+            JokerCard joker = (JokerCard)currentCard;
+            gameBoardViewModel.addJokerCard(joker, fromPlayer);
+        }
+        showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(),"Ok",showBtn, FieldType.RISIKO,() -> {
+            Log.d(TAG, "showCardRisiko" + (currentCard instanceof MoveCard ? "moveCard":"payCard"));
+            currentCard.doActionOfCard(this.gameBoardViewModel);
+        });
+    }
+    public void showCardBank(int indexCard, boolean showBtn) {
+        Card currentCard = bankCards.get(indexCard);
+        showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(), "Ok",showBtn, FieldType.BANK, () -> {
+            Log.d(TAG, "showCardBank");
+            currentCard.doActionOfCard(this.gameBoardViewModel);
+        });
     }
 }
