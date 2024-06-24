@@ -75,4 +75,14 @@ public class ThreadTimerTest {
 
         verify(timerElapsedEvent, times(1)).onTimerElapsed();
     }
+
+    @Test
+    public void testDiscard() throws InterruptedException {
+        threadTimer = new ThreadTimer(3000, timerElapsedEvent);
+
+        threadTimer.start();
+        threadTimer.discard();
+
+        verify(timerElapsedEvent, times(0)).onTimerElapsed();
+    }
 }
