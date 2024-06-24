@@ -1,10 +1,8 @@
 package com.example.dkt_group_beta.model;
 
-import android.util.Log;
 import android.widget.ImageView;
-
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Objects;
 
 
@@ -160,8 +158,6 @@ public class Player implements Serializable {
     public void removeJokerCard(){
         if(this.hasJokerCard()){
             this.jokerCards.remove(0);
-        }else{
-            Log.d("Player", "found no joker");
         }
     }
     public boolean isHasCheated() {
@@ -196,6 +192,7 @@ public class Player implements Serializable {
         this.color = serverPlayer.color;
         this.isHost = serverPlayer.isHost;
         this.hasCheated = serverPlayer.hasCheated;
+        this.jokerCards = serverPlayer.jokerCards;
     }
 
     public void setDefaulValues() {

@@ -1,13 +1,10 @@
 package com.example.dkt_group_beta.viewmodel;
 
 import android.util.Log;
-
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.communication.enums.Action;
-import com.example.dkt_group_beta.io.CardCSVReader;
-import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.JokerCard;
@@ -115,6 +112,7 @@ public class GameBoardViewModel {
             Player cheater = game.getPlayerById(param);
             gameBoardAction.showCheaterDetectedPopUp(cheater, fromPlayer);
         }
+
         if (action == Action.RISIKO_CARD_SHOW){
             Log.d("DEBUG", fromPlayer.getUsername());
             int cardIndex = Integer.parseInt(param);
@@ -210,13 +208,13 @@ public class GameBoardViewModel {
     public void submitCheat(int money) {
         actionController.submitCheat(money);
     }
-    public void passStartOrMoneyField(){
+    public void passStartOrMoneyField() {
 
-        if(player.getCurrentPosition() == 0){
+        if (player.getCurrentPosition() == 0) {
             game.setMoney(400);
-        }else if(player.getCurrentPosition() == 17){
+        } else if (player.getCurrentPosition() == 17) {
             game.setMoney(100);
-        }else{
+        } else {
             game.setMoney(200);
         }
 
@@ -227,15 +225,16 @@ public class GameBoardViewModel {
         game.setMoney(amount);
         actionController.moneyUpdate(player);
     }
+
     public void moveForCard(int fieldID, int amount){
         int fieldAmount = game.getFieldListSize();
         int fieldPosition = game.getFieldPosition(fieldID);
         int currentPosition = player.getCurrentPosition();
         int moveAmount;
-        if(currentPosition > fieldPosition){
-            moveAmount = fieldAmount-(currentPosition-fieldPosition);
+        if(currentPosition > fieldPosition) {
+            moveAmount = fieldAmount - (currentPosition - fieldPosition);
             game.setMoney(amount);
-        }else{
+        } else {
             moveAmount = fieldPosition - currentPosition;
         }
         actionController.movePlayer(moveAmount);

@@ -1,7 +1,6 @@
 package com.example.dkt_group_beta.activities.interfaces;
 
 import com.example.dkt_group_beta.model.Building;
-import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Player;
 import java.time.LocalTime;
 
@@ -24,5 +23,4 @@ public interface GameBoardAction {
     void showTaxes(Player payer, Player payee, int amount);
     void placeBuilding(int fieldIndex, Building building, int numberOfBuildings);
     void showCheaterDetectedPopUp(Player cheater, Player detective);
-
 }
