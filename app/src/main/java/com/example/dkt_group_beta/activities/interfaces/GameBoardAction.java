@@ -14,6 +14,8 @@ public interface GameBoardAction {
     void enableEndTurnButton();
     void updatePlayerStats();
     void enableDiceButton();
+    void showCardRisiko(int cardIndex, boolean showBtn, Player fromPlayer);
+    void showCardBank(int cardIndex, boolean showBtn);
     void showDisconnectPopUp(Player disconnectedPlayer, LocalTime serverTime);
     void removeReconnectPopUp();
     void removePlayerFromGame(Player fromPlayer);

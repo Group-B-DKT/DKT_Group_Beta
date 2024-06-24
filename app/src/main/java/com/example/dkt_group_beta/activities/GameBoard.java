@@ -29,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.graphics.Insets;
@@ -221,7 +220,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         for (int i = 0; i < players.size(); i++) {
             final ImageView x;
             if(i == 0){
-                x = character;
+               x = character;
             }else{
                 x = new ImageView(this);
                 constraintLayout.addView(x);
@@ -308,7 +307,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
 
     public void buyField(int index) {
-        gameBoardViewModel.buyField(index);
+            gameBoardViewModel.buyField(index);
     }
 
     public void markBoughtField(int index, int color){
@@ -438,8 +437,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private void checkEndFieldPosition(boolean passedStart) {
         Field field = fields.get(player.getCurrentPosition());
         if ((field.getFieldType() == FieldType.NORMAL || field.getFieldType() == FieldType.SPECIAL) &&
-                field.getOwner() == null &&
-                player.getMoney() >= field.getPrice()){
+            field.getOwner() == null &&
+            player.getMoney() >= field.getPrice()){
 
             showCard(findViewById(R.id.gameBoard), "card" + FIELD_NAME + (player.getCurrentPosition() + 1), "Buy Field", true, FieldType.NORMAL,  () -> gameBoardViewModel.buyField(player.getCurrentPosition()));
         } else if (field.getFieldType() == FieldType.RISIKO){
@@ -657,7 +656,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                     @Override
                     public void onSecondElapsed(int secondsRemaining) {
                         runOnUiThread(() ->
-                                rollButton.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                            rollButton.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
                         );
                     }
                 }).start();
@@ -820,7 +819,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     }
     @Override
-    public void showTaxes(Player payer, Player payee, int amount) {
+     public void showTaxes(Player payer, Player payee, int amount) {
         runOnUiThread(()->{
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.popup_info_text, null);
@@ -846,7 +845,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 @Override
                 public void onSecondElapsed(int secondsRemaining) {
                     runOnUiThread(() ->
-                            btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                        btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
                     );
                 }
             }).start();
@@ -882,7 +881,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 @Override
                 public void onSecondElapsed(int secondsRemaining) {
                     runOnUiThread(() ->
-                            btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                        btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
                     );
                 }
             }).start();
