@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import android.widget.ImageView;
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.enums.CardType;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -42,8 +43,8 @@ class PlayerTest {
         player = new Player("TestPlayer", "123");
         field = new Field(200, "TestField", 200, true);
         field.setOwner(player);
-        house = new House(0, null, 1, field);
-        hotel = new Hotel(200, null, 1, field);
+        house = new House(0, 10);
+        hotel = new Hotel(200, 10);
         List<Player> players = new ArrayList<>();
         players.add(player);
         List<Field> fields = new ArrayList<>();
@@ -53,40 +54,47 @@ class PlayerTest {
 
     @Test
     void buyHouse() {
-        assertTrue(game.buyHouse(player, house));
+        assertTrue(game.buyHouse(player, house, field));
         assertEquals(1300, player.getMoney());
-        assertEquals(player, house.getOwner());
-        assertEquals(field, house.getField());
     }
     @Test
     void buyHouseNotEnoughMoney() {
         player.setMoney(50);
-        assertFalse(game.buyHouse(player, house));
+        assertFalse(game.buyHouse(player, house, field));
     }
     @Test
     void buyHouseFieldAlreadyHasHotel() {
         field.setHotel(hotel);
-        assertFalse(game.buyHouse(player, house));
+        assertFalse(game.buyHouse(player, house, field));
+    }
+    @Test
+    void testBuyHouseFieldHasMaxHouses() {
+        field.setOwner(player);
+        for (int i = 0; i < house.getMaxAmount(); i++) {
+            field.addHouse(house);
+        }
+        game.buyHouse(player, house, field);
+        assertNotNull(field.getHotel());
+        assertEquals(0, field.getHouses().size());
     }
 
     @Test
     void testBuyHotel() {
-        assertTrue(game.buyHotel(player, hotel));
+        assertTrue(game.buyHotel(player, hotel, field));
         assertEquals(1300, player.getMoney());
-        assertEquals(player, hotel.getOwner());
     }
 
     @Test
     void testBuyHotelNotEnoughMoney() {
         player.setMoney(50);
-        assertFalse(game.buyHotel(player, hotel));
+        assertFalse(game.buyHotel(player, hotel, field));
 
     }
 
     @Test
     void testBuyHotelFieldAlreadyHasHotel() {
         field.setHotel(hotel);
-        assertFalse(game.buyHotel(player, new Hotel(200, null, 1, new Field(200, "AnotherField", 500, true))));
+        assertFalse(game.buyHotel(player, new Hotel(200, 10), field));
     }
 
     @Test
@@ -238,5 +246,66 @@ class PlayerTest {
         player2.setDefaulValues();
         assertEquals(Player.START_MONEY, player2.getMoney());
     }
+
+    @Test
+    void testHasCheated(){
+        Player player = new Player("P1", "ID1");
+        assertFalse(player.isHasCheated());
+        player.setHasCheated(true);
+        assertTrue(player.isHasCheated());
+    }
+
+    @Test
+    void testGetJokerCardsInitiallyEmpty() {
+        assertTrue(player.getJokerCards().isEmpty());
+    }
+
+    @Test
+    void testSetJokerCards() {
+        ArrayList<JokerCard> jokerCards = new ArrayList<>();
+        jokerCards.add(new JokerCard(1, 0, CardType.JOKER, "joker1.png"));
+        jokerCards.add(new JokerCard(2, 0, CardType.JOKER, "joker2.png"));
+
+        player.setJokerCards(jokerCards);
+
+        assertEquals(jokerCards, player.getJokerCards());
+    }
+
+    @Test
+    void testHasJokerCardInitiallyFalse() {
+        assertFalse(player.hasJokerCard());
+    }
+
+    @Test
+    void testHasJokerCardAfterAdding() {
+        player.addJokerCard(new JokerCard(1, 0, CardType.JOKER, "joker.png"));
+        assertTrue(player.hasJokerCard());
+    }
+
+    @Test
+    void testGetJokerAmount() {
+        player.addJokerCard(new JokerCard(1, 0, CardType.JOKER, "joker.png"));
+        player.addJokerCard(new JokerCard(2, 0, CardType.JOKER, "joker.png"));
+
+        assertEquals(2, player.getJokerAmount());
+    }
+
+    @Test
+    void testAddJokerCard() {
+        JokerCard jokerCard = new JokerCard(1, 0, CardType.JOKER, "joker.png");
+        player.addJokerCard(jokerCard);
+
+        assertTrue(player.getJokerCards().contains(jokerCard));
+    }
+
+    @Test
+    void testRemoveJokerCard() {
+        JokerCard jokerCard = new JokerCard(1, 0, CardType.JOKER, "joker.png");
+        player.addJokerCard(jokerCard);
+        player.removeJokerCard();
+
+        assertFalse(player.getJokerCards().contains(jokerCard));
+    }
+
 
 }
