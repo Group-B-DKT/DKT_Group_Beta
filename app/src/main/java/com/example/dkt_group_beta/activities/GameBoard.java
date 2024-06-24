@@ -425,7 +425,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             field.getOwner() == null &&
             player.getMoney() >= field.getPrice()){
 
-            showCard(findViewById(R.id.gameBoard), "card" + FIELD_NAME + (player.getCurrentPosition() + 1), "Buy Field", true, () -> gameBoardViewModel.buyField(player.getCurrentPosition()));
+            showCard(findViewById(R.id.gameBoard), "card" + FIELD_NAME + (player.getCurrentPosition() + 1), "Buy Field", true, FieldType.NORMAL,  () -> gameBoardViewModel.buyField(player.getCurrentPosition()));
         } else if (field.getFieldType() == FieldType.RISIKO){
             gameBoardViewModel.landOnRisikoCard(risikoCards.size());
         } else if (field.getFieldType() == FieldType.BANK){
@@ -742,32 +742,64 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         sensorManager.unregisterListener(this);
     }
 
-    public void showCard(View view, String viewID, String btnText, boolean showBtn, PopupBtnAction btnAction) {
+    public void showCard(View view, String viewID, String btnText, boolean showBtn, FieldType fieldType, PopupBtnAction btnAction) {
         runOnUiThread(()->{
-                    LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-                    View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
-                    int width = MATCH_PARENT;
-                    int height = MATCH_PARENT;
-                    boolean focusable = true;
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
+            boolean focusable = true;
 
-        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
-                    ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
-                    int imageResourceId = getResources().getIdentifier(viewID, DEF_TYPE, getPackageName());
-                    popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
+            ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
+            int imageResourceId = getResources().getIdentifier(viewID, DEF_TYPE, getPackageName());
+            popupImageView.setImageBitmap(decodeSampledBitmapFromResource(getResources(), imageResourceId, 200, 200));
 
-                    Button btnBuy = popupView.findViewById(R.id.btn_buy);
-                    btnBuy.setText(btnText);
-                    btnBuy.setOnClickListener(v -> {
-                        btnAction.callAction();
-                        popupWindow.dismiss();
-                    });
-                    if(!showBtn){
-                        disableView(btnBuy);
+            Button btnDiscard = popupView.findViewById(R.id.btn_cardDiscard);
+            btnDiscard.setOnClickListener(v -> popupWindow.dismiss());
+
+            Button btnBuy = popupView.findViewById(R.id.btn_buy);
+            btnBuy.setText(btnText);
+            btnBuy.setOnClickListener(v -> {
+                btnAction.callAction();
+                popupWindow.dismiss();
+            });
+            if(!showBtn){
+                disableView(btnBuy);
+                new ThreadTimer(7000, new TimerElapsedEvent() {
+                    @Override
+                    public void onTimerElapsed() {
+                        runOnUiThread(popupWindow::dismiss);
                     }
-//            Button btnDiscard = popupView.findViewById(R.id.btn_cardDiscard);
-//            btnDiscard.setOnClickListener(v -> popupWindow.dismiss());
+
+                    @Override
+                    public void onSecondElapsed(int secondsRemaining) {
+                        runOnUiThread(() ->
+                                btnDiscard.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                        );
+                    }
+                }).start();
+            } else if (fieldType != FieldType.NORMAL) {
+                disableView(btnDiscard);
+                new ThreadTimer(7000, new TimerElapsedEvent() {
+                    @Override
+                    public void onTimerElapsed() {
+                        runOnUiThread(() -> {
+                            btnAction.callAction();
+                            popupWindow.dismiss();
+                        });
+                    }
+
+                    @Override
+                    public void onSecondElapsed(int secondsRemaining) {
+                        runOnUiThread(() ->
+                                btnBuy.setText(String.format(getString(R.string.txt_general_ok_msg), secondsRemaining))
+                        );
+                    }
+                }).start();
+            }
         });
 
     }
@@ -1021,14 +1053,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             JokerCard joker = (JokerCard)currentCard;
             gameBoardViewModel.addJokerCard(joker, fromPlayer);
         }
-        showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(),"Ok",showBtn,() -> {
+        showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(),"Ok",showBtn, FieldType.RISIKO,() -> {
             Log.d(TAG, "showCardRisiko" + (currentCard instanceof MoveCard ? "moveCard":"payCard"));
             currentCard.doActionOfCard(this.gameBoardViewModel);
         });
     }
     public void showCardBank(int indexCard, boolean showBtn) {
         Card currentCard = bankCards.get(indexCard);
-        showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(), "Ok",showBtn, () -> {
+        showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(), "Ok",showBtn, FieldType.BANK, () -> {
             Log.d(TAG, "showCardBank");
             currentCard.doActionOfCard(this.gameBoardViewModel);
         });
