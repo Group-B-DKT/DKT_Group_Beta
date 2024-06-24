@@ -54,6 +54,14 @@ public class ActionController {
 
     }
 
+    public void buyBuilding(Field field){
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BUY_BUILDING, null, WebsocketClientController.getPlayer(), Collections.singletonList(field));
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+
 
     public void isReady(boolean isReady){
         ActionJsonObject actionJsonObject;
@@ -144,6 +152,12 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
+    public void reportCheat(Player player, Player fromPlayer) {
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.REPORT_CHEAT, player.getId(), fromPlayer, null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
 
     public void showRisikoCard(int cardIndex){
         int gameId = WebsocketClientController.getConnectedGameId();
@@ -167,4 +181,6 @@ public class ActionController {
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
         handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer(), actionJsonObject.getFields());
     }
+
+
 }

@@ -5,11 +5,10 @@ import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.communication.enums.Action;
-import com.example.dkt_group_beta.io.CardCSVReader;
-import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.JokerCard;
+import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.google.gson.Gson;
 
@@ -43,6 +42,13 @@ public class GameBoardViewModel {
             actionController.payTaxes(field.getOwner());
         }
     }
+    public void buyBuilding(Player player, House house, Field field){
+        boolean building = game.buyHouse(player, house, field);
+        if (building) {
+            actionController.buyBuilding(field);
+        }
+    }
+
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if(action == Action.ROLL_DICE) {
@@ -61,6 +67,9 @@ public class GameBoardViewModel {
 
         if (action == Action.BUY_FIELD) {
             handleBuyField(fromPlayer, fields);
+        }
+        if (action == Action.BUY_BUILDING) {
+            handleBuyBuilding(fields, fromPlayer);
         }
 
         if(action == Action.UPDATE_MONEY){
@@ -99,6 +108,11 @@ public class GameBoardViewModel {
             gameBoardAction.removeReconnectPopUp();
         }
 
+        if (action == Action.REPORT_CHEAT){
+            Player cheater = game.getPlayerById(param);
+            gameBoardAction.showCheaterDetectedPopUp(cheater, fromPlayer);
+        }
+
         if (action == Action.RISIKO_CARD_SHOW){
             Log.d("DEBUG", fromPlayer.getUsername());
             int cardIndex = Integer.parseInt(param);
@@ -130,6 +144,16 @@ public class GameBoardViewModel {
             game.updatePlayer(fromPlayer);
         gameBoardAction.markBoughtField(fields.get(0).getId()-1, fromPlayer.getColor());
         gameBoardAction.updatePlayerStats();
+    }
+    private void handleBuyBuilding(List<Field> fields, Player fromPlayer){
+        game.updateField(fields.get(0));
+        game.updatePlayer(fromPlayer);
+        gameBoardAction.updatePlayerStats();
+        if(fields.get(0).getHotel() != null){
+            gameBoardAction.placeBuilding(fields.get(0).getId()-1, fields.get(0).getHotel(), 1);
+        }else {
+            gameBoardAction.placeBuilding(fields.get(0).getId() - 1, fields.get(0).getHouses().get(0), fields.get(0).getHouses().size());
+        }
     }
 
     private void handleEndTurn(Player fromPlayer) {
@@ -201,15 +225,16 @@ public class GameBoardViewModel {
         game.setMoney(amount);
         actionController.moneyUpdate(player);
     }
+
     public void moveForCard(int fieldID, int amount){
         int fieldAmount = game.getFieldListSize();
         int fieldPosition = game.getFieldPosition(fieldID);
         int currentPosition = player.getCurrentPosition();
         int moveAmount;
-        if(currentPosition > fieldPosition){
-            moveAmount = fieldAmount-(currentPosition-fieldPosition);
+        if (currentPosition > fieldPosition) {
+            moveAmount = fieldAmount - (currentPosition - fieldPosition);
             game.setMoney(amount);
-        }else{
+        } else {
             moveAmount = fieldPosition - currentPosition;
         }
         actionController.movePlayer(moveAmount);
@@ -230,5 +255,9 @@ public class GameBoardViewModel {
                 .findAny()
                 .orElse(null).addJokerCard(joker);
         gameBoardAction.updatePlayerStats();    // update the joker amount before endTurn
+    }
+
+    public void reportCheat(Player player, Player fromPlayer) {
+        actionController.reportCheat(player, fromPlayer);
     }
 }

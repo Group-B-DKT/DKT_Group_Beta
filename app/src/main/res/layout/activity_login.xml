@@ -23,9 +23,9 @@
 
     <Button
         android:id="@+id/LoginButton2"
+        style="@style/MyButton.Attention"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FF0000"
         android:text="@string/Login"
         android:textColor="#FFFFFF"
         android:textColorLink="#FF0000"
@@ -61,24 +61,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="256dp"
             android:ems="10"
-            android:inputType="text"
-            android:text="fdsfsdfsdf" />
+            android:inputType="text" />
     </LinearLayout>
-
-    <Button
-
-
-
-
-        android:id="@+id/buttonBoard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="go to board"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.737"
-        app:layout_constraintStart_toEndOf="@+id/Login"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.168" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

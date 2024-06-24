@@ -1,30 +1,32 @@
 package com.example.dkt_group_beta.activities;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.ViewGroup;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.widget.Button;
-
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,32 +35,39 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
 import com.example.dkt_group_beta.R;
+import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.activities.interfaces.PopupBtnAction;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 import com.example.dkt_group_beta.io.CardCSVReader;
 import com.example.dkt_group_beta.model.Card;
+import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
+import com.example.dkt_group_beta.dialogues.ReportCheaterDialog;
+import com.example.dkt_group_beta.model.Field;
+import com.example.dkt_group_beta.model.Building;
 import com.example.dkt_group_beta.model.Game;
 import com.example.dkt_group_beta.model.JokerCard;
 import com.example.dkt_group_beta.model.MoveCard;
+import com.example.dkt_group_beta.model.Hotel;
+import com.example.dkt_group_beta.model.House;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.model.enums.FieldType;
+import com.example.dkt_group_beta.model.interfaces.TimerElapsedEvent;
+import com.example.dkt_group_beta.model.utilities.ThreadTimer;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
-import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
-import com.example.dkt_group_beta.model.Field;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GameBoard extends AppCompatActivity implements SensorEventListener, GameBoardAction, CheatDialogFragment.OnInputListener{
     private static final String TAG = "DEBUG";
@@ -111,6 +120,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     private PopupWindow popupReconnect;
 
     private boolean isCountdownThreadToCancel = false;
+    Button build;
 
 
     @Override
@@ -124,6 +134,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             return insets;
         });
 
+        testButton = findViewById(R.id.popUpCards);
+        build = findViewById(R.id.build_button);
 
         initializeVariables();
 
@@ -141,7 +153,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE); // initialising the Sensor
         createPlayerItems(game.getPlayers());
 
-        testButton = findViewById(R.id.popUpCards);
         if (!player.isOnTurn()) {
             disableView(testButton);
             disableView(btnEndTurn);
@@ -149,11 +160,16 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         initializeFieldImages();
 
         testButton.setOnClickListener(v -> dicePopUp());
+        build.setOnClickListener(v -> {
+            if (player.isOnTurn()) {
+                buildPopUp(player);
+                updatePlayerStats();
+            }
+        });
         initializeEndTurnButton();
 
         risikoCards = CardCSVReader.readCards(getApplicationContext(), "risiko.csv");
         bankCards = CardCSVReader.readCards(getApplicationContext(), "bank.csv");
-        Log.d("DEBUG", ""+risikoCards);
     }
 
     private void initializeFieldImages() {
@@ -257,6 +273,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 // We can ignore this for now
             }
         };
+        sensorManager.registerListener(proximitySensorListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+
         players = (List<Player>) getIntent().getSerializableExtra("players");
         players.removeIf(p -> p.getId().equals(player.getId()));
         players.add(player);
@@ -291,7 +309,6 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     public void markBoughtField(int index, int color){
-        Log.d(TAG, "variable:" + index);
         runOnUiThread(() -> {
             ImageView imageView = imageViews.get(index);
             if (imageView != null) {
@@ -384,10 +401,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             @Override
             public void onAnimationEnd(Animation animation) {
                 animation.cancel();
-                movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
-                if (movePlayer.getCurrentPosition() >= NUMBER_OF_FIELDS) {
+                if (movePlayer.getCurrentPosition() + 1 >= NUMBER_OF_FIELDS) {
                     movePlayer.setCurrentPosition(0);
                     passedStart = true;
+                }else{
+                    movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
                 }
                 setPosition(movePlayer.getCurrentPosition(), movePlayer);
                 animation(movePlayer, repetition - 1);
@@ -408,16 +426,16 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             player.getMoney() >= field.getPrice()){
 
             showCard(findViewById(R.id.gameBoard), "card" + FIELD_NAME + (player.getCurrentPosition() + 1), "Buy Field", true, () -> gameBoardViewModel.buyField(player.getCurrentPosition()));
-        }else if (field.getFieldType() == FieldType.RISIKO){
+        } else if (field.getFieldType() == FieldType.RISIKO){
             gameBoardViewModel.landOnRisikoCard(risikoCards.size());
-        }else if (field.getFieldType() == FieldType.BANK){
+        } else if (field.getFieldType() == FieldType.BANK){
             gameBoardViewModel.landOnBankCard(bankCards.size());
         }
+
         if(field.getFieldType() != FieldType.ASSET &&
                 field.getOwner() != null && player.getMoney() >= field.getRent()) {
             gameBoardViewModel.payTaxes(player, field);
         }
-
 
         if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();
@@ -461,6 +479,118 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             testButton.setLayoutParams(params);
         });
     }
+    public void buildPopUp(Player player) {
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.activity_build, null);
+
+
+            int width = WRAP_CONTENT;
+            int height = WRAP_CONTENT;
+            boolean focusable = true;
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+
+
+            Button buildButton = popupView.findViewById(R.id.buildButton);
+            buildButton.setOnClickListener(v -> {
+                getOwnedFields(player);
+                popupWindow.dismiss();
+            });
+        });
+    }
+    private void getOwnedFields(Player player) {
+        for (Field field : fields) {
+            int fieldIndex = fields.indexOf(field);
+            if (field.getOwner() != null && field.getOwner().getId().equals(player.getId()) && field.getFieldType() == FieldType.NORMAL) {
+                enableFieldClick(fieldIndex, player);
+            }
+        }
+    }
+
+    private void enableFieldClick(int index, Player player) {
+        ImageView imageView = imageViews.get(index);
+        if (imageView != null) {
+            imageView.setOnClickListener(v -> buildHouse(player, index));
+        }
+    }
+    private void buildHouse(Player player, int fieldIndex) {
+        Field field = fields.get(fieldIndex);
+        House house = new House(House.getHousePrice(), fieldIndex);
+        gameBoardViewModel.buyBuilding(player, house, field);
+    }
+
+    private Map<Integer, List<ImageView>> fieldHousesMap = new HashMap<>();
+    @Override
+    public void placeBuilding(int fieldIndex, Building building, int numberOfBuildings) {
+        runOnUiThread(() -> {
+            ImageView buildingView = new ImageView(this);
+            int resourceId = building instanceof House ? R.drawable.house : R.drawable.hotel;
+            buildingView.setImageResource(resourceId);
+
+
+            int houseWidth = 50;
+            int houseHeight = 50;
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(houseWidth, houseHeight);
+            buildingView.setLayoutParams(params);
+
+            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+            constraintLayout.addView(buildingView);
+
+            if(building instanceof Hotel){
+                removeHousesFromField(fieldIndex, 4);
+            } else if (building instanceof House) {
+                addHouse(fieldIndex, buildingView);
+            }
+
+            int[] position = getPositionFromView(imageViews.get(fieldIndex));
+
+
+            int xOffset = 10;
+            int yOffset = 10;
+            int xMult = 1;
+            int yMult = 1;
+            if (numberOfBuildings == 2){
+                xMult = 5;
+            }
+            else if (numberOfBuildings == 3){
+                yMult = 5;
+            }
+            else if(numberOfBuildings == 4){
+                xMult = 5;
+                yMult = 5;
+            }
+            buildingView.setX(position[0] + (float) (xOffset*xMult));
+            buildingView.setY(position[1] + (float) (yOffset*yMult));
+        });
+
+    }
+
+    private void addHouse (int fieldIndex, ImageView houseView){
+        List<ImageView> houseViews = fieldHousesMap.get(fieldIndex);
+        if (houseViews == null){
+            houseViews = new ArrayList<>();
+            fieldHousesMap.put(fieldIndex, houseViews);
+        }
+        houseViews.add(houseView);
+    }
+    private void removeHousesFromField(int fieldIndex, int numberOfHouses) {
+        List<ImageView> houseViews = fieldHousesMap.get(fieldIndex);
+        if (houseViews != null && houseViews.size() >= numberOfHouses) {
+            ConstraintLayout constraintLayout = findViewById(R.id.gameBoard);
+            for (int i = 0; i < numberOfHouses; i++) {
+                ImageView houseView = houseViews.get(i);
+                constraintLayout.removeView(houseView);
+            }
+            houseViews.subList(0, numberOfHouses).clear();
+            if (houseViews.isEmpty()) {
+                fieldHousesMap.remove(fieldIndex);
+            }
+        }
+    }
+
 
     public void dicePopUp() {
         runOnUiThread(() -> {
@@ -470,8 +600,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             diceImageView1 = popupView.findViewById(R.id.diceImageView1);
             diceImageView2 = popupView.findViewById(R.id.diceImageView2);
 
-            int width = WRAP_CONTENT;
-            int height = WRAP_CONTENT;
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
             boolean focusable = true;
             PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
@@ -501,7 +631,20 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             Log.d(TAG, "IsOnTurn: "+player.isOnTurn());
 
             if (!player.isOnTurn()) {
-                disableView(rollButton);
+                rollButton.setText("CLOSE");
+                rollButton.setOnClickListener(v -> popupWindow.dismiss());
+                new ThreadTimer(4000, new TimerElapsedEvent() {
+                    @Override
+                    public void onTimerElapsed() {
+                        runOnUiThread(popupWindow::dismiss);
+                    }
+                    @Override
+                    public void onSecondElapsed(int secondsRemaining) {
+                        runOnUiThread(() ->
+                            rollButton.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                        );
+                    }
+                }).start();
             }
         });
     }
@@ -590,6 +733,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         super.onResume();
         sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_NORMAL);
+
+        sensorManager.registerListener(proximitySensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY), SensorManager.SENSOR_DELAY_NORMAL);
     }
     @Override
     protected void onPause() {
@@ -598,21 +743,15 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     public void showCard(View view, String viewID, String btnText, boolean showBtn, PopupBtnAction btnAction) {
-        Log.d("game-card","ShowCard");
         runOnUiThread(()->{
                     LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
                     View popupView = inflater.inflate(R.layout.popup_cards_layout, null);
-                    int width = WRAP_CONTENT;
-                    int height = WRAP_CONTENT;
+                    int width = MATCH_PARENT;
+                    int height = MATCH_PARENT;
                     boolean focusable = true;
 
-                    PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-                    // disables possibility to close popup by clicking outside
-//                    popupWindow.setTouchable(true);
-//                    popupWindow.setFocusable(false);
-//                    popupWindow.setOutsideTouchable(false);
-
-                    popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+        PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
 
                     ImageView popupImageView = popupView.findViewById(R.id.popUpCards); // load specific image into pop-up that belongs to the field
                     int imageResourceId = getResources().getIdentifier(viewID, DEF_TYPE, getPackageName());
@@ -627,15 +766,18 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                     if(!showBtn){
                         disableView(btnBuy);
                     }
+//            Button btnDiscard = popupView.findViewById(R.id.btn_cardDiscard);
+//            btnDiscard.setOnClickListener(v -> popupWindow.dismiss());
         });
+
     }
     @Override
      public void showTaxes(Player payer, Player payee, int amount) {
         runOnUiThread(()->{
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-            View popupView = inflater.inflate(R.layout.popup_paytaxes, null);
-            int width = WRAP_CONTENT;
-            int height = WRAP_CONTENT;
+            View popupView = inflater.inflate(R.layout.popup_info_text, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
             boolean focusable = true;
 
             PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
@@ -643,9 +785,60 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             TextView playerTaxesTextView = popupView.findViewById(R.id.txt_playerTaxes);
             String taxesMessage = payer.getUsername() + " pay " + amount + " $ Taxes to " + payee.getUsername();
             playerTaxesTextView.setText(taxesMessage);
+
+            Button btnClose = popupView.findViewById(R.id.btn_closeInfoPopup);
+            btnClose.setOnClickListener(v -> popupWindow.dismiss());
+
+            new ThreadTimer(5000, new TimerElapsedEvent() {
+                @Override
+                public void onTimerElapsed() {
+                    runOnUiThread(popupWindow::dismiss);
+                }
+
+                @Override
+                public void onSecondElapsed(int secondsRemaining) {
+                    runOnUiThread(() ->
+                        btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                    );
+                }
+            }).start();
         });
 
 
+    }
+
+    @Override
+    public void showCheaterDetectedPopUp(Player cheater, Player detective) {
+        runOnUiThread(() -> {
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_info_text, null);
+            int width = MATCH_PARENT;
+            int height = MATCH_PARENT;
+            boolean focusable = true;
+
+            PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(findViewById(R.id.gameBoard), Gravity.CENTER, 0, 0);
+
+            TextView playerTaxesTextView = popupView.findViewById(R.id.txt_playerTaxes);
+            String taxesMessage = String.format(getString(R.string.txt_cheater_detected), cheater.getUsername(), detective.getUsername());
+            playerTaxesTextView.setText(taxesMessage);
+
+            Button btnClose = popupView.findViewById(R.id.btn_closeInfoPopup);
+            btnClose.setOnClickListener(v -> popupWindow.dismiss());
+            new ThreadTimer(5000, new TimerElapsedEvent() {
+                @Override
+                public void onTimerElapsed() {
+                    runOnUiThread(popupWindow::dismiss);
+                }
+
+                @Override
+                public void onSecondElapsed(int secondsRemaining) {
+                    runOnUiThread(() ->
+                        btnClose.setText(String.format(getString(R.string.txt_general_close_msg), secondsRemaining))
+                    );
+                }
+            }).start();
+        });
     }
 
     @Override
@@ -799,6 +992,29 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     public void sendCheatValue(int input) {
         gameBoardViewModel.submitCheat(input);
     }
+    public void reportCheat(Player player, Player fromPlayer) {
+        gameBoardViewModel.reportCheat(player, fromPlayer);
+    }
+
+    public void reportCheater(View v) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        List<Player> playersWithoutMe = this.players.stream()
+                .filter(p -> !p.getId().equals(player.getId()))
+                .collect(Collectors.toList());
+        ReportCheaterDialog dialogFragment = new ReportCheaterDialog(playersWithoutMe, new ReportCheaterDialog.OnPlayerSelectedListener() {
+            @Override
+            public void onPlayerSelected(Player player) {
+                // not used
+            }
+
+            @Override
+            public void onPlayerConfirmed(Player player) {
+                reportCheat(player, GameBoard.this.player);
+            }
+        });
+        dialogFragment.show(fragmentManager, "player_selection");
+    }
     public void showCardRisiko(int indexCard, boolean showBtn, Player fromPlayer) {
         Card currentCard = risikoCards.get(indexCard);
         if(currentCard instanceof JokerCard){
@@ -806,14 +1022,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             gameBoardViewModel.addJokerCard(joker, fromPlayer);
         }
         showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(),"Ok",showBtn,() -> {
-            Log.d("DEBUG", "showCardRisiko" + (currentCard instanceof MoveCard ? "moveCard":"payCard"));
+            Log.d(TAG, "showCardRisiko" + (currentCard instanceof MoveCard ? "moveCard":"payCard"));
             currentCard.doActionOfCard(this.gameBoardViewModel);
         });
     }
     public void showCardBank(int indexCard, boolean showBtn) {
         Card currentCard = bankCards.get(indexCard);
         showCard(findViewById(R.id.gameBoard), currentCard.getImageResource(), "Ok",showBtn, () -> {
-            Log.d("DEBUG", "showCardBank");
+            Log.d(TAG, "showCardBank");
             currentCard.doActionOfCard(this.gameBoardViewModel);
         });
     }
