@@ -249,13 +249,20 @@ public class GameBoardViewModel {
         //player.addJokerCard(joker);
         gameBoardAction.updatePlayerStats();    // update the joker amount before endTurn
     }
-    public void addJokerCard(JokerCard joker, Player fromPlayer){
-        game.getPlayers().stream()
+    public void addJokerCard(JokerCard joker, Player fromPlayer) {
+        Player playerToUpdate = game.getPlayers().stream()
                 .filter(p -> p.getId().equals(fromPlayer.getId()))
                 .findAny()
-                .orElse(null).addJokerCard(joker);
-        gameBoardAction.updatePlayerStats();    // update the joker amount before endTurn
+                .orElse(null);
+
+        if (playerToUpdate != null) {
+            playerToUpdate.addJokerCard(joker);
+            gameBoardAction.updatePlayerStats(); // update the joker amount before endTurn
+        }else{
+            throw new IllegalArgumentException("Player with ID " + fromPlayer.getId() + " not found");
+        }
     }
+
 
     public void reportCheat(Player player, Player fromPlayer) {
         actionController.reportCheat(player, fromPlayer);
