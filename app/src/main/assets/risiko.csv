@@ -1,0 +1,15 @@
+ID;VALUE;TYPE;PATHNAME
+1;-90;PAY;risikocard1
+2;0;JOKER;risikocard2
+3;80;PAY;risikocard3
+4;-110;PAY;risikocard4
+5;-50;PAY;risikocard5
+6;50;PAY;risikocard6
+7;-180;PAY;risikocard7
+8;0;MOVE;25;risikocard8
+9;-50;PAY;risikocard9
+10;200;MOVE;15;risikocard10
+11;-80;PAY;risikocard11
+12;200;MOVE;7;risikocard12
+13;300;PAY;risikocard13
+14;-60;PAY;risikocard14
