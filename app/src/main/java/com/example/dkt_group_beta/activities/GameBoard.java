@@ -259,14 +259,38 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }
 
         proximitySensorListener = new SensorEventListener() {
+            ThreadTimer threadTimer = null;
+            CheatDialogFragment dialog;
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if (event.values[0] < proximitySensor.getMaximumRange()) {
-                    // Hand is near the display
-                    Toast.makeText(getApplicationContext(), "Cheat Mode Activated", Toast.LENGTH_SHORT).show();
-                    CheatDialogFragment dialog = new CheatDialogFragment();
-                    dialog.inputListener = GameBoard.this;
-                    dialog.show(getSupportFragmentManager(), "InputDialogFragment");
+                if (this.threadTimer != null){
+                    this.threadTimer.discard();
+                }
+                if (event.values[0] == 0) {
+                    threadTimer = new ThreadTimer(1000, new TimerElapsedEvent() {
+                        @Override
+                        public void onTimerElapsed() {
+                            runOnUiThread(() -> {
+                                dialog = new CheatDialogFragment();
+                                dialog.inputListener = GameBoard.this;
+                                if (dialog == null || !dialog.isVisible()) {
+                                    Toast.makeText(GameBoard.this.getApplicationContext(), "Cheat Mode Activated", Toast.LENGTH_SHORT).show();
+                                    dialog.show(GameBoard.this.getSupportFragmentManager(), "InputDialogFragment");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onSecondElapsed(int secondsRemaining) {
+
+                        }
+                    });
+                    this.threadTimer.start();
+//                    Toast.makeText(getApplicationContext(), "Cheat Mode Activated", Toast.LENGTH_SHORT).show();
+//                    CheatDialogFragment dialog = new CheatDialogFragment();
+//                    dialog.inputListener = GameBoard.this;
+//                    dialog.show(getSupportFragmentManager(), "InputDialogFragment");
+
                 }
             }
 
