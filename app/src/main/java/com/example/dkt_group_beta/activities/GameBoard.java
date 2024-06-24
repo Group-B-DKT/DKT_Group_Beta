@@ -267,7 +267,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                     this.threadTimer.discard();
                 }
                 if (event.values[0] == 0) {
-                    threadTimer = new ThreadTimer(1000, new TimerElapsedEvent() {
+                    threadTimer = new ThreadTimer(5000, new TimerElapsedEvent() {
                         @Override
                         public void onTimerElapsed() {
                             runOnUiThread(() -> {
