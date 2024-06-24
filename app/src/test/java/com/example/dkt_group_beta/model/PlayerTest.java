@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import android.widget.ImageView;
 
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
+import com.example.dkt_group_beta.model.enums.CardType;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -254,4 +255,55 @@ class PlayerTest {
         assertTrue(player.isHasCheated());
     }
 
+    @Test
+    void testGetJokerCardsInitiallyEmpty() {
+        assertTrue(player.getJokerCards().isEmpty());
+    }
+
+    @Test
+    void testSetJokerCards() {
+        ArrayList<JokerCard> jokerCards = new ArrayList<>();
+        jokerCards.add(new JokerCard(1, 0, CardType.JOKER, "joker1.png"));
+        jokerCards.add(new JokerCard(2, 0, CardType.JOKER, "joker2.png"));
+
+        player.setJokerCards(jokerCards);
+
+        assertEquals(jokerCards, player.getJokerCards());
+    }
+
+    @Test
+    void testHasJokerCardInitiallyFalse() {
+        assertFalse(player.hasJokerCard());
+    }
+
+    @Test
+    void testHasJokerCardAfterAdding() {
+        player.addJokerCard(new JokerCard(1, 0, CardType.JOKER, "joker.png"));
+        assertTrue(player.hasJokerCard());
+    }
+
+    @Test
+    void testGetJokerAmount() {
+        player.addJokerCard(new JokerCard(1, 0, CardType.JOKER, "joker.png"));
+        player.addJokerCard(new JokerCard(2, 0, CardType.JOKER, "joker.png"));
+
+        assertEquals(2, player.getJokerAmount());
+    }
+
+    @Test
+    void testAddJokerCard() {
+        JokerCard jokerCard = new JokerCard(1, 0, CardType.JOKER, "joker.png");
+        player.addJokerCard(jokerCard);
+
+        assertTrue(player.getJokerCards().contains(jokerCard));
+    }
+
+    @Test
+    void testRemoveJokerCard() {
+        JokerCard jokerCard = new JokerCard(1, 0, CardType.JOKER, "joker.png");
+        player.addJokerCard(jokerCard);
+        player.removeJokerCard();
+
+        assertFalse(player.getJokerCards().contains(jokerCard));
+    }
 }
