@@ -1,5 +1,7 @@
 package com.example.dkt_group_beta.model;
 
+
+
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
 
 import java.security.SecureRandom;
@@ -45,47 +47,49 @@ public class Game {
         }
         return false;
     }
-    public boolean buyHouse(Player player, House house) {
-        Field field = house.getField();
-        if (field.getOwner() == player && pay(player, house.getHousePrice())) {
+    public boolean payTaxes(Player currentPlayer, Field field) {
+        Player owner = field.getOwner();
+        if (owner != null && !owner.getId().equals(currentPlayer.getId())) {
+            int taxAmount = field.getRent();
+            if (currentPlayer.getMoney() > taxAmount) {
+                owner.setMoney(owner.getMoney() + taxAmount);
+                currentPlayer.setMoney(currentPlayer.getMoney()-taxAmount);
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean buyHouse(Player player, House house, Field field) {
+        if (field.getOwner().getId().equals(player.getId())  && player.getMoney() >= House.getHousePrice()) {
             if (field.hasHotel()) {
                 return false;
-            } else if (getNumberOfHouses() == house.getMaxAmount()) {
-                return buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, player, house.getPosition(), field));
+            } else if (getNumberOfHouses(field) == house.getMaxAmount()) {
+                buyHotel(player, new Hotel(Hotel.HOTEL_PRICE, 10), field);
+                field.removeHouse(house, 4);
+                return true;
             } else {
-                field.addBuilding(house);
-                house.setOwner(player);
-                house.setField(field);
+                field.addHouse(house);
+                pay(player, House.getHousePrice());
                 return true;
             }
         }
         return false;
     }
 
-    public boolean buyHotel(Player player, Hotel hotel) {
-        Field field = hotel.getField();
-        if (field.getOwner() == player && pay(player, hotel.getPrice())) {
+    public boolean buyHotel(Player player, Hotel hotel, Field field) {
+        if (field.getOwner().getId().equals(player.getId()) && player.getMoney() >= hotel.getPrice()){
             if (field.hasHotel()) {
                 return false;
             } else {
-                field.addBuilding(hotel);
-                hotel.setOwner(player);
-                hotel.setField(field);
+                field.setHotel(hotel);
+                pay(player, hotel.getPrice());
                 return true;
             }
         }
         return false;
     }
-    public int getNumberOfHouses(){
-        int count = 0;
-        for (Field field : fields) {
-            for (Building building : field.getBuildings()) {
-                if (building instanceof House) {
-                    count++;
-                }
-            }
-        }
-        return count;
+    public int getNumberOfHouses(Field field){
+        return field.getHouses().size();
     }
 
     public List<Field> getOwnedFields(Player player) {
@@ -179,5 +183,16 @@ public class Game {
                 p.setHost(true);
             }
         });
+    }
+    public int getFieldListSize(){
+        return fields.size();
+    }
+    public int getFieldPosition(int fieldID){
+        for (int i = 0; i < fields.size(); i++) {
+            if(fields.get(i).getId() == fieldID){
+                return i;
+            }
+        }
+        return -1;
     }
 }
