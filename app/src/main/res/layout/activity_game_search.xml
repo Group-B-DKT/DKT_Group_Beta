@@ -56,25 +56,23 @@
 
         <Button
             android:id="@+id/btn_refresh"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/MyButton.Info"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:layout_weight="1"
-            android:backgroundTint="#FF0000"
             android:text="@string/btn_refresh"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/btn_connect"
-            style="?android:attr/buttonBarButtonStyle"
+            style="@style/MyButton.Info"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"
             android:layout_weight="1"
-            android:backgroundTint="#FF0000"
             android:focusable="true"
             android:text="@string/btn_connect"
             android:textColor="@color/white" />

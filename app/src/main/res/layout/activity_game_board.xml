@@ -9,7 +9,7 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#818979"
+    android:background="@drawable/background"
     tools:context=".activities.GameBoard">
 
 
@@ -277,13 +277,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/middleLayout"
+            android:background="@drawable/dkt1"
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/linear_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linear_top">
+            app:layout_constraintTop_toBottomOf="@+id/linear_top"
+            app:layout_constraintVertical_bias="0.0">
 
             <LinearLayout
                 android:id="@+id/linearLeft"
@@ -370,6 +372,8 @@
                 android:layout_marginTop="20dp"
                 android:backgroundTint="#669800"
                 android:text="Roll Dice"
+                android:textColor="@color/white"
+                android:textSize="20sp"
                 app:cornerRadius="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -463,21 +467,6 @@
         app:layout_constraintWidth_default="percent"
         app:layout_constraintWidth_percent=".4">
 
-        <TextView
-            android:id="@+id/build_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="96dp"
-            android:text="Um zu BAUEN klicken Sie auf die hervorgehobenen Felder"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_playerStats"
             android:layout_width="match_parent"
@@ -485,8 +474,8 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            app:layout_constraintBottom_toTopOf="@+id/build_text_view"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_reportCheater"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -502,6 +491,8 @@
             android:layout_marginEnd="20dp"
             android:backgroundTint="@android:color/holo_green_dark"
             android:text="BAUEN"
+            android:textColor="@color/white"
+            android:textSize="15sp"
             app:cornerRadius="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -511,19 +502,38 @@
         <Button
             android:id="@+id/btn_endTurn"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
             android:backgroundTint="#C15F2A"
             android:text="@string/end_turn"
-            android:textSize="12sp"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:cornerRadius="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.114"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_reportCheater"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/btn_reportCheater"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="#C15F2A"
+            android:onClick="reportCheater"
+            android:text="@string/report_cheater"
+            android:textColor="@color/white"
+            android:textSize="14sp"
             app:cornerRadius="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/build_text_view"
-            app:layout_constraintVertical_bias="1.0" /> <!-- Die TextView wird zunächst unsichtbar gemacht -->
+            app:layout_constraintStart_toStartOf="parent" />
+        <!-- Die TextView wird zunächst unsichtbar gemacht -->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

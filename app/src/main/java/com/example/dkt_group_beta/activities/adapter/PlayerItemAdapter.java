@@ -30,12 +30,14 @@ public class PlayerItemAdapter extends RecyclerView.Adapter<PlayerItemAdapter.Vi
         TextView playerName;
         TextView isOnTurn;
         TextView money;
+        TextView joker;
         LinearLayout layoutItemMain;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             playerName = itemView.findViewById(R.id.txt_playerName);
             isOnTurn = itemView.findViewById(R.id.txt_isOnTurn);
             money = itemView.findViewById(R.id.txt_money);
+            joker = itemView.findViewById(R.id.txt_joker);
             layoutItemMain = itemView.findViewById(R.id.layout_itemMain);
         }
     }
@@ -57,6 +59,7 @@ public class PlayerItemAdapter extends RecyclerView.Adapter<PlayerItemAdapter.Vi
         holder.isOnTurn.setText(data.get(position).isOnTurn() ? "current playing" : "");
         holder.money.setText(""+data.get(position).getMoney());
         Log.d("Color", ""+data.get(position));
+        holder.joker.setText(""+data.get(position).getJokerAmount());
         holder.layoutItemMain.getBackground().setTint(data.get(position).getColor());
     }
 

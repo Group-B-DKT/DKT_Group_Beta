@@ -6,6 +6,7 @@ import com.example.dkt_group_beta.communication.ActionJsonObject;
 import com.example.dkt_group_beta.communication.enums.Action;
 import com.example.dkt_group_beta.communication.enums.Request;
 import com.example.dkt_group_beta.communication.utilities.WrapperHelper;
+import com.example.dkt_group_beta.model.Card;
 import com.example.dkt_group_beta.model.Field;
 import com.example.dkt_group_beta.model.Player;
 import com.example.dkt_group_beta.viewmodel.interfaces.InputHandleAction;
@@ -53,6 +54,14 @@ public class ActionController {
 
     }
 
+    public void buyBuilding(Field field){
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BUY_BUILDING, null, WebsocketClientController.getPlayer(), Collections.singletonList(field));
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+
+
 
     public void isReady(boolean isReady){
         ActionJsonObject actionJsonObject;
@@ -99,10 +108,15 @@ public class ActionController {
 
     }
 
-    public void moneyUpdate(){
+    public void moneyUpdate(Player player){
 
-        Player player = WebsocketClientController.getPlayer();
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.UPDATE_MONEY, null, player, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
+    public void payTaxes(Player player){
+
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.PAY_TAXES, null, player, null);
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
@@ -119,7 +133,7 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
-  
+
     public void reconnectToGame() {
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_OK, null);
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
@@ -138,7 +152,25 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
+    public void reportCheat(Player player, Player fromPlayer) {
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.REPORT_CHEAT, player.getId(), fromPlayer, null);
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
 
+    public void showRisikoCard(int cardIndex){
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RISIKO_CARD_SHOW, Integer.toString(cardIndex), WebsocketClientController.getPlayer()); // Action, card, and player send to server
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg); // sends message to server
+    }
+    public void showBankCard(int cardIndex){
+        int gameId = WebsocketClientController.getConnectedGameId();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.BANK_CARD_SHOW, Integer.toString(cardIndex), WebsocketClientController.getPlayer()); // Action, card, and player send to server
+        String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg); // sends message to server
+    }
 
     private void onMessageReceived(Object actionObject) {
         if (!(actionObject instanceof ActionJsonObject))
@@ -149,4 +181,6 @@ public class ActionController {
         ActionJsonObject actionJsonObject = (ActionJsonObject) actionObject;
         handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer(), actionJsonObject.getFields());
     }
+
+
 }
