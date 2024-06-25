@@ -41,4 +41,6 @@
     <string name="txt_cheater_detected">"Cheater: %s Detected by %s"</string>
     <string name="txt_general_close_msg">"CLOSE (%ds remaining)"</string>
     <string name="txt_general_ok_msg">"OK (%ds remaining)"</string>
+    <string name="congrats_win">CONGRATULATIONS</string>
+    <string name="win_text">%s won the game!</string>
 </resources>

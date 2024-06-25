@@ -24,4 +24,5 @@ public interface GameBoardAction {
     void showTaxes(Player payer, Player payee, int amount);
     void placeBuilding(int fieldIndex, Building building, int numberOfBuildings);
     void showCheaterDetectedPopUp(Player cheater, Player detective);
+    void switchToWinScreen(Player fromPlayer);
 }

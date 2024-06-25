@@ -90,6 +90,7 @@ public class GameSearch extends AppCompatActivity implements GameSearchAction {
         Intent intent = new Intent(getApplicationContext(), GameLobby.class);
         intent.putExtra("username", username);
         startActivity(intent);
+        gameSearchViewModel.setDestroyed(true);
         finish();
     }
 

@@ -3,6 +3,7 @@ package com.example.dkt_group_beta.activities;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -26,7 +27,6 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
-
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -130,6 +130,8 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     private boolean isCountdownThreadToCancel = false;
     Button build;
+
+    private boolean doAnimation = true;
 
 
     @Override
@@ -274,14 +276,38 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         }
 
         proximitySensorListener = new SensorEventListener() {
+            ThreadTimer threadTimer = null;
+            CheatDialogFragment dialog;
             @Override
             public void onSensorChanged(SensorEvent event) {
-                if (event.values[0] < proximitySensor.getMaximumRange()) {
-                    // Hand is near the display
-                    Toast.makeText(getApplicationContext(), "Cheat Mode Activated", Toast.LENGTH_SHORT).show();
-                    CheatDialogFragment dialog = new CheatDialogFragment();
-                    dialog.inputListener = GameBoard.this;
-                    dialog.show(getSupportFragmentManager(), "InputDialogFragment");
+                if (this.threadTimer != null){
+                    this.threadTimer.discard();
+                }
+                if (event.values[0] == 0) {
+                    threadTimer = new ThreadTimer(5000, new TimerElapsedEvent() {
+                        @Override
+                        public void onTimerElapsed() {
+                            runOnUiThread(() -> {
+                                dialog = new CheatDialogFragment();
+                                dialog.inputListener = GameBoard.this;
+                                if (dialog == null || !dialog.isVisible()) {
+                                    Toast.makeText(GameBoard.this.getApplicationContext(), "Cheat Mode Activated", Toast.LENGTH_SHORT).show();
+                                    dialog.show(GameBoard.this.getSupportFragmentManager(), "InputDialogFragment");
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onSecondElapsed(int secondsRemaining) {
+
+                        }
+                    });
+                    this.threadTimer.start();
+//                    Toast.makeText(getApplicationContext(), "Cheat Mode Activated", Toast.LENGTH_SHORT).show();
+//                    CheatDialogFragment dialog = new CheatDialogFragment();
+//                    dialog.inputListener = GameBoard.this;
+//                    dialog.show(getSupportFragmentManager(), "InputDialogFragment");
+
                 }
             }
 
@@ -396,46 +422,57 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
 
     @Override
     public void animation(Player movePlayer, int repetition) {
+        if (!doAnimation){
 
-
-        ImageView characterImageView = movePlayer.getCharacterView();
-
-        if (repetition == 0) {
-            if (movePlayer.getId().equals(player.getId())) {
+            if (movePlayer.getCurrentPosition() + repetition >= NUMBER_OF_FIELDS) {
+                movePlayer.setCurrentPosition((movePlayer.getCurrentPosition() + repetition) - NUMBER_OF_FIELDS);
+                passedStart = true;
+            }else{
+                movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+ repetition);
+            }
+            setPosition(movePlayer.getCurrentPosition(), movePlayer);
+            if (player.getId().equals(movePlayer.getId()))
                 checkEndFieldPosition(passedStart);
-                passedStart = false;
-            }
-            return;
         }
+        else {
+            ImageView characterImageView = movePlayer.getCharacterView();
 
-        Animation animation = getAnimation(movePlayer);
-        animation.setDuration(500); // Dauer basierend auf Anzahl der Schritte
-        animation.setRepeatCount(0); // Keine Wiederholung, da die Position manuell aktualisiert wird
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                Log.d(TAG, "Y3: " + characterImageView.getY());
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                animation.cancel();
-                if (movePlayer.getCurrentPosition() + 1 >= NUMBER_OF_FIELDS) {
-                    movePlayer.setCurrentPosition(0);
-                    passedStart = true;
-                }else{
-                    movePlayer.setCurrentPosition(movePlayer.getCurrentPosition()+1);
+            if (repetition == 0) {
+                if (movePlayer.getId().equals(player.getId())) {
+                    checkEndFieldPosition(passedStart);
                 }
-                setPosition(movePlayer.getCurrentPosition(), movePlayer);
-                animation(movePlayer, repetition - 1);
-
+                return;
             }
 
-            @Override
-            public void onAnimationRepeat(Animation animation) { // method not used
-            }
-        });
-        movePlayer.getCharacterView().startAnimation(animation);
+            Animation animation = getAnimation(movePlayer);
+            animation.setDuration(500); // Dauer basierend auf Anzahl der Schritte
+            animation.setRepeatCount(0); // Keine Wiederholung, da die Position manuell aktualisiert wird
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    Log.d(TAG, "Y3: " + characterImageView.getY());
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    animation.cancel();
+                    if (movePlayer.getCurrentPosition() + 1 >= NUMBER_OF_FIELDS) {
+                        movePlayer.setCurrentPosition(0);
+                        passedStart = true;
+                    } else {
+                        movePlayer.setCurrentPosition(movePlayer.getCurrentPosition() + 1);
+                    }
+                    setPosition(movePlayer.getCurrentPosition(), movePlayer);
+                    animation(movePlayer, repetition - 1);
+
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) { // method not used
+                }
+            });
+            movePlayer.getCharacterView().startAnimation(animation);
+        }
     }
 
     private void checkEndFieldPosition(boolean passedStart) {
@@ -897,6 +934,17 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     @Override
+    public void switchToWinScreen(Player fromPlayer) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, WinScreen.class);
+            intent.putExtra("playername", fromPlayer.getUsername());
+            startActivity(intent);
+            sensorManager.unregisterListener(this);
+            finish();
+        });
+    }
+
+    @Override
     public void showDisconnectPopUp(Player disconnectedPlayer, LocalTime serverTime){
         final int RECONNECT_DURATION = 1 * 60; // in seconds
 
@@ -914,11 +962,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
                 disableView(btnKickPlayer);
             }
             btnKickPlayer.setOnClickListener(v ->
-                this.players.forEach(p -> {
-                    if (!p.isConnected()) {
-                        gameBoardViewModel.removePlayer(player.getGameId(), p);
-                    }
-                }));
+                    this.players.forEach(p -> {
+                        if (!p.isConnected()) {
+                            gameBoardViewModel.removePlayer(player.getGameId(), p);
+                        }
+                    }));
 
             TextView playerDisconnected = popupView.findViewById(R.id.txt_playerDisconnected);
             TextView remainingTime = popupView.findViewById(R.id.txt_remainingTime);
@@ -1092,6 +1140,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             Log.d(TAG, "showCardBank");
             currentCard.doActionOfCard(this.gameBoardViewModel);
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.sensorManager.unregisterListener(proximitySensorListener, proximitySensor);
+        this.sensorManager = null;
+
     }
 
     public void gotToJail(Player playerInJail){

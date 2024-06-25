@@ -9,6 +9,8 @@ public class ThreadTimer extends Thread {
     private long oldSecondsMillis;
     int secondsRemaining;
 
+    boolean stop = false;
+
     public ThreadTimer(int timer, TimerElapsedEvent timerElapsedEvent) {
         this.timerElapsedEvent = timerElapsedEvent;
         this.timer = timer;
@@ -33,6 +35,8 @@ public class ThreadTimer extends Thread {
         super.run();
 
         while (System.currentTimeMillis() - oldMillis < timer){
+            if (stop) return;
+
             if (System.currentTimeMillis() - oldSecondsMillis > 1000){
                 oldSecondsMillis = System.currentTimeMillis();
                 timerElapsedEvent.onSecondElapsed(--secondsRemaining);
@@ -40,5 +44,9 @@ public class ThreadTimer extends Thread {
         }
 
         timerElapsedEvent.onTimerElapsed();
+    }
+
+    public void discard() {
+        stop = true;
     }
 }

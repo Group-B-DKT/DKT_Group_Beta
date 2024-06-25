@@ -53,6 +53,7 @@ public class Player implements Serializable {
         this.hasCheated = false;
         //test
         this.jokerCards = new ArrayList<>();
+        this.jokerCards = new ArrayList<>();
     }
 
 
