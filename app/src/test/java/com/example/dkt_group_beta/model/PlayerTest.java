@@ -1,6 +1,10 @@
 package com.example.dkt_group_beta.model;
 
 import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import android.widget.ImageView;
 
@@ -94,6 +98,30 @@ class PlayerTest {
     void testBuyHotelFieldAlreadyHasHotel() {
         field.setHotel(hotel);
         assertFalse(game.buyHotel(player, new Hotel(200, 10), field));
+    }
+    @Test
+    void testSellHouse() {
+        game.buyHouse(player, house, field);
+        assertTrue(game.sellHouse(player, house, field));
+        assertEquals(1400, player.getMoney());
+        assertTrue(field.getHouses().isEmpty());
+    }
+
+    @Test
+    void testSellHouseNotOwned() {
+        assertFalse(game.sellHouse(player, house, field));
+    }
+
+    @Test
+    void testSellHotel() {
+        game.buyHotel(player, hotel, field);
+        assertTrue(game.sellHotel(player, field));
+        assertNull(field.getHotel());
+    }
+
+    @Test
+    void testSellHotelNotOwned() {
+        assertFalse(game.sellHotel(player, field));
     }
 
     @Test
