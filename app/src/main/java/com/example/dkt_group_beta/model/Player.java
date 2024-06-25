@@ -33,7 +33,9 @@ public class Player implements Serializable {
     private int currentPosition;
 
     private int color;
+
     private ArrayList<JokerCard> jokerCards;
+
     private boolean hasCheated;
 
 
@@ -46,8 +48,8 @@ public class Player implements Serializable {
         this.money = START_MONEY;
         this.currentPosition = 0;
         this.isOnTurn = false;
-        this.jokerCards = new ArrayList<>();
         this.hasCheated = false;
+        this.jokerCards = new ArrayList<>();
     }
 
 
