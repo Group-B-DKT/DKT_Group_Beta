@@ -133,6 +133,7 @@ public class GameBoardViewModel {
         }
 
         if (action == Action.GAME_WON){
+            player.setDefaulValues();
             gameBoardAction.switchToWinScreen(fromPlayer);
         }
     }

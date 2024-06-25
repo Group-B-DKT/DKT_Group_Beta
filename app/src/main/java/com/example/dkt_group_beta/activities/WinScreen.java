@@ -1,6 +1,8 @@
 package com.example.dkt_group_beta.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -26,5 +28,12 @@ public class WinScreen extends AppCompatActivity {
 
         TextView txtWin = findViewById(R.id.txt_win);
         txtWin.setText(String.format(getString(R.string.win_text), getIntent().getStringExtra("playername")));
+
+        Button btnToLogin = findViewById(R.id.btn_toLogin);
+        btnToLogin.setOnClickListener(v -> {
+            Intent intent = new Intent(this, Login.class);
+            startActivity(intent);
+            finish();
+        });
     }
 }
