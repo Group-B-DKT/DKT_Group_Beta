@@ -534,7 +534,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
     private void sellHouse(Player player, int fieldIndex) {
         Field field = fields.get(fieldIndex);
-        House house = field.getHouses().get(0); // Get the first house from the list
+        House house = field.getHouses().get(0);
         gameBoardViewModel.sellBuilding(player, house, field);
     }
 
@@ -587,7 +587,12 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     public void deleteBuilding(int fieldIndex, Building building, int numberOfBuildings) {
         runOnUiThread(() -> {
             if (building instanceof House) {
-                removeHousesFromField(fieldIndex, 1);
+                List<ImageView> houseViews = fieldHousesMap.get(fieldIndex);
+                if (houseViews != null && !houseViews.isEmpty()) {
+                    ImageView lastHouseView = houseViews.get(houseViews.size() - 1);
+                    ((ViewGroup) lastHouseView.getParent()).removeView(lastHouseView);
+                    houseViews.remove(lastHouseView);
+                }
             } else if (building instanceof Hotel) {
                 // Remove the hotel view from the UI
                 ImageView hotelView = fieldHousesMap.get(fieldIndex).get(0);
