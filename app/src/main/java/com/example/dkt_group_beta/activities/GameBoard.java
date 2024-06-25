@@ -919,6 +919,7 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             Intent intent = new Intent(this, WinScreen.class);
             intent.putExtra("playername", fromPlayer.getUsername());
             startActivity(intent);
+            sensorManager.unregisterListener(this);
             finish();
         });
     }
@@ -1114,5 +1115,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             Log.d(TAG, "showCardBank");
             currentCard.doActionOfCard(this.gameBoardViewModel);
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.sensorManager.unregisterListener(proximitySensorListener, proximitySensor);
+        this.sensorManager = null;
+
     }
 }
