@@ -1,6 +1,7 @@
 package com.example.dkt_group_beta.activities;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +11,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.dkt_group_beta.R;
 
-public class WinActivity extends AppCompatActivity {
+public class WinScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,5 +23,8 @@ public class WinActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        TextView txtWin = findViewById(R.id.txt_win);
+        txtWin.setText(String.format(getString(R.string.win_text), getIntent().getStringExtra("playername")));
     }
 }

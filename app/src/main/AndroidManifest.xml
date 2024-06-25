@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".activities.WinActivity"
+            android:name=".activities.WinScreen"
             android:exported="false" />
         <activity
             android:name=".activities.Login"

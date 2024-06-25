@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#20FEC007"
-    tools:context=".activities.WinActivity">
+    tools:context=".activities.WinScreen">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txt_win"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="PlayerXX won the game"
@@ -26,7 +26,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CONGRATULATIONS"
+        android:text="@string/congrats_win"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/imageView"

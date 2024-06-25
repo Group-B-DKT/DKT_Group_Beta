@@ -131,6 +131,10 @@ public class GameBoardViewModel {
             }
             gameBoardAction.showCardBank(cardIndex, showBtn);
         }
+
+        if (action == Action.GAME_WON){
+            gameBoardAction.switchToWinScreen(fromPlayer);
+        }
     }
 
     private void handleConnectionLost(Player disconnectedPlayer, LocalTime serverTime) {
