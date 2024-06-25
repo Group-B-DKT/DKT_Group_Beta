@@ -3,6 +3,7 @@ package com.example.dkt_group_beta.activities;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -913,6 +914,17 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
     }
 
     @Override
+    public void switchToWinScreen(Player fromPlayer) {
+        runOnUiThread(() -> {
+            Intent intent = new Intent(this, WinScreen.class);
+            intent.putExtra("playername", fromPlayer.getUsername());
+            startActivity(intent);
+            sensorManager.unregisterListener(this);
+            finish();
+        });
+    }
+
+    @Override
     public void showDisconnectPopUp(Player disconnectedPlayer, LocalTime serverTime){
         final int RECONNECT_DURATION = 1 * 60; // in seconds
 
@@ -1103,5 +1115,13 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
             Log.d(TAG, "showCardBank");
             currentCard.doActionOfCard(this.gameBoardViewModel);
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.sensorManager.unregisterListener(proximitySensorListener, proximitySensor);
+        this.sensorManager = null;
+
     }
 }

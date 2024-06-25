@@ -27,6 +27,8 @@ public class GameSearchViewModel extends ViewModel {
 
     private List<Player> reconnectPlayerBuffer;
 
+    private boolean destroyed;
+
 
     public GameSearchViewModel(String uri, String username, String id, GameSearchAction gameSearchAction){
         WebsocketClientController.connectToServer(uri, id, username);
@@ -35,6 +37,7 @@ public class GameSearchViewModel extends ViewModel {
         actionController = new ActionController(this::handleAction);
         this.gameSearchAction = gameSearchAction;
         this.username = username;
+        this.destroyed = false;
     }
 
     public void receiveGames (){
@@ -77,7 +80,8 @@ public class GameSearchViewModel extends ViewModel {
 
     void handleAction(Action action, String param, Player fromPlayer, List<Field> fields){
         if (action != Action.RECONNECT_DISCARD && action != Action.RECONNECT_OK && (fromPlayer == null || !fromPlayer.getUsername().equals(username))) {
-            this.receiveGames();
+            if (!destroyed)
+                this.receiveGames();
             return;
         }
 
@@ -128,5 +132,9 @@ public class GameSearchViewModel extends ViewModel {
         Player myPlayer = WebsocketClientController.getPlayer();
         myPlayer.setDefaulValues();
         actionController.discardReconnect(gameId);
+    }
+
+    public void setDestroyed(boolean destroyed){
+        this.destroyed = destroyed;
     }
 }

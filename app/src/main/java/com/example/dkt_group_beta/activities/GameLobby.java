@@ -94,7 +94,7 @@ public class GameLobby extends AppCompatActivity implements GameLobbyAction {
             btnStart.setOnClickListener(v -> gameLobbyViewModel.startGame());
             ViewCompat.setBackgroundTintList(
                     layoutButtons,
-                    ColorStateList.valueOf(Color.GREEN));
+                    ColorStateList.valueOf(Color.WHITE));
             layoutButtons.addView(btnStart);
             layoutGameLobbyBtn.removeView(this.btnReady);
         });
