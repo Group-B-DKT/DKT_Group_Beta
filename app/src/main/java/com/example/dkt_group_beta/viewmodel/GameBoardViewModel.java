@@ -1,6 +1,7 @@
 package com.example.dkt_group_beta.viewmodel;
 
 import android.util.Log;
+
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
 import com.example.dkt_group_beta.communication.controller.ActionController;
 import com.example.dkt_group_beta.communication.controller.WebsocketClientController;
@@ -108,6 +109,13 @@ public class GameBoardViewModel {
             gameBoardAction.removeReconnectPopUp();
         }
 
+        if(action == Action.UPDATE_ROUNDS_TO_SKIP){
+            if(player.getId().equals(fromPlayer.getId())){
+                player.setRoundsToSkip(fromPlayer.getRoundsToSkip());
+                movePlayer(Integer.parseInt(param));
+            }
+        }
+
         if (action == Action.REPORT_CHEAT){
             Player cheater = game.getPlayerById(param);
             gameBoardAction.showCheaterDetectedPopUp(cheater, fromPlayer);
@@ -162,6 +170,15 @@ public class GameBoardViewModel {
     }
 
     private void handleEndTurn(Player fromPlayer) {
+        if(player.getId().equals(fromPlayer.getId()) && player.getRoundsToSkip() > 0 ){
+            player.setRoundsToSkip(player.getRoundsToSkip()-1);
+            endTurn();
+            gameBoardAction.disableEndTurnButton();
+            gameBoardAction.disableDiceButton();
+            actionController.updatePlayer();
+            return;
+        }
+        boolean skipRound = false;
         if (player.isOnTurn()){
             gameBoardAction.disableEndTurnButton();
             player.setOnTurn(false);
@@ -197,15 +214,9 @@ public class GameBoardViewModel {
         return game.getRandomNumber(min,max);
     }
 
-    public void rollDice(int[] diceResults){
-        actionController.diceRolled(diceResults);
-    }
+    public void rollDice(int[] diceResults){actionController.diceRolled(diceResults);}
 
-    public void movePlayer(int dice){
-
-        actionController.movePlayer(dice);
-
-    }
+    public void movePlayer(int dice){ actionController.movePlayer(dice);}
     public void endTurn() {
         actionController.endTurn();
     }
@@ -223,12 +234,12 @@ public class GameBoardViewModel {
             game.setMoney(200);
         }
 
-        actionController.moneyUpdate(player);
+        actionController.moneyUpdate();
     }
 
     public void payForCard(int amount){
         game.setMoney(amount);
-        actionController.moneyUpdate(player);
+        actionController.moneyUpdate();
     }
 
     public void moveForCard(int fieldID, int amount){
@@ -243,6 +254,12 @@ public class GameBoardViewModel {
             moveAmount = fieldPosition - currentPosition;
         }
         actionController.movePlayer(moveAmount);
+    }
+
+   public void setRoundsToSkip(int round){
+        player.setRoundsToSkip(3);
+        actionController.updateRoundsToSkip(round);
+       // actionController.updatePlayer();
     }
 
     public void removePlayer(int gameId, Player player) {

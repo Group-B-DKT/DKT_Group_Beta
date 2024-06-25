@@ -20,6 +20,7 @@ public interface GameBoardAction {
     void removeReconnectPopUp();
     void removePlayerFromGame(Player fromPlayer);
     void setPlayerDisconnected(Player disconnectedPlayer);
+    void disableDiceButton();
     void showTaxes(Player payer, Player payee, int amount);
     void placeBuilding(int fieldIndex, Building building, int numberOfBuildings);
     void showCheaterDetectedPopUp(Player cheater, Player detective);

@@ -306,4 +306,10 @@ class PlayerTest {
 
         assertFalse(player.getJokerCards().contains(jokerCard));
     }
+    @Test
+    void testSetRoundsToSkip(){
+        player.setRoundsToSkip(3);
+        assertEquals(3, player.getRoundsToSkip());
+    }
+
 }

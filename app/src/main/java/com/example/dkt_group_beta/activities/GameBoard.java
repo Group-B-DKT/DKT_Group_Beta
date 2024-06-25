@@ -9,6 +9,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.ViewGroup;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -24,8 +27,10 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +45,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.dkt_group_beta.dialogues.CheatDialogFragment;
 import com.example.dkt_group_beta.R;
 import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
 import com.example.dkt_group_beta.activities.interfaces.GameBoardAction;
@@ -61,6 +67,8 @@ import com.example.dkt_group_beta.model.enums.FieldType;
 import com.example.dkt_group_beta.model.interfaces.TimerElapsedEvent;
 import com.example.dkt_group_beta.model.utilities.ThreadTimer;
 import com.example.dkt_group_beta.viewmodel.GameBoardViewModel;
+import com.example.dkt_group_beta.activities.adapter.PlayerItemAdapter;
+import com.example.dkt_group_beta.model.Field;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -252,6 +260,14 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         endTurnLayout = new ViewGroup.LayoutParams(btnEndTurn.getLayoutParams());
 
 
+        //testButton.setOnClickListener(v -> dicePopUp());
+        btnEndTurn.setOnClickListener(v -> {
+            if (player.isOnTurn()){
+                gameBoardViewModel.endTurn();
+                disableView(testButton);
+                diceRolling = false;
+            }
+        });
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
@@ -480,6 +496,10 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         if(passedStart) {
             gameBoardViewModel.passStartOrMoneyField();
             this.passedStart = false;
+       }
+        if(player.getCurrentPosition() == 9){
+            gotToJail(player);
+
         }
 
     }
@@ -998,6 +1018,11 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         });
     }
 
+    @Override
+    public void disableDiceButton() {
+        runOnUiThread(()-> disableView(testButton));
+    }
+
     private void countdown(final int startTime, TextView remainingTime) {
         new Thread(() -> {
             long lastTime = System.currentTimeMillis();
@@ -1124,4 +1149,25 @@ public class GameBoard extends AppCompatActivity implements SensorEventListener,
         this.sensorManager = null;
 
     }
+
+    public void gotToJail(Player playerInJail){
+
+
+        //player.setRoundsToSkip(3);
+        int currentposition = playerInJail.getCurrentPosition();
+        int jail = 24;
+        int round = 0;
+        if(currentposition < 24){
+            round = jail-currentposition;
+        }else{ //current position > 24
+            round= jail + (30 - currentposition); //goal: field 24, to reach this field he has to go till start + 24 fields
+        }
+
+        gameBoardViewModel.setRoundsToSkip(round);
+    }
+
+
+
+
+
 }

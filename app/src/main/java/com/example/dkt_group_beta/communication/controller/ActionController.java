@@ -62,7 +62,6 @@ public class ActionController {
     }
 
 
-
     public void isReady(boolean isReady){
         ActionJsonObject actionJsonObject;
         if (isReady)
@@ -108,8 +107,8 @@ public class ActionController {
 
     }
 
-    public void moneyUpdate(Player player){
-
+    public void moneyUpdate(){
+        Player player = WebsocketClientController.getPlayer();
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.UPDATE_MONEY, null, player, null);
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
@@ -119,6 +118,10 @@ public class ActionController {
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.PAY_TAXES, null, player, null);
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
+    }
+
+    public void updatePlayer(){
+      moneyUpdate();
     }
 
     public void endTurn(){
@@ -133,7 +136,7 @@ public class ActionController {
         String msg = WrapperHelper.toJsonFromObject(gameId, Request.ACTION, actionJsonObject);
         WebsocketClientController.sendToServer(msg);
     }
-
+  
     public void reconnectToGame() {
         ActionJsonObject actionJsonObject = new ActionJsonObject(Action.RECONNECT_OK, null);
         String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
@@ -182,5 +185,10 @@ public class ActionController {
         handleAction.handleAction(actionJsonObject.getAction(), actionJsonObject.getParam(), actionJsonObject.getFromPlayer(), actionJsonObject.getFields());
     }
 
-
+    public void updateRoundsToSkip(int round) {
+        Player player = WebsocketClientController.getPlayer();
+        ActionJsonObject actionJsonObject = new ActionJsonObject(Action.UPDATE_ROUNDS_TO_SKIP, Integer.toString(round), player, null);
+        String msg = WrapperHelper.toJsonFromObject(WebsocketClientController.getConnectedGameId(), Request.ACTION, actionJsonObject);
+        WebsocketClientController.sendToServer(msg);
+    }
 }
