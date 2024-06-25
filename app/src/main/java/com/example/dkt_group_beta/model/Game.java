@@ -196,8 +196,4 @@ public class Game {
         }
         return -1;
     }
-
-    public void checkEndCondition(){
-
-    }
 }
